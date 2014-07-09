@@ -6,9 +6,10 @@ import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+import cms.view.GraphicsConstants;
 import cms.view.panel.LogDisplay;
 
-public class TextAreaFormatting {
+public class TextAreaFormatting implements GraphicsConstants{
 
 	private SimpleAttributeSet gooduserinput = new SimpleAttributeSet();
 	private SimpleAttributeSet baduserinput = new SimpleAttributeSet();
@@ -22,24 +23,24 @@ public class TextAreaFormatting {
 
 	public void define() {
 		StyleConstants.setFontFamily(gooduserinput, "Verdana");
-		StyleConstants.setForeground(gooduserinput, Color.GREEN);
+		StyleConstants.setForeground(gooduserinput, RUN);
 		StyleConstants.setFontSize(gooduserinput, 11);
 
 		StyleConstants.setFontFamily(baduserinput, "Verdana");
-		StyleConstants.setForeground(baduserinput, Color.RED);
+		StyleConstants.setForeground(baduserinput, ERR);
 		StyleConstants.setFontSize(baduserinput, 11);
 		
 		StyleConstants.setFontFamily(programerror, "Verdana");
-		StyleConstants.setForeground(programerror, Color.RED);
+		StyleConstants.setForeground(programerror, ERR);
 		StyleConstants.setFontSize(programerror, 11);
 		
 		StyleConstants.setFontFamily(programoutput, "Verdana");
-		StyleConstants.setForeground(programoutput, Color.WHITE);
+		StyleConstants.setForeground(programoutput, ABS);
 		StyleConstants.setFontSize(programoutput, 11);
 		
 		StyleConstants.setFontFamily(log, "Verdana");
 		StyleConstants.setFontSize(log, 9);
-		StyleConstants.setForeground(log, Color.LIGHT_GRAY);
+		StyleConstants.setForeground(log, ABS);
 	}
 
 	public void append(JTextPane textpane, int highlightType, String str) {
