@@ -21,11 +21,11 @@ public class IconFactory {
 		y_pos = y/2;
 		
 		switch(type){
-		case 0: nodeIcon(); break;
-		case 1: /*CMS*/ ; break;
-		case 2: /*AMS*/ ; break;
-		case 3: /*DBS*/ ; break;	
-		default: nodeIcon(); break;
+		case 0: nodeIcon();	break;
+		case 1: cmsIcon();	break;
+		case 2: amsIcon();	break;
+		case 3: dbIcon();	break;	
+		default: nodeIcon();	break;
 		}
 		
 	}
@@ -42,6 +42,18 @@ public class IconFactory {
 		graphics.fillOval(x_pos-x_offset[i], y_pos-y_offset[i], x_offset[i]*2,  y_offset[i]*2);
 		i++;
 		graphics.fillRect(x_pos-x_offset[i], y_pos-y_offset[i], x_offset[i]*2,  y_offset[i]*2);
+	}
+	
+	private static void cmsIcon(){
+		
+	}
+	
+	private static void amsIcon(){
+		
+	}
+	
+	private static void dbIcon(){
+		
 	}
 	
 	
