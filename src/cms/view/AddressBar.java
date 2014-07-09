@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import cms.controller.LogSystem;
 import cms.model.DataFactory;
 import cms.view.element.NodeButton;
 
@@ -28,6 +29,8 @@ public class AddressBar extends JPanel implements GraphicsConstants {
 		coreLayout.setVgap(ADDRESS_GAP);
 
 		this.setLayout(coreLayout);
+		
+		LogSystem.log(true, false, "Size is " + size);
 		
 		button = new NodeButton[DataFactory.core.length];
 		for (int i = 0; i < DataFactory.core.length; i++) {

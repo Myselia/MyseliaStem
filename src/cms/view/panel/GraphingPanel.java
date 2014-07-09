@@ -1,6 +1,7 @@
 package cms.view.panel;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
@@ -20,6 +21,9 @@ public class GraphingPanel extends JPanel implements GraphicsConstants{
 		this.barcount = DataFactory.core.length;
 		//LogSystem.log(true, false, ""+this.);
 		graphbar = new GraphBar[barcount];
+		
+		GridLayout coreLayout = new GridLayout(1, barcount);
+		this.setLayout(coreLayout);
 		
 		for(int i = 0; i < barcount; i++){
 			graphbar[i] = new GraphBar(this.getWidth()/barcount, DataFactory.core[i]);
