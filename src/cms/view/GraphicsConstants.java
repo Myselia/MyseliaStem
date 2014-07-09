@@ -3,7 +3,7 @@ package cms.view;
 import java.awt.Color;
 
 public interface GraphicsConstants {
-	String TITLE = "CMS v0.1 alpha";
+	String TITLE = "CMS v0.5 alpha";
 
 	int ADDRESS_COLUMNS = 16;
 	int ADDRESS_GAP = 8;

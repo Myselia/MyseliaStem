@@ -1,10 +1,14 @@
 package cms.view.panel;
 
+import java.awt.Color;
+
 import javax.swing.JPanel;
 
-public class GraphingPanel extends JPanel{
+import cms.view.GraphicsConstants;
+
+public class GraphingPanel extends JPanel implements GraphicsConstants{
 
 	public GraphingPanel(){
-		
+		this.setBackground(PRE);
 	}
 }

@@ -16,7 +16,7 @@ public class Communication extends JPanel implements GraphicsConstants {
 
 	public Communication() {
 		this.setBackground(BACK);
-		this.setPreferredSize(new Dimension(100, 390));
+		this.setPreferredSize(new Dimension(100, 346));
 		this.setLayout(new BorderLayout());
 		
 		this.add(console, BorderLayout.CENTER);

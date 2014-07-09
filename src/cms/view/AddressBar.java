@@ -3,6 +3,7 @@ package cms.view;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import cms.model.DataFactory;
@@ -17,6 +18,7 @@ public class AddressBar extends JPanel implements GraphicsConstants {
 
 	public AddressBar() {
 		this.setBackground(BACK);
+		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, 0, ADDRESS_GAP, 0));
 		int rows = (int) Math.ceil((double) DataFactory.core.length
 				/ ADDRESS_COLUMNS);
 

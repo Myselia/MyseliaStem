@@ -5,10 +5,8 @@ import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
-import cms.view.panel.ConsoleDisplay;
 import cms.view.panel.GraphingMenu;
 import cms.view.panel.GraphingPanel;
-import cms.view.panel.LogDisplay;
 
 public class Graph extends JPanel implements GraphicsConstants {
 	private static final long serialVersionUID = 1L;

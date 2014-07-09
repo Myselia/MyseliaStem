@@ -12,8 +12,8 @@ public class Main {
 		Thread display = new Thread(new Runnable(){
 			public void run() {
 				ProgramWindow.init();
-				LogSystem.log(true, false, "Log Started");
-				System.out.println("Console Started");	
+				LogSystem.log(true, false, "Log System Started");
+				System.out.println("Welcome to the CMS v0.5 alpha");	
 			}
 		});
 		
