@@ -1,0 +1,58 @@
+IS ASSUMED
+cd workspace/project
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+SETUP
+
+[right click in folder for git root] [left click Git Init Here]
+git config --global user.name "Name"
+git config --global user.email "mail@mail.com"
+git remote add origin https://github.com/user/repo
+git remote -v
+
+(pull)
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+PULLING - (pulls master from online repo)
+
+git pull origin master
+git log
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+PUSHING - (pull before and resolve merges)
+
+git status
+git add .
+git add file1
+git rm file1
+git commit -m "Message"
+git push origin master
+git push origin issN
+
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+BRANCHING - (branches issN from master)
+
+git checkout master
+git branch issN
+git checkout issN
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+MERGING - (merges issN to master)
+
+git checkout master
+git merge issN
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+VARIA
+
+git reset
+git commit -a
+git revert rev
