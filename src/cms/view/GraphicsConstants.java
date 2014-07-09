@@ -13,7 +13,7 @@ public interface GraphicsConstants {
 	 * http://paletton.com/#uid=73u1Z0kJGsmQLb8N4khx6HTpoNk
 	 */
 	
-	Color ABS = new Color(0x999999); // GREY
+	Color ABS = new Color(0xAAAAAA); // GREY
 	Color PRE = new Color(0xE27C00); // ORANGE
 	Color AVA = new Color(0x045C90); // BLUE
 	Color RUN = new Color(0x4EC700); // GREEN
