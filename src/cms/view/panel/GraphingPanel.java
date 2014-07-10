@@ -1,35 +1,40 @@
 package cms.view.panel;
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import cms.controller.LogSystem;
 import cms.model.DataFactory;
 import cms.view.GraphicsConstants;
 import cms.view.element.GraphBar;
 
 public class GraphingPanel extends JPanel implements GraphicsConstants{
+	private static final long serialVersionUID = 1L;
 	
 	private static GraphBar[] graphbar;
-	private Dimension size;
-	private int barcount;
+	private static int barcount;
 
 	public GraphingPanel(){
-		this.setBackground(ABS);
+		this.setBackground(BACK);
 		this.barcount = DataFactory.core.length;
 		//LogSystem.log(true, false, ""+this.);
 		graphbar = new GraphBar[barcount];
 		
-		GridLayout coreLayout = new GridLayout(1, barcount);
-		this.setLayout(coreLayout);
+		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP));
+		
+		GridLayout graphLayout = new GridLayout(1, barcount);
+		this.setLayout(graphLayout);
 		
 		for(int i = 0; i < barcount; i++){
-			graphbar[i] = new GraphBar(this.getWidth()/barcount, DataFactory.core[i]);
+			graphbar[i] = new GraphBar(DataFactory.core[i]);
 			this.add("Bar", graphbar[i]);
-			LogSystem.log(true, false, ""+ this.getSize());
-			//LogSystem.log(true, false, "Created bar no." +i);
+		}
+	}
+	
+	public static void regraph(){
+		for(int i = 0; i < barcount; i++){
+			graphbar[i].repaint();
 		}
 	}
 	

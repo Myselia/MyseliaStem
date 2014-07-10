@@ -1,11 +1,14 @@
 package cms.model;
 
+import java.util.Random;
+
+import cms.controller.LogSystem;
 import cms.model.data.BeanNetwork;
 import cms.model.data.BeanNode;
 
 public class DataFactory {
 
-	public static BeanNode[] core = new BeanNode[16*1];
+	public static BeanNode[] core = new BeanNode[32*1];
 	public static BeanNetwork network = new BeanNetwork();
 
 	public DataFactory() {
@@ -42,5 +45,13 @@ public class DataFactory {
 			}
 		}
 		return 0;
+	}
+	
+	public static void newData(){
+		Random rand = new Random();	
+		for(int i = 0; i < core.length; i++){
+			core[i].setTemperature((int)(core[i].getTemperature()*1.1 + (rand.nextInt()%5)*1));
+			LogSystem.log(true,false, "NewValue : " + core[i].getTemperature());
+		}
 	}
 }

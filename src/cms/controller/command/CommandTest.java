@@ -3,6 +3,8 @@ package cms.controller.command;
 import java.util.Random;
 
 import cms.controller.LogSystem;
+import cms.model.DataFactory;
+import cms.view.panel.GraphingPanel;
 
 public class CommandTest implements Command {
 
@@ -19,6 +21,9 @@ public class CommandTest implements Command {
 				break;
 			case "communications":
 				testcommunications();
+				break;
+			case "data":
+				testdata();
 				break;
 			case "three":
 				testthree();
@@ -39,6 +44,12 @@ public class CommandTest implements Command {
 		System.out.println("Tests specific parts of the program");
 		System.out.println("Test are to be implemented in the source code");
 		
+	}
+	
+	private void testdata(){
+		LogSystem.log(true, false, "Testing new data");
+		DataFactory.newData();
+		GraphingPanel.regraph();
 	}
 
 	private void testlog() {

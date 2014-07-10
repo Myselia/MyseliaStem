@@ -30,8 +30,6 @@ public class AddressBar extends JPanel implements GraphicsConstants {
 
 		this.setLayout(coreLayout);
 		
-		LogSystem.log(true, false, "Size is " + size);
-		
 		button = new NodeButton[DataFactory.core.length];
 		for (int i = 0; i < DataFactory.core.length; i++) {
 			button[i] = new NodeButton(size, DataFactory.core[i]);
