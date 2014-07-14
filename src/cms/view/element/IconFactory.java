@@ -18,15 +18,31 @@ public class IconFactory {
 		y_pos = y/2;
 		
 		switch(type){
-		case 0: nodeIcon();	break;
-		case 1: cmsIcon();	break;
-		case 2: amsIcon();	break;
-		case 3: dbIcon();	break;	
-		default: nodeIcon();	break;
+		case 0: nodeIcon();			break;
+		case 1: cmsIcon();			break;
+		case 2: amsIcon();			break;
+		case 3: dbIcon();			break;
+		case 50: 
+		case 51: tempIcon();		break;
+		case 52: 
+		case 53: particlesIcon();	break;
+		case 54: 
+		case 55: pingIcon();		break;
+		case 56: 
+		case 57: mathIcon();		break;
+		default: nodeIcon();		break;
 		}
 		
 	}
 	
+	private static void mathIcon() {nodeIcon();}
+
+	private static void pingIcon() {nodeIcon();}
+
+	private static void particlesIcon() {nodeIcon();}
+
+	private static void tempIcon() {nodeIcon();}
+
 	private static void nodeIcon(){
 		graphics.setColor(foregrnd);
 		graphics.fillOval(x_pos-15, y_pos-15, 30,  30);

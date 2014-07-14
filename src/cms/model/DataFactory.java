@@ -33,6 +33,8 @@ public class DataFactory {
 		
 		core[5].setState(40);
 		
+		core[13].setState(10);
+		
 	}
 	
 	public static int getSelectedCore(){

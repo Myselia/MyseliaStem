@@ -25,12 +25,12 @@ public class Graph extends JPanel implements GraphicsConstants {
 
 		Thread refresh = new Thread(new Runnable() {
 			public void run() {
-				// int bob = 0;
+				//int bob = 0;
 				while (true) {
 					/*
-					 * bob++; if(bob%10 == 0 || bob%10 == 5){
-					 * CommandSystem.command("test data"); }
-					 */
+					bob++; if(bob%10 == 0 || bob%10 == 5){
+					CommandSystem.command("test data"); }
+					*/
 					try {
 						Thread.sleep(100);
 						// LogSystem.log(true, false, "Repainting...");

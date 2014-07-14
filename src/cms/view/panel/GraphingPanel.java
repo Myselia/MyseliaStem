@@ -46,8 +46,7 @@ GraphicsConstants{
 			g.setColor(ABS);
 			
 			//x position, y position, width, height
-			g.fillRect(offset*i  + extra, getHeight() - DataFactory.core[i].getTemperature()*5 , offset - 2, 5);
-			
+			g.fillRect(offset*i  + extra, getHeight() - DataFactory.core[i].getTemperature()*5 , offset - 2, 5);	
 			
 		}
 		

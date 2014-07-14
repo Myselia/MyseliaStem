@@ -18,7 +18,7 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 	private BeanNode core;
 	private boolean select = false; 
 	
-	Color background, foreground;
+	private Color background, foreground;
 
 	public NodeButton(Dimension size, BeanNode core) {
 		super();
