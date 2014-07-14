@@ -19,7 +19,8 @@ public class Main {
 			public void run() {
 				ProgramWindow.init();
 				LogSystem.log(true, false, "Log System Started");
-				System.out.println("Welcome to the CMS v0.5 alpha");	
+				System.out.println("Welcome to the CMS v0.5 alpha");
+				System.out.println("Enter 'help' for a list of commands");
 			}
 		});
 		
