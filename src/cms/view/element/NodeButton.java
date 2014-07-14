@@ -49,7 +49,7 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 			background = UNSELECTED;
 		}
 		g.setColor(background);
-		g.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+		g.fillRect(0, 0, getWidth(), getHeight());
 		
 		//Icon
 		switch(core.getState()){
