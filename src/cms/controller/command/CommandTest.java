@@ -48,7 +48,6 @@ public class CommandTest implements Command {
 	private void testdata(){
 		LogSystem.log(true, false, "Testing new data");
 		DataFactory.newData();
-		
 	}
 
 	private void testlog() {
