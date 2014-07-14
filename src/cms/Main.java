@@ -7,7 +7,13 @@ import cms.view.ProgramWindow;
 public class Main {
 	public static void main(String[] args) {
 		
-		DataFactory.build();
+		
+		Thread data = new Thread(new Runnable(){
+			public void run() {
+				DataFactory.build();	
+			}
+		});
+		
 		
 		Thread display = new Thread(new Runnable(){
 			public void run() {
@@ -24,6 +30,7 @@ public class Main {
 			}
 		});
 		
+		data.start();
 		display.start();
 		communicator.start();
 		

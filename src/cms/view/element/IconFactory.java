@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class IconFactory {
-	
-	private static final int[] x_offset = {15, 13, 8, 3};
-	private static final int[] y_offset = {15, 13, 8, 35};
 	static Graphics graphics;
 	static Color foregrnd, backgrnd;
 	static int x_pos, y_pos;
@@ -31,29 +28,39 @@ public class IconFactory {
 	}
 	
 	private static void nodeIcon(){
-		int i = 0;
 		graphics.setColor(foregrnd);
-		graphics.fillOval(x_pos-x_offset[i], y_pos-y_offset[i], x_offset[i]*2,  y_offset[i]*2);
-		i++;
+		graphics.fillOval(x_pos-15, y_pos-15, 30,  30);
 		graphics.setColor(backgrnd);
-		graphics.fillOval(x_pos-x_offset[i], y_pos-y_offset[i], x_offset[i]*2,  y_offset[i]*2);
-		i++;
+		graphics.fillOval(x_pos-13, y_pos-13, 26,  26);
 		graphics.setColor(foregrnd);
-		graphics.fillOval(x_pos-x_offset[i], y_pos-y_offset[i], x_offset[i]*2,  y_offset[i]*2);
-		i++;
-		graphics.fillRect(x_pos-x_offset[i], y_pos-y_offset[i], x_offset[i]*2,  y_offset[i]*2);
+		graphics.fillOval(x_pos-8, y_pos-8, 16,  16);
+		graphics.fillRect(x_pos-3, y_pos-35, 6,  70);
 	}
 	
 	private static void cmsIcon(){
-		
+		graphics.setColor(foregrnd);
+		graphics.fillOval(x_pos - 21, y_pos - 30, 20,  20);
+		graphics.fillOval(x_pos - 4, y_pos - 25, 35, 35);
+		graphics.fillOval(x_pos - 23, y_pos, 27, 27);
 	}
 	
 	private static void amsIcon(){
-		
+		graphics.setColor(foregrnd);
+		graphics.fillRect(x_pos - 20, y_pos - 28, 40, 5);
+		graphics.fillRect(x_pos - 20, y_pos - 16, 40, 5);
+		graphics.fillRect(x_pos - 20, y_pos - 4, 40, 5);
+		graphics.fillRect(x_pos - 20, y_pos + 8, 40, 5);
+		graphics.fillRect(x_pos - 20, y_pos + 20, 40, 5);
 	}
 	
 	private static void dbIcon(){
-		
+		graphics.setColor(foregrnd);
+		graphics.fillRect(x_pos - 20, y_pos - 20, 40, 38);
+		graphics.setColor(backgrnd);
+		graphics.fillOval(x_pos - 21, y_pos - 26, 40, 12);
+		graphics.setColor(foregrnd);
+		graphics.fillOval(x_pos - 20, y_pos + 12, 38, 12);
+		graphics.fillOval(x_pos - 19, y_pos - 26, 36, 10);
 	}
 	
 	

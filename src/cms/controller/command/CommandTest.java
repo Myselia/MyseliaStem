@@ -4,7 +4,6 @@ import java.util.Random;
 
 import cms.controller.LogSystem;
 import cms.model.DataFactory;
-import cms.view.panel.GraphingPanel;
 
 public class CommandTest implements Command {
 
@@ -49,7 +48,7 @@ public class CommandTest implements Command {
 	private void testdata(){
 		LogSystem.log(true, false, "Testing new data");
 		DataFactory.newData();
-		GraphingPanel.regraph();
+		
 	}
 
 	private void testlog() {

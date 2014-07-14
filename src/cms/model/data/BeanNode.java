@@ -5,7 +5,7 @@ public class BeanNode implements java.io.Serializable {
 
 	// Properties
 	private int id = 0;
-	private int type = 0;
+	private int type = 0;				// core type: 0node, 1cms, 2ams, 3db
 	private int state = 0; 				// core state as viewed by model
 	private boolean selected = false; 	// core state as viewed by view
 	private int temperature = 25; 		// core temperature
