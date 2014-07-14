@@ -5,7 +5,6 @@ import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
-import cms.controller.LogSystem;
 import cms.view.panel.GraphingMenu;
 import cms.view.panel.GraphingPanel;
 

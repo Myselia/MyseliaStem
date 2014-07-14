@@ -2,7 +2,6 @@ package cms.model;
 
 import java.util.Random;
 
-import cms.controller.LogSystem;
 import cms.model.data.BeanNetwork;
 import cms.model.data.BeanNode;
 
