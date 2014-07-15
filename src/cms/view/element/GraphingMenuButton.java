@@ -7,7 +7,6 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
 
-import cms.view.AddressBar;
 import cms.view.GraphicsConstants;
 import cms.view.panel.GraphingMenu;
 
@@ -45,7 +44,7 @@ public class GraphingMenuButton extends JComponent implements MouseListener, Gra
 			background = UNSELECTED;
 		}
 		g.setColor(background);
-		g.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+		g.fillRect(0, 0, getWidth(), getHeight());
 		
 		IconFactory.icon(g, ABS, background, getWidth(), getHeight(), type);
 	}
