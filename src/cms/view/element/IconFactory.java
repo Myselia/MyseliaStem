@@ -1,6 +1,7 @@
 package cms.view.element;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 public class IconFactory {
@@ -16,6 +17,9 @@ public class IconFactory {
 		backgrnd = background;
 		x_pos = x/2;
 		y_pos = y/2;
+		
+		Font f = new Font("Dialog", Font.BOLD, 15);
+		graphics.setFont(f);
 		
 		switch(type){
 		case 0: nodeIcon();			break;
@@ -35,13 +39,25 @@ public class IconFactory {
 		
 	}
 	
-	private static void mathIcon() {nodeIcon();}
+	private static void mathIcon() {
+		graphics.setColor(foregrnd);
+		graphics.drawString("calculations", x_pos - 40, y_pos +7);
+	}
 
-	private static void pingIcon() {nodeIcon();}
+	private static void pingIcon() {
+		graphics.setColor(foregrnd);
+		graphics.drawString("ping", x_pos - 15, y_pos +7);
+	}
 
-	private static void particlesIcon() {nodeIcon();}
+	private static void particlesIcon() { 
+		graphics.setColor(foregrnd);
+		graphics.drawString("particles", x_pos - 30, y_pos +7);
+	}
 
-	private static void tempIcon() {nodeIcon();}
+	private static void tempIcon() {
+		graphics.setColor(foregrnd);
+		graphics.drawString("temperature", x_pos - 40, y_pos +7);
+	}
 
 	private static void nodeIcon(){
 		graphics.setColor(foregrnd);
