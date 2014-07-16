@@ -1,5 +1,6 @@
 package cms.view.panel;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -7,6 +8,7 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import cms.controller.LogSystem;
 import cms.model.DataFactory;
 import cms.view.GraphicsConstants;
 
@@ -37,22 +39,40 @@ GraphicsConstants{
 		g.setColor(BACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		int offset = getWidth()/barcount;
-		int extra = (getWidth() - (((int)(getWidth()/barcount)) * barcount)) / 2;
-		
-		
-		//values
+		//font values
+		Font f = new Font("Dialog", Font.BOLD, 12);
+		g.setFont(f);
+
+		//read-through values and average
+		int[] value = new int[barcount];
+		double average = 0.0;
 		for(int i = 0; i < barcount; i++){
-			g.setColor(ABS);
-			
-			//x position, y position, width, height
-			g.fillRect(offset*i  + extra, getHeight() - DataFactory.core[i].getTemperature()*5 , offset - 2, 5);	
-			
+			value[i] = DataFactory.core[i].getTemperature();
+			average += ((double)value[i]/(double)barcount);
 		}
 		
-		//average
-		g.setColor(ABS);
-		g.fillRect(0, 125, getWidth(), 3);
+		//average drawing
+		g.setColor(AVA);
+		g.fillRect(0, getHeight() - (int)(average*5), getWidth(), 1);
+		String bob = Double.toString(average) + "extrainfo";
+		if(bob.length() > 4){
+			bob = bob.substring(0,4);
+		}
+		g.drawString(bob, 4, getHeight() - ((int)(average*5) + 2)); //text	
+		
+		//design values
+		int offset = getWidth()/(barcount+1);
+		int extra = (getWidth() - (((int)(getWidth()/(barcount+1))) * (barcount+1))) / 2;
+		
+		//indicator drawing
+		for(int i = 0; i < barcount; i++){
+			g.setColor(ABS);
+			int x_pos = offset*(i+1) + extra;
+			int y_pos = getHeight() - value[i]*5;
+			
+			g.fillRect(x_pos , y_pos , offset - 2, 5); //x position, y position, width, height
+			g.drawString(Integer.toString(value[i]), x_pos + 4, y_pos - 2); //text	
+		}
 	}
 
 	@Override
