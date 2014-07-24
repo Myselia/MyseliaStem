@@ -7,14 +7,14 @@ import cms.view.ProgramWindow;
 public class Main {
 	public static void main(String[] args) {
 		
-		
+		//Model
 		Thread data = new Thread(new Runnable(){
 			public void run() {
 				DataFactory.build();	
 			}
 		});
 		
-		
+		//View
 		Thread display = new Thread(new Runnable(){
 			public void run() {
 				ProgramWindow.init();
