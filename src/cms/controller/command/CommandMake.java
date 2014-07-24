@@ -17,8 +17,7 @@ public class CommandMake implements Command{
 
 	@Override
 	public void define() {
-		System.out.println("Parameters: 'def' 'slot' ");
-		System.out.println("Sends loaded buffer to called node.");
+		System.out.println("Parameters: id");
 		System.out.println("Calls node's setup methods.");
 	}
 

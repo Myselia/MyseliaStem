@@ -9,7 +9,7 @@ public class CommandHelp implements Command {
 				define();
 			}
 		} else {
-			System.out.println("call - load - make - test - help - exit");
+			System.out.println("call - load - make - test - help - send - pack - note - exit");
 		}
 	}
 

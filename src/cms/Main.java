@@ -24,16 +24,16 @@ public class Main {
 			}
 		});
 		
-		Thread communicator = new Thread(new Runnable(){
+		/*Thread communicator = new Thread(new Runnable(){
 			public void run() {
 				
 				
 			}
-		});
+		});*/
 		
 		data.start();
 		display.start();
-		communicator.start();
+		//communicator.start();
 		
 	}
 }

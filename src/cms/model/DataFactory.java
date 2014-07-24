@@ -49,7 +49,7 @@ public class DataFactory {
 	public static void newData(){
 		Random rand = new Random();	
 		for(int i = 0; i < core.length; i++){
-			core[i].setTemperature((int)(core[i].getTemperature()*1 + (rand.nextInt()%5)*1));
+			core[i].setTemperature((int)(core[i].getTemperature()*1 + (rand.nextInt()%2)*1));
 			//LogSystem.log(true,false, "NewValue : " + core[i].getTemperature());
 		}
 	}

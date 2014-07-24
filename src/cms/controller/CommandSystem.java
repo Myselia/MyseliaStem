@@ -11,6 +11,10 @@ public class CommandSystem {
 	private static CommandTest test = new CommandTest();
 	private static CommandHelp help = new CommandHelp();
 	private static CommandExit exit = new CommandExit();
+	
+	private static CommandPack pack = new CommandPack();
+	private static CommandSend send = new CommandSend();
+	private static CommandNote note = new CommandNote();
 
 	private static int index = -1;
 	private static String[] history = new String[20];
@@ -50,6 +54,20 @@ public class CommandSystem {
 			print(true);
 			exit.action(commandparts);
 			break;
+
+		case "pack":
+			print(true);
+			pack.action(commandparts);
+			break;
+		case "send":
+			print(true);
+			send.action(commandparts);
+			break;
+		case "note":
+			print(true);
+			note.action(commandparts);
+			break;
+			
 
 		default:
 			print(false);

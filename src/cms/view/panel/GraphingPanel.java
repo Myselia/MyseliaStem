@@ -8,7 +8,6 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import cms.controller.LogSystem;
 import cms.model.DataFactory;
 import cms.view.GraphicsConstants;
 

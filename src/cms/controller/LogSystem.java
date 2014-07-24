@@ -18,6 +18,7 @@ public class LogSystem {
 		if(display){
 			LogDisplay.display(make);
 		}
+
 	}
 	
 }
