@@ -2,10 +2,15 @@ package cms;
 
 import cms.controller.LogSystem;
 import cms.model.DataFactory;
+import cms.model.communication.Server;
 import cms.view.ProgramWindow;
 
 public class Main {
+	
+	public static final int DEFAULT_PORT = 6969; //fya know what i mean
+	
 	public static void main(String[] args) {
+		Server server = new Server(DEFAULT_PORT, 100);
 		
 		//Model
 		Thread data = new Thread(new Runnable(){
@@ -24,16 +29,19 @@ public class Main {
 			}
 		});
 		
-		/*Thread communicator = new Thread(new Runnable(){
+		Thread communicator = new Thread(new Runnable(){
 			public void run() {
-				
-				
+				try{
+				server.startRunning();
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+				}
 			}
-		});*/
+		});
 		
 		data.start();
 		display.start();
-		//communicator.start();
+		communicator.start();
 		
 	}
 }
