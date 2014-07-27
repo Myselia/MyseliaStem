@@ -1,9 +1,9 @@
 package cms.model.communication;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -12,7 +12,7 @@ import cms.controller.LogSystem;
 public class Server {
 	// public ObjectOutputStream output;
 	// public ObjectInputStream input;
-	public BufferedOutputStream output;
+	public PrintWriter output;
 	public BufferedReader input;
 	public ServerSocket serverSocket;
 	public Socket clientConnectionSocket;
@@ -29,8 +29,9 @@ public class Server {
 		System.out.println("STARTING SERVER LISTENING ON PORT " + port);
 		SERVER_RUNNING = true;
 		
+		boolean NOCONN = true; 
 		try {
-			while (SERVER_RUNNING) {
+			while (NOCONN) {
 				/*
 				 * SETUP
 				 */
@@ -43,36 +44,38 @@ public class Server {
 				if (clientConnectionSocket.isConnected()) {
 					System.out.println("Client connected on port "
 							+ clientConnectionSocket.getPort());
+					
+					output = new PrintWriter(
+							clientConnectionSocket.getOutputStream(), true);
+					LogSystem.log(true, false, "Started output stream buffer: " + output.toString());
+					//output.flush();
+					input = new BufferedReader(new InputStreamReader(
+							clientConnectionSocket.getInputStream()));
+					LogSystem.log(true, false, "Started input stream buffer: " + input.toString());
+					//output.flush();
+					NOCONN = false;
 				}
 
-				output = new BufferedOutputStream(
-						clientConnectionSocket.getOutputStream());
-				LogSystem.log(true, false, "Started output stream buffer: " + output.toString());
-				output.flush();
-				input = new BufferedReader(new InputStreamReader(
-						clientConnectionSocket.getInputStream()));
-				LogSystem.log(true, false, "Started input stream buffer: " + input.toString());
-
+				
+			}
 				/*
 				 * LOGIC
 				 */
 				String inputL = "";
 			
-				
+				int c = 0;
+				LogSystem.log(true, false, "Starting communication..");
 				do {
-					LogSystem.log(true, false, "Starting communication..");
 					inputL = input.readLine();
 					LogSystem.log(true, false, "Read line.");
 				    System.out.println("inputL: " + inputL);
-					System.out.println("Respone from Client(" + clientConnectionSocket.toString() + ": " + inputL);
+					LogSystem.log(true, false, "Response from Client(" + clientConnectionSocket.getInetAddress().getHostAddress()  + ": " + inputL);
+					output.println("You said: " + inputL);
 					Thread.sleep(100);
-					LogSystem.log(true, false, "Client sent : " + inputL);
-					//output.println("anal beads lawnmower style");
-				} while (SERVER_RUNNING);
+				} while (inputL != null);
 				
-			
+				LogSystem.log(true, false, "Client " + clientConnectionSocket.getInetAddress().getHostAddress() + " has stopped communicating");
 				
-			}
 
 		} catch (IOException e) {
 			System.err.println("EXCEPTION LISTENING ON PORT " + port);
@@ -80,7 +83,7 @@ public class Server {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} 
 
 	}
 }
