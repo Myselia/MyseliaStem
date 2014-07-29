@@ -46,7 +46,7 @@ public class XMLParser {
 		}
 
 		try {
-			element = (Element) doc.getElementsByTagName("head").item(0);
+			element = (Element) doc.getElementsByTagName("header").item(0);
 			transmission = new Transmission();
 			return construct(element, transmission);
 		}catch (Exception e) {
