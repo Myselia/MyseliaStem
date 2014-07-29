@@ -33,7 +33,7 @@ public class Graph extends JPanel implements GraphicsConstants {
 					CommandSystem.command("test data"); }
 					*/
 					try {
-						Thread.sleep(100);
+						Thread.sleep(200);
 						//LogSystem.log(true, false, "Repainting...");
 						graphingpanel.repaint();
 					} catch (InterruptedException e) {

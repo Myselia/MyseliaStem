@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<transmission>
+
+	<head id="894fh23nu9v8ybvw4o4" type="sys" from="node1" to="cms">
+		110 <!-- OPCODE FOR NODE INFO UPDATE -->
+	</head>
+
+	<particle type="sys" class="temp" count="1"> <!-- TEMPERATURE -->
+		54.1
+	</particle>
+
+	<particle type="sys" class="ram" count="1"> <!-- LEFTOVER RAM -->
+		198.1
+	</particle>
+
+	<particle type="sys" class="proc" count="1"> <!-- PROCESSOR USAGE -->
+		198.1
+	</particle>
+
+</trasmission>
