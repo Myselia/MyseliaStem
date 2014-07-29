@@ -29,15 +29,16 @@ public class SClientSession extends ThreadHelper {
 					clientConnectionSocket.getOutputStream(), true);
 			
 			long time = System.currentTimeMillis();
-			
-			serverInput = input.readLine();
-			LogSystem.log(true, false, "Read line.");
-			System.out.println("inputL: " + serverInput);
-			LogSystem.log(true, false, "Response from Client("
-					+ clientConnectionSocket.getInetAddress()
-							.getHostAddress() + ": " + serverInput + "(BYTES: "
-					+ serverInput.getBytes().length + ")");
-			output.println("You said: " + serverInput);
+
+			while ((serverInput = input.readLine()) != null) {
+				LogSystem.log(true, false, "Read line.");
+				System.out.println("inputL: " + serverInput);
+				LogSystem.log(true, false, "Response from Client("
+						+ clientConnectionSocket.getInetAddress()
+								.getHostAddress() + ": " + serverInput
+						+ "(BYTES: " + serverInput.getBytes().length + ")");
+				output.println("You said: " + serverInput);
+			}
 			
 			output.close();
 			input.close();
