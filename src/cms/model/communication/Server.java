@@ -16,7 +16,7 @@ public class Server extends ThreadHelper {
 	public int MAX_SERVER_THREAD_POOLS = 10;
 	
 	protected int port, backlog;
-	
+		
 	protected PrintWriter output;
 	protected BufferedReader input;
 	protected ServerSocket serverSocket;
@@ -31,7 +31,7 @@ public class Server extends ThreadHelper {
 		this.SERVER_RUNNING = true;
 		threadPool = Executors.newFixedThreadPool(MAX_SERVER_THREAD_POOLS);
 	}
-
+	
 	public void startRunning() throws ClassNotFoundException {
 		System.out.println("STARTING SERVER LISTENING ON PORT " + port);
 

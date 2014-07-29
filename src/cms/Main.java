@@ -42,8 +42,8 @@ public class Main {
 			Thread.sleep(200);
 			display.start();
 			Thread.sleep(200);
-			test.start();
-			Thread.sleep(200);
+			//test.start();
+			//Thread.sleep(200);
 			communicator.start();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
