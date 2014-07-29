@@ -1,6 +1,7 @@
 package cms.model;
 
-import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -9,6 +10,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import cms.model.communication.format.Transmission;
 
@@ -32,6 +34,7 @@ public class XMLParser {
 		}
 	}
 
+<<<<<<< HEAD
 	public static Transmission makedoc(BufferedReader input) {
 
 		try {
@@ -39,19 +42,23 @@ public class XMLParser {
 		} catch (Exception e) {
 			e.printStackTrace();	
 		}
+=======
+	public static Transmission makedoc(String input) {
+		
+		Document doc = null;
+>>>>>>> 664539633587970c705088a74321fac41189711e
 
 		try {
+			doc = dBuilder.parse(new InputSource(new StringReader(input)));
 			particles = doc.getElementsByTagName("particle");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			
 			element = (Element) doc.getElementsByTagName("head").item(0);
 			transmission = new Transmission();
 			return construct(element, transmission);
-				
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
