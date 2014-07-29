@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.JTextField;
 
+import cms.Main;
 import cms.controller.CommandSystem;
 import cms.view.GraphicsConstants;
 import cms.view.element.TextAreaOutputStream;
@@ -46,8 +47,10 @@ public class ConsoleDisplay extends JPanel implements KeyListener,
 		textpane = new JTextPane();
 		TextAreaOutputStream taos = new TextAreaOutputStream(textpane, 0, 400);
 		PrintStream ps = new PrintStream(taos);
+
 		System.setOut(ps);
-		System.setErr(ps);
+		if (Main.REROUTE_ERR)
+			System.setErr(ps);
 		textpane.setBackground(BACK);
 		textpane.setFont(new Font("Verdana", Font.PLAIN, 11));
 		textpane.setEditable(false);
@@ -65,18 +68,18 @@ public class ConsoleDisplay extends JPanel implements KeyListener,
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_ENTER){
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			CommandSystem.index_reset();
 			String make = field.getText();
-			if(!make.equals("")){
+			if (!make.equals("")) {
 				CommandSystem.command(make);
 				field.setText("");
 			}
-		} else if(e.getKeyCode() == KeyEvent.VK_UP){
+		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
 			CommandSystem.index_increase();
 			field.setText(CommandSystem.get_command());
-			
-		} else if(e.getKeyCode() == KeyEvent.VK_DOWN){
+
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			CommandSystem.index_decrease();
 			field.setText(CommandSystem.get_command());
 		}

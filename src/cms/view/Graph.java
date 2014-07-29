@@ -5,6 +5,7 @@ import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
+import cms.controller.LogSystem;
 //import cms.controller.CommandSystem;
 import cms.view.panel.GraphingMenu;
 import cms.view.panel.GraphingPanel;
@@ -33,7 +34,7 @@ public class Graph extends JPanel implements GraphicsConstants {
 					*/
 					try {
 						Thread.sleep(100);
-						// LogSystem.log(true, false, "Repainting...");
+						//LogSystem.log(true, false, "Repainting...");
 						graphingpanel.repaint();
 					} catch (InterruptedException e) {
 						e.printStackTrace();

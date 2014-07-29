@@ -73,12 +73,12 @@ public class TextAreaOutputStream extends OutputStream {
 	// STATIC MEMBERS
 	// *************************************************************************************************
 
-	class Appender implements Runnable {
+	 class Appender implements Runnable {
 		private final JTextPane txtpane;
 		private final int maxLines; // maximum lines allowed in text area
 		private final LinkedList<Integer> lengths; // length of lines within
 													// text area
-		private final List<String> values; // values waiting to be appended
+		private volatile List<String> values; // values waiting to be appended
 		private int highlighttype;
 
 		private int curLength; // length of current line
