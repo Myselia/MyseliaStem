@@ -8,13 +8,15 @@ import java.net.Socket;
 
 import cms.controller.LogSystem;
 import cms.helpers.ThreadHelper;
+import cms.model.XMLParser;
+import cms.model.communication.format.Transmission;
 
 public class SClientSession extends ThreadHelper {
 
 	protected Socket clientConnectionSocket = null;
 	protected String serverTransmission = null;
-	protected String serverInput = null;
-
+	
+	String inputS;
 	public SClientSession(Socket clientConnectionSocket, String serverTransmission) {
 		this.clientConnectionSocket = clientConnectionSocket;
 		this.serverTransmission = serverTransmission;
@@ -30,14 +32,19 @@ public class SClientSession extends ThreadHelper {
 			
 			long time = System.currentTimeMillis();
 
-			while ((serverInput = input.readLine()) != null) {
+			Transmission trans;
+			/*(trans = XMLParser.makedoc(input)*/
+			
+			while ((inputS = input.readLine() ) != null) {
+				
+				//trans.printTransmission();
 				LogSystem.log(true, false, "Read line.");
-				System.out.println("inputL: " + serverInput);
+				System.out.println("inputS: " + inputS);
 				LogSystem.log(true, false, "Response from Client("
 						+ clientConnectionSocket.getInetAddress()
-								.getHostAddress() + ": " + serverInput
-						+ "(BYTES: " + serverInput.getBytes().length + ")");
-				output.println("You said: " + serverInput);
+								.getHostAddress() + ": " + input
+						+ "(BYTES: " + input. + ")");
+				output.println("You said: " + input);
 			}
 			
 			output.close();

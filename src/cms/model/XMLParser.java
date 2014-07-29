@@ -37,7 +37,7 @@ public class XMLParser {
 		try {
 			doc = dBuilder.parse(new InputSource(input));
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace();	
 		}
 
 		try {
