@@ -10,8 +10,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import cms.model.communication.format.Request;
-import cms.model.communication.format.Response;
 import cms.model.communication.format.Transmission;
 
 public class XMLParser {
@@ -50,20 +48,11 @@ public class XMLParser {
 
 		try {
 			
-			element = (Element) doc.getElementsByTagName("request").item(0);
-			if(element != null){
-				transmission = new Request();
-				return construct(element, transmission);
-			} 
-			
-			element = (Element) doc.getElementsByTagName("response").item(0);
-			if(element != null){
-				transmission = new Response();
-				return construct(element, transmission);
-			} 
-
-
-		} catch (Exception e) {
+			element = (Element) doc.getElementsByTagName("head").item(0);
+			transmission = new Transmission();
+			return construct(element, transmission);
+				
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -77,8 +66,8 @@ public class XMLParser {
 		tags[0] = element.getTextContent();
 		tags[1] = element.getAttribute("id");
 		tags[2] = element.getAttribute("type");
-		tags[3] = element.getAttribute("to");
-		tags[4] = element.getAttribute("from");
+		tags[3] = element.getAttribute("from");
+		tags[4] = element.getAttribute("to");
 		
 		transmission.addAttributes(tags[1], tags[2], tags[3], tags[4]);
 		transmission.addOpcode(tags[0]);
