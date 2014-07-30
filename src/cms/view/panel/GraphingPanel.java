@@ -43,10 +43,10 @@ GraphicsConstants{
 		g.setFont(f);
 
 		//read-through values and average
-		int[] value = new int[barcount];
+		double[] value = new double[barcount];
 		double average = 0.0;
 		for(int i = 0; i < barcount; i++){
-			value[i] = DataFactory.core[i].getTemperature();
+			value[i] = (int)DataFactory.core[i].getTemperature();
 			average += ((double)value[i]/(double)barcount);
 		}
 		
@@ -66,11 +66,11 @@ GraphicsConstants{
 		//indicator drawing
 		for(int i = 0; i < barcount; i++){
 			g.setColor(ABS);
-			int x_pos = offset*(i+1) + extra;
-			int y_pos = getHeight() - value[i]*5;
+			double x_pos = offset*(i+1) + extra;
+			double y_pos = getHeight() - value[i]*5;
 			
-			g.fillRect(x_pos , y_pos , offset - 2, 5); //x position, y position, width, height
-			g.drawString(Integer.toString(value[i]), x_pos + 4, y_pos - 2); //text	
+			g.fillRect((int)x_pos , (int)y_pos , (int)(offset - 2), (int)5); //x position, y position, width, height
+			g.drawString(Double.toString(value[i]), (int)x_pos + 4, (int)y_pos - 2); //text	
 		}
 	}
 

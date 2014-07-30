@@ -7,7 +7,7 @@ import cms.model.data.BeanNode;
 
 public class DataFactory {
 
-	public static BeanNode[] core = new BeanNode[8];
+	public static BeanNode[] core = new BeanNode[4];
 	public static BeanNetwork network = new BeanNetwork();
 
 	public DataFactory() {
@@ -31,7 +31,7 @@ public class DataFactory {
 		core[2].setType(3);
 		core[2].setState(30);
 		
-		core[5].setState(40);
+		//core[5].setState(40);
 		
 		//core[13].setState(10);
 		

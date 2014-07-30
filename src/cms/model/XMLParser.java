@@ -26,6 +26,7 @@ public class XMLParser {
 	private static Transmission transmission;
 
 	public XMLParser() {
+		this.doc = null;
 		try {
 			dbFactory = DocumentBuilderFactory.newInstance();
 			dBuilder = dbFactory.newDocumentBuilder();
@@ -34,26 +35,17 @@ public class XMLParser {
 		}
 	}
 
-<<<<<<< HEAD
-	public static Transmission makedoc(BufferedReader input) {
-
-		try {
-			doc = dBuilder.parse(new InputSource(input));
-		} catch (Exception e) {
-			e.printStackTrace();	
-		}
-=======
 	public static Transmission makedoc(String input) {
 		
-		Document doc = null;
->>>>>>> 664539633587970c705088a74321fac41189711e
-
 		try {
-			doc = dBuilder.parse(new InputSource(new StringReader(input)));
+			InputSource is = new InputSource();
+		    is.setCharacterStream(new StringReader(input));
+			doc = dBuilder.parse(is);
+		    System.out.println("||" + doc.toString() + "||");
 			particles = doc.getElementsByTagName("particle");
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		} 
 
 		try {
 			element = (Element) doc.getElementsByTagName("header").item(0);
