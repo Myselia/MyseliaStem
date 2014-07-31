@@ -11,6 +11,7 @@ public class CommandPack extends AbstractCommand {
 			if (parameters[1].equals("def")) {
 				define();
 			} else if (parameters[1].equals("now")){
+				System.out.println("e>Currently no implementation of Pack is available.");
 				pack();
 			} else {
 				System.out.println("e>Load Command Incomplete.");

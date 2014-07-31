@@ -7,20 +7,14 @@ public class CommandExit extends AbstractCommand {
 		String[] parameters = super.commandParam(arg);
 		if (parameters.length > 1) {
 			switch (parameters[1]) {
-			case "1":
-				System.exit(0);
-				break;
 			case "now":
 				System.exit(0);
 				break;
 			case "def":
 				define();
 				break;
-			case "clean":
-				clean();
-				break;
-			default: /* nothing */
-				;
+			default:
+				System.out.println("e>Wrong parameter for command 'exit'");
 				break;
 			}
 		} else {

@@ -6,13 +6,13 @@ public class CommandMake extends AbstractCommand{
 	@Override
 	public void action(String arg) {
 		String[] parameters = super.commandParam(arg);
-		if(parameters.length == 2){
+		switch(parameters.length){
+		case 2:
 			if(parameters[1].equals("def")){
 				define();
-			} else if (parameters[1].equals("buffer")){
-				System.out.println("e>Make Command Incomplete");
-			}
-		} else {
+				break;
+			}else if (parameters[1].equals("buffer")){}
+		default:
 			System.out.println("e>Make Command Incomplete");
 		}
 	}

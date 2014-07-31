@@ -9,7 +9,7 @@ public class CommandNote extends AbstractCommand {
 	@Override
 	public void action(String arg) {
 		String[] parameters = super.commandParam(arg);
-		if (parameters.length >= 2) {
+		if (parameters.length > 1) {
 			if (parameters[1].equals("def")) {
 				define();
 			} else if (parameters[1].equals("log")){

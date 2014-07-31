@@ -82,6 +82,7 @@ public class CommandSystem {
 		}
 		return classes;
 	}
+	
 	/**
 	 * Verifies if command is valid by comparing first word with static variable of AbstractCommand subclasses.
 	 * Makes use of quasi-anonymous objects. Hardly needs any maintenance - 

@@ -32,6 +32,8 @@ public class CommandTest extends AbstractCommand {
 			case "def":
 				define();
 				break;
+			default:
+				System.out.println("e>Test Command: Wrong Parameter");
 			}
 		} else {
 			System.out.println("e>Test Command Incomplete");
@@ -52,12 +54,12 @@ public class CommandTest extends AbstractCommand {
 		return CommandTest.command_signature;
 	}
 	
-	private void testdata(){
+	private static void testdata(){
 		LogSystem.log(true, false, "Testing new data");
 		DataFactory.newData();
 	}
 
-	private void testlog() {
+	private static void testlog() {
 		System.out.println("Testing Log");
 		Random random = new Random();
 		int max = random.nextInt() % 5;
@@ -67,7 +69,7 @@ public class CommandTest extends AbstractCommand {
 		}
 	}
 
-	private void testconsole() {
+	private static void testconsole() {
 		LogSystem.log(true, false, "Testing Console");
 		Random random = new Random();
 		int max = random.nextInt() % 5;
@@ -77,14 +79,14 @@ public class CommandTest extends AbstractCommand {
 		}
 	}
 	
-	private void testcommunications(){
+	private static void testcommunications(){
 		for(int i = 0; i < 10; i++){
 			testlog();
 			testconsole();
 		}
 	}
 
-	private void testthree() {
+	private static void testthree() {
 		System.out.println("s>Void test");
 	}
 

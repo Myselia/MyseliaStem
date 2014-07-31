@@ -11,6 +11,7 @@ public class CommandSend extends AbstractCommand {
 			if (parameters[1].equals("def")) {
 				define();
 			} else if (parameters[1].equals("now")){
+				System.out.println("e>Currently no implementation of Send is available.");
 				send();
 			} else {
 				System.out.println("e>Load Command Incomplete.");

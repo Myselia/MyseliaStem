@@ -6,16 +6,18 @@ public class CommandLoad extends AbstractCommand {
 	@Override
 	public void action(String arg) {
 		String[] parameters = super.commandParam(arg);
-		if (parameters.length == 3) {
-			load(parameters[1], parameters[2]);
-		} else if (parameters.length == 2) {
-			if (parameters[1].equals("def")) {
+		switch(parameters.length){
+		case 3:
+			load(parameters[1],parameters[2]);
+			break;
+		case 2:	
+			if(parameters[1].equals("def")){
 				define();
-			} else {
-				System.out.println("e>Load Command Incomplete.");
+				break;
 			}
-		} else {
+		default:
 			System.out.println("e>Load Command Incomplete");
+			break;
 		}
 	}
 
@@ -30,6 +32,7 @@ public class CommandLoad extends AbstractCommand {
 		return CommandLoad.command_signature;
 	}
 	
+	//TODO
 	private void load(String file, String buffer) {
 		System.out.println("s>File loaded: " + file + "@" + buffer);
 	}

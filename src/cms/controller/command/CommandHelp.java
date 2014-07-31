@@ -7,9 +7,8 @@ public class CommandHelp extends AbstractCommand {
 	public void action(String arg) {
 		String[] parameters = super.commandParam(arg);
 		if(parameters.length > 1){
-			if(parameters[1].equals("def")){
+			if(parameters[1].equals("def"))
 				define();
-			}
 		} else {
 			System.out.println("call - load - make - test - help - send - pack - note - exit");
 		}
