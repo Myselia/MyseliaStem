@@ -17,6 +17,7 @@ public class CommandCall extends AbstractCommand{
 					AddressBar.nodeButton(call).select(true);
 				}catch(NumberFormatException e){
 					AddressBar.unselectLast(null);
+					System.out.println("e>Call Command: Wrong Parameters");
 				}catch(Exception e){
 					System.out.println("e>No such node ID");
 				}
