@@ -1,8 +1,10 @@
 package cms.controller.command;
 
-public class CommandExit implements Command {
+public class CommandExit extends AbstractCommand {
+	private final static String command_signature = "exit";
 
-	public void action(String[] parameters) {
+	public void action(String arg) {
+		String[] parameters = super.commandParam(arg);
 		if (parameters.length > 1) {
 			switch (parameters[1]) {
 			case "1":
@@ -33,8 +35,12 @@ public class CommandExit implements Command {
 		System.out.println("Exits and closes all processes.");
 	}
 	
-	private void clean() {
-		
+	@Override
+	public String getCommandSignature(){
+		return CommandExit.command_signature;
 	}
+	
+	//TODO
+	private void clean() {}
 
 }

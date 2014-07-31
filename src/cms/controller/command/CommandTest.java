@@ -5,11 +5,13 @@ import java.util.Random;
 import cms.controller.LogSystem;
 import cms.model.DataFactory;
 
-public class CommandTest implements Command {
+public class CommandTest extends AbstractCommand {
+	
+	private final static String command_signature = "test";
 
 	@Override
-	public void action(String[] parameters) {
-
+	public void action(String arg) {
+		String[] parameters = super.commandParam(arg);
 		if (parameters.length > 1) {
 			switch (parameters[1]) {
 			case "log":
@@ -43,6 +45,11 @@ public class CommandTest implements Command {
 		System.out.println("Tests specific parts of the program");
 		System.out.println("Test are to be implemented in the source code");
 		
+	}
+	
+	@Override
+	public String getCommandSignature(){
+		return CommandTest.command_signature;
 	}
 	
 	private void testdata(){

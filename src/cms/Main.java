@@ -10,7 +10,7 @@ public class Main {
 	public static final int DEFAULT_PORT = 6969; //fya know what i mean
 	
 	public static void main(String[] args) {
-		Server server = new Server(DEFAULT_PORT, 100);
+		final Server server = new Server(DEFAULT_PORT, 100);
 		
 		//Model
 		Thread data = new Thread(new Runnable(){

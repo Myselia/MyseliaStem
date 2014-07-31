@@ -1,6 +1,7 @@
 package cms.controller.command;
 
 public interface Command {
-	public void action(String[] parameters);
-	public void define();
+	public abstract void action(String arg);
+	public abstract void define();
+	public abstract String getCommandSignature();
 }

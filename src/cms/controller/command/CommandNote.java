@@ -2,10 +2,13 @@ package cms.controller.command;
 
 import cms.controller.LogSystem;
 
-public class CommandNote implements Command {
+public class CommandNote extends AbstractCommand {
 
+	private final static String command_signature = "note";
+	
 	@Override
-	public void action(String[] parameters) {
+	public void action(String arg) {
+		String[] parameters = super.commandParam(arg);
 		if (parameters.length >= 2) {
 			if (parameters[1].equals("def")) {
 				define();
@@ -24,6 +27,11 @@ public class CommandNote implements Command {
 			concat += note[i] + " ";
 		}
 		LogSystem.log(true, false, concat);
+	}
+	
+	@Override
+	public String getCommandSignature(){
+		return CommandNote.command_signature;
 	}
 
 	@Override

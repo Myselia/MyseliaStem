@@ -1,13 +1,13 @@
 package cms.controller.command;
-
 import cms.view.AddressBar;
 
-public class CommandCall implements Command{
-
+public class CommandCall extends AbstractCommand{
+	private final static String command_signature = "call";
+	
 	@Override
-	public void action(String[] parameters) {
+	public void action(String arg){
+		String[] parameters = super.commandParam(arg);
 		int call;
-		
 		if(parameters.length == 2){
 			if(parameters[1].equals("def")){
 				define();
@@ -38,6 +38,11 @@ public class CommandCall implements Command{
 		System.out.println("Parameters: 'def' '#' 'void' ");
 		System.out.println("Selects a node in the grid.");
 		
+	}
+	
+	@Override
+	public String getCommandSignature(){
+		return CommandCall.command_signature;
 	}
 
 }
