@@ -1,18 +1,25 @@
 package cms.controller.command;
 
-public class CommandMake implements Command{
-
+public class CommandMake extends AbstractCommand{
+	private final static String command_signature = "make";
+	
 	@Override
-	public void action(String[] parameters) {
-		if(parameters.length == 2){
+	public void action(String arg) {
+		String[] parameters = super.commandParam(arg);
+		switch(parameters.length){
+		case 2:
 			if(parameters[1].equals("def")){
 				define();
-			} else if (parameters[1].equals("buffer")){
-				System.out.println("e>Make Command Incomplete");
-			}
-		} else {
+				break;
+			}else if (parameters[1].equals("buffer")){}
+		default:
 			System.out.println("e>Make Command Incomplete");
 		}
+	}
+	
+	@Override
+	public String getCommandSignature(){
+		return CommandMake.command_signature;
 	}
 
 	@Override

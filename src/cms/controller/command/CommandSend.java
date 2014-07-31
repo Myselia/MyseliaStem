@@ -1,13 +1,17 @@
 package cms.controller.command;
 
-public class CommandSend implements Command {
+public class CommandSend extends AbstractCommand {
 
+	private final static String command_signature = "send";
+	
 	@Override
-	public void action(String[] parameters) {
+	public void action(String arg) {
+		String[] parameters = super.commandParam(arg);
 		if (parameters.length == 2) {
 			if (parameters[1].equals("def")) {
 				define();
 			} else if (parameters[1].equals("now")){
+				System.out.println("e>Currently no implementation of Send is available.");
 				send();
 			} else {
 				System.out.println("e>Load Command Incomplete.");
@@ -16,13 +20,16 @@ public class CommandSend implements Command {
 		
 	}
 	
-	public void send(){
-		
-	}
+	public void send(){}
 
 	@Override
 	public void define() {
 		System.out.println("Sends file once it's packed.");
 		
+	}
+	
+	@Override
+	public String getCommandSignature(){
+		return CommandSend.command_signature;
 	}
 }

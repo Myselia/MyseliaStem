@@ -39,7 +39,15 @@ public class ConsoleDisplay extends JPanel implements KeyListener,
 
 		fieldSetup();
 		this.add(field, BorderLayout.SOUTH);
-
+		
+		try{
+			CommandSystem.setClasses("cms.controller.command");
+		}catch(Exception e){
+			System.out.println("b>" + "&>" + "cms.controller.CommandSystem.setClasses(String) call in");
+			System.out.println("b>" + "&>" + "cms.view.panel.ConsoleDisplay.ConsoleDisplay() threw an exception.");
+			System.out.println("b>" + "&>" + "Force kill the app and investigate.");
+			e.printStackTrace();
+		}
 		setVisible(true);
 	}
 

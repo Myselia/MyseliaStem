@@ -13,7 +13,7 @@ public class Main {
 	public static boolean REROUTE_ERR = false;
 	
 	public static void main(String[] args) {
-		
+		final Server server = new Server(DEFAULT_PORT, 100);
 		
 		//Model
 		Thread data = new Thread(new Runnable(){
@@ -31,8 +31,7 @@ public class Main {
 				System.out.println("Enter 'help' for a list of commands");
 			}
 		});
-		
-		Server server = new Server(DEFAULT_PORT, 100);
+
 		Thread communicator = new Thread(server);
 		
 		Thread test = new Thread(new Test());

@@ -5,11 +5,13 @@ import java.util.Random;
 import cms.controller.LogSystem;
 import cms.model.DataFactory;
 
-public class CommandTest implements Command {
+public class CommandTest extends AbstractCommand {
+	
+	private final static String command_signature = "test";
 
 	@Override
-	public void action(String[] parameters) {
-
+	public void action(String arg) {
+		String[] parameters = super.commandParam(arg);
 		if (parameters.length > 1) {
 			switch (parameters[1]) {
 			case "log":
@@ -30,6 +32,8 @@ public class CommandTest implements Command {
 			case "def":
 				define();
 				break;
+			default:
+				System.out.println("e>Test Command: Wrong Parameter");
 			}
 		} else {
 			System.out.println("e>Test Command Incomplete");
@@ -45,12 +49,17 @@ public class CommandTest implements Command {
 		
 	}
 	
-	private void testdata(){
+	@Override
+	public String getCommandSignature(){
+		return CommandTest.command_signature;
+	}
+	
+	private static void testdata(){
 		LogSystem.log(true, false, "Testing new data");
 		DataFactory.newData();
 	}
 
-	private void testlog() {
+	private static void testlog() {
 		System.out.println("Testing Log");
 		Random random = new Random();
 		int max = random.nextInt() % 5;
@@ -60,7 +69,7 @@ public class CommandTest implements Command {
 		}
 	}
 
-	private void testconsole() {
+	private static void testconsole() {
 		LogSystem.log(true, false, "Testing Console");
 		Random random = new Random();
 		int max = random.nextInt() % 5;
@@ -70,14 +79,14 @@ public class CommandTest implements Command {
 		}
 	}
 	
-	private void testcommunications(){
+	private static void testcommunications(){
 		for(int i = 0; i < 10; i++){
 			testlog();
 			testconsole();
 		}
 	}
 
-	private void testthree() {
+	private static void testthree() {
 		System.out.println("s>Void test");
 	}
 
