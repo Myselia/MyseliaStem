@@ -22,5 +22,9 @@ public class Communication extends JPanel implements GraphicsConstants {
 		this.add(console, BorderLayout.CENTER);
 		this.add(log, BorderLayout.EAST);
 	}
+	
+	protected void setFocusOnTextField(){
+		console.setFocus();
+	}
 
 }
