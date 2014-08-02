@@ -43,11 +43,13 @@ public class ConsoleDisplay extends JPanel implements KeyListener,
 		try{
 			CommandSystem.setClasses("cms.controller.command");
 		}catch(Exception e){
-			System.out.println("b>" + "&>" + "cms.controller.CommandSystem.setClasses(String) call in");
+			System.out.println("b>" + "&>" + "cms.controller.CommandSystem.setClasses(String) called in");
 			System.out.println("b>" + "&>" + "cms.view.panel.ConsoleDisplay.ConsoleDisplay() threw an exception.");
 			System.out.println("b>" + "&>" + "Force kill the app and investigate.");
 			e.printStackTrace();
 		}
+		
+		field.grabFocus();
 		setVisible(true);
 	}
 
@@ -69,7 +71,6 @@ public class ConsoleDisplay extends JPanel implements KeyListener,
 		field.setBackground(Color.BLACK);
 		field.setForeground(Color.LIGHT_GRAY);
 		field.setFont(new Font("Verdana", Font.LAYOUT_LEFT_TO_RIGHT, 12));
-		field.requestFocusInWindow();
 		field.addKeyListener(this);
 		field.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	}
@@ -93,6 +94,19 @@ public class ConsoleDisplay extends JPanel implements KeyListener,
 		}
 	}
 
+	/**
+	 * Loops until focus is given to field. Average of 9 loops so far.
+	 */
+	public void setFocus(){
+		//int loop = 0;
+		while(!field.hasFocus()){
+			field.grabFocus();
+			//loop++;
+		}
+		//Debug
+		//System.out.println("Focus is set, finally: " + field.hasFocus() + ". Loops: " + loop);
+	}
+	
 	@Override
 	public void keyReleased(KeyEvent e) {
 	}
