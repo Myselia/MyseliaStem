@@ -7,7 +7,7 @@ public class TransmissionParser {
 	public static void parse(Transmission trans, BeanNode[] core){
 		int coreid = Integer.parseInt(trans.from);
 		
-		if(trans.opcode.equals("100")){
+		if(trans.opcode.equals("110")){
 			for(int i = 0; i < trans.particles.length; i++){
 				
 				if(trans.particles[i].getParticleClass().equals("temp")){
