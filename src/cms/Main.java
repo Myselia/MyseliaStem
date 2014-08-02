@@ -33,8 +33,6 @@ public class Main {
 		});
 
 		Thread communicator = new Thread(server);
-		
-		Thread test = new Thread(new Test());
 
 		try {
 			data.start();

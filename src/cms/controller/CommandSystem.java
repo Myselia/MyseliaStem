@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+
 import cms.controller.command.*;
 
 public class CommandSystem {
@@ -15,6 +16,7 @@ public class CommandSystem {
 	private static String[] history = new String[20];
 	private static String[] commandparts;
 	private static String command;
+	@SuppressWarnings("rawtypes")
 	private static Class[] commandClasses = null;
 	
 	
@@ -91,7 +93,7 @@ public class CommandSystem {
 	 * @author Philippe Hebert
 	 * @param str
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings("unchecked")
 	public static void command(String str) {
 		history(str);
 		str = str.trim();
@@ -103,7 +105,7 @@ public class CommandSystem {
 		for(String s : commandparts){
 			System.out.print("'" + s + "' ");
 		}*/
-		for(Class c :commandClasses){
+		for(@SuppressWarnings("rawtypes") Class c :commandClasses){
 			if(c.isInterface() || c.getCanonicalName() == "cms.controller.command.AbstractCommand") continue;
 			try{
 				Method[] methods = {c.getMethod("getCommandSignature", null), c.getMethod("action", new Class[]{String.class})};

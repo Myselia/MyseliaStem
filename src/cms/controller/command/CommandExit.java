@@ -33,8 +33,5 @@ public class CommandExit extends AbstractCommand {
 	public String getCommandSignature(){
 		return CommandExit.command_signature;
 	}
-	
-	//TODO
-	private void clean() {}
 
 }
