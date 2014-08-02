@@ -42,12 +42,18 @@ git checkout master
 git branch issN
 git checkout issN
 
+git branch -r (shows remote branches)
+git branch -a (shows all branches)
+
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 MERGING - (merges issN to master)
 
 git checkout master
 git merge issN
+//branch deletion
+git branch --delete issN
+git push origin --delete issN
 
 |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 

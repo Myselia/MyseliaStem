@@ -34,8 +34,6 @@ public class SClientSession extends ThreadHelper {
 					clientConnectionSocket.getInputStream()));
 			PrintWriter output =  new PrintWriter(
 					clientConnectionSocket.getOutputStream(), true);
-			
-			long time = System.currentTimeMillis();
 
 			Transmission trans;
 
@@ -46,19 +44,16 @@ public class SClientSession extends ThreadHelper {
 				LogSystem.log(true, false, "Response from Client("
 						+ clientConnectionSocket.getInetAddress()
 								.getHostAddress());
-				
-				trans = XMLParser.makedoc(inputS);
+				XMLParser xmlp = new XMLParser();
+				trans = xmlp.makedoc(inputS);
 				DataFactory.core[3].setTemperature(Double.parseDouble(trans.particles[0].getContent()));
 				trans.printTransmission();
-				
-				//output.println("You said: " + input);
+
 			}
 			
 			output.close();
 			input.close();
-			//System.out.println("Request processed: " + time);
 		} catch (IOException e) {
-			// report exception somewhere.
 			e.printStackTrace();
 		}
 	}

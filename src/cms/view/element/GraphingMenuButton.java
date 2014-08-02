@@ -7,12 +7,14 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
 
+import cms.view.DisplayType;
 import cms.view.GraphicsConstants;
 import cms.view.panel.GraphingMenu;
 
 public class GraphingMenuButton extends JComponent implements MouseListener, GraphicsConstants{
 	private static final long serialVersionUID = 1L;
 	private int type;
+	public DisplayType dt;
 	private boolean select;
 	
 	private Color background;
@@ -48,13 +50,17 @@ public class GraphingMenuButton extends JComponent implements MouseListener, Gra
 		
 		IconFactory.icon(g, ABS, background, getWidth(), getHeight(), type);
 	}
+	
+	public void setDisplayType(DisplayType dt){
+		this.dt = dt;
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		GraphingMenu.unselectLast(this);
 		select(true);
 		if(select){
-			System.out.println("g>display " + type);
+			System.out.println("g>Display: " + dt);
 		}
 	}
 

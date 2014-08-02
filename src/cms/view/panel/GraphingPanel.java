@@ -8,7 +8,9 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+//import cms.controller.LogSystem;
 import cms.model.DataFactory;
+import cms.view.DisplayType;
 import cms.view.GraphicsConstants;
 
 public class GraphingPanel extends JPanel implements MouseListener,
@@ -16,9 +18,9 @@ GraphicsConstants{
 	private static final long serialVersionUID = 1L;
 	
 	private int barcount;
-	//private static int displaytype;
+	private DisplayType displaytype;
 
-	public GraphingPanel(){
+	public GraphingPanel(DisplayType displaytype){
 		super();
 		enableInputMethods(true);
 		setFocusable(true);
@@ -26,7 +28,7 @@ GraphicsConstants{
 		setVisible(true);
 
 		this.barcount = DataFactory.core.length;
-		
+		this.displaytype = displaytype;
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP));
 		
 	}
@@ -45,19 +47,46 @@ GraphicsConstants{
 		//read-through values and average
 		double[] value = new double[barcount];
 		double average = 0.0;
+		double sum = 0.0;
+		double max = 0.0;
+		
 		for(int i = 0; i < barcount; i++){
-			value[i] = (int)DataFactory.core[i].getTemperature();
-			average += ((double)value[i]/(double)barcount);
+			if(displaytype == DisplayType.TEMPERATURE){
+				max = 100.0;
+				value[i] = DataFactory.core[i].getTemperature();
+			} else if(displaytype == DisplayType.CPU){
+				max = 100.0;
+				value[i] = DataFactory.core[i].getCpu();
+			} else if(displaytype == DisplayType.RAM){
+				max = 512.0;
+				value[i] = DataFactory.core[i].getRam();
+			} else if(displaytype == DisplayType.PARTICLES){
+				max = 0.0;
+				value[i] = DataFactory.core[i].getParticles();
+			}
+			
+			average += (double)(value[i]/barcount);
+			sum += value[i];
 		}
+		
+		//LogSystem.log(true, false, "Average:" + average + " || Sum: "+ sum);
+		//LogSystem.log(true, false, "Display Type:" + displaytype);
+		
+		if(displaytype == DisplayType.PARTICLES){
+			max = sum;
+		}
+	
+		//scale calculator
+		double scale = getHeight()/max;
 		
 		//average drawing
 		g.setColor(AVA);
-		g.fillRect(0, getHeight() - (int)(average*5), getWidth(), 1);
+		g.fillRect(0, getHeight() - (int)(average*scale), getWidth(), 1);
 		String bob = Double.toString(average) + "extrainfo";
 		if(bob.length() > 4){
 			bob = bob.substring(0,4);
 		}
-		g.drawString(bob, 4, getHeight() - ((int)(average*5) + 2)); //text	
+		g.drawString(bob, 4, getHeight() - ((int)(average*scale) + 2)); //text	
 		
 		//design values
 		int offset = getWidth()/(barcount+1);
@@ -67,11 +96,19 @@ GraphicsConstants{
 		for(int i = 0; i < barcount; i++){
 			g.setColor(ABS);
 			double x_pos = offset*(i+1) + extra;
-			double y_pos = getHeight() - value[i]*5;
+			double y_pos = getHeight() - value[i]*scale;
 			
 			g.fillRect((int)x_pos , (int)y_pos , (int)(offset - 2), (int)5); //x position, y position, width, height
 			g.drawString(Double.toString(value[i]), (int)x_pos + 4, (int)y_pos - 2); //text	
 		}
+	}
+	
+	public void setDisplayType(DisplayType dt){
+		displaytype = dt;
+	}
+	
+	public DisplayType getDisplayType(){
+		return displaytype;
 	}
 
 	@Override

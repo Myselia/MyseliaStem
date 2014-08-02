@@ -1,6 +1,5 @@
 package cms.model;
 
-import java.io.IOException;
 import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -10,20 +9,19 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import cms.model.communication.format.Transmission;
 
 public class XMLParser {
 
-	private static Document doc;
-	private static DocumentBuilderFactory dbFactory;
-	private static DocumentBuilder dBuilder;
+	private Document doc;
+	private DocumentBuilderFactory dbFactory;
+	private DocumentBuilder dBuilder;
 
-	private static NodeList particles;
-	private static Element element;
+	private NodeList particles;
+	private Element element;
 
-	private static Transmission transmission;
+	private Transmission transmission;
 
 	public XMLParser() {
 		this.doc = null;
@@ -35,7 +33,7 @@ public class XMLParser {
 		}
 	}
 
-	public static Transmission makedoc(String input) {
+	public Transmission makedoc(String input) {
 		
 		try {
 			InputSource is = new InputSource();
@@ -59,7 +57,7 @@ public class XMLParser {
 
 	}
 	
-	private static Transmission construct(Element element, Transmission transmission){
+	private Transmission construct(Element element, Transmission transmission){
 		String[] tags = new String[5];
 		
 		tags[0] = element.getTextContent();

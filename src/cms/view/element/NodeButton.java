@@ -68,7 +68,7 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 		AddressBar.unselectLast(this);
 		select(true);
 		if(select){
-			System.out.println("g>call " + core.getId());
+			System.out.println("g>Call: " + core.getId());
 		}
 	}
 

@@ -8,7 +8,11 @@ public class BeanNode implements java.io.Serializable {
 	private int type = 0;				// core type: 0node, 1cms, 2ams, 3db
 	private int state = 0; 				// core state as viewed by model
 	private boolean selected = false; 	// core state as viewed by view
+	
 	private double temperature = 25; 		// core temperature
+	private double cpu = 50;				// core cpu usage
+	private double ram = 256;				// core leftover ram
+	private double particles = 1000;		// core ams particles
 
 	// Constructor
 	public BeanNode() {
@@ -52,6 +56,30 @@ public class BeanNode implements java.io.Serializable {
 
 	public void setTemperature(double temperature) {
 		this.temperature = temperature;
+	}
+
+	public double getParticles() {
+		return particles;
+	}
+
+	public void setParticles(double particles) {
+		this.particles = particles;
+	}
+
+	public double getRam() {
+		return ram;
+	}
+
+	public void setRam(double ram) {
+		this.ram = ram;
+	}
+
+	public double getCpu() {
+		return cpu;
+	}
+
+	public void setCpu(double cpu) {
+		this.cpu = cpu;
 	}
 
 

@@ -33,19 +33,14 @@ public class Main {
 		});
 
 		Thread communicator = new Thread(server);
-		
-		Thread test = new Thread(new Test());
 
 		try {
 			data.start();
 			Thread.sleep(200);
 			display.start();
 			Thread.sleep(200);
-			//test.start();
-			//Thread.sleep(200);
 			communicator.start();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
