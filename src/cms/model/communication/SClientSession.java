@@ -46,7 +46,9 @@ public class SClientSession extends ThreadHelper {
 								.getHostAddress());
 				XMLParser xmlp = new XMLParser();
 				trans = xmlp.makedoc(inputS);
-				DataFactory.core[3].setTemperature(Double.parseDouble(trans.particles[0].getContent()));
+				if(trans.type.equals("sys")){
+					DataFactory.insertData(trans);
+				}
 				trans.printTransmission();
 
 			}
