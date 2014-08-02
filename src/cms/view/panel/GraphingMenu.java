@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import cms.view.DisplayType;
+import cms.view.Graph;
 import cms.view.GraphicsConstants;
 import cms.view.element.GraphingMenuButton;
 
@@ -29,6 +31,12 @@ public class GraphingMenu extends JPanel implements GraphicsConstants{
 			button[i] = new GraphingMenuButton(2*i+50);
 			this.add("Button", button[i]);
 		}
+		
+		button[0].setDisplayType(DisplayType.TEMPERATURE);
+		button[1].setDisplayType(DisplayType.CPU);
+		button[2].setDisplayType(DisplayType.RAM);
+		button[3].setDisplayType(DisplayType.PARTICLES);
+		
 	}
 	
 	public static void unselectLast(GraphingMenuButton nextLast) {
@@ -36,6 +44,8 @@ public class GraphingMenu extends JPanel implements GraphicsConstants{
 			lastButtonClicked.select(false);
 		}
 		lastButtonClicked = nextLast;
+		Graph.setDisplayType(lastButtonClicked.dt);
+		
 	}
 	public static GraphingMenuButton nodeButton(int ID){
 		return button[ID];

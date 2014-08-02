@@ -29,34 +29,31 @@ public class IconFactory {
 		case 50: 
 		case 51: tempIcon();		break;
 		case 52: 
-		case 53: particlesIcon();	break;
+		case 53: cpuIcon();			break;
 		case 54: 
-		case 55: pingIcon();		break;
+		case 55: ramIcon();			break;
 		case 56: 
-		case 57: mathIcon();		break;
+		case 57: particlesIcon();		break;
 		default: nodeIcon();		break;
 		}
 		
 	}
 	
-	private static void mathIcon() {
+	private static void tempIcon() {
 		graphics.setColor(foregrnd);
-		graphics.drawString("calculations", x_pos - 40, y_pos +7);
+		graphics.drawString("temperature", x_pos - 42, y_pos +7);
 	}
-
-	private static void pingIcon() {
+	private static void cpuIcon() {
 		graphics.setColor(foregrnd);
-		graphics.drawString("ping", x_pos - 15, y_pos +7);
+		graphics.drawString("CPU", x_pos - 15, y_pos +7);
 	}
-
+	private static void ramIcon() {
+		graphics.setColor(foregrnd);
+		graphics.drawString("RAM", x_pos - 15, y_pos +7);
+	}
 	private static void particlesIcon() { 
 		graphics.setColor(foregrnd);
 		graphics.drawString("particles", x_pos - 30, y_pos +7);
-	}
-
-	private static void tempIcon() {
-		graphics.setColor(foregrnd);
-		graphics.drawString("temperature", x_pos - 40, y_pos +7);
 	}
 
 	private static void nodeIcon(){
