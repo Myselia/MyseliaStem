@@ -62,7 +62,8 @@ public class Server extends ThreadHelper {
 
 			// Create a thread for a client if accepted containing an
 			// SClientSession
-			this.threadPool.execute(new Thread(new SClientSession(clientConnectionSocket, "Multithreaded Server")));
+			this.threadPool.execute(new Thread(new SClientSession(
+					clientConnectionSocket, "Multithreaded Server")));
 
 		}
 
@@ -81,18 +82,22 @@ public class Server extends ThreadHelper {
 			broadcast = getServerNetworkBroadcast();
 
 		int i = 5;
-		
+
 		while (DISCOVER_MODE) {
-			
+
 			// Send infoPacket to broadcast address
 			try {
 				if (i > 0) {
-				DatagramPacket infoPacket = new DatagramPacket(info, info.length, InetAddress.getByName("255.255.255.255"), 8888);
-				//DatagramPacket infoPacket = new DatagramPacket(info, info.length, broadcast, 8888);
-				discoverSocket.send(infoPacket);
-				System.out.println("Sent packet " + infoPacket + " to: " + infoPacket.getAddress().getHostAddress());
-				Thread.sleep(2000);
-				i--;
+					DatagramPacket infoPacket = new DatagramPacket(info,
+							info.length,
+							InetAddress.getByName("255.255.255.255"), 8888);
+					// DatagramPacket infoPacket = new DatagramPacket(info,
+					// info.length, broadcast, 8888);
+					discoverSocket.send(infoPacket);
+					System.out.println("Sent packet " + infoPacket + " to: "
+							+ infoPacket.getAddress().getHostAddress());
+					Thread.sleep(2000);
+					i--;
 				} else {
 					DISCOVER_MODE = false;
 				}
@@ -121,7 +126,8 @@ public class Server extends ThreadHelper {
 			if (networkInterface.isLoopback())
 				continue;
 
-			for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
+			for (InterfaceAddress interfaceAddress : networkInterface
+					.getInterfaceAddresses()) {
 				broadcast = interfaceAddress.getBroadcast();
 				System.out.println("BCAST FIND: " + broadcast);
 
@@ -166,11 +172,11 @@ public class Server extends ThreadHelper {
 	public void run() {
 		try {
 			while (true) {
-			if (DISCOVER_MODE) {
-				startDiscovering();
-			} else {
-				startRunning();
-			}
+				if (DISCOVER_MODE) {
+					startDiscovering();
+				} else {
+					startRunning();
+				}
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

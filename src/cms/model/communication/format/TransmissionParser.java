@@ -1,6 +1,5 @@
-package cms.model;
+package cms.model.communication.format;
 
-import cms.model.communication.format.*;
 import cms.model.data.BeanNode;
 
 public class TransmissionParser {

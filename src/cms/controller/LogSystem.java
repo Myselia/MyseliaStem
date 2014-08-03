@@ -18,6 +18,10 @@ public class LogSystem {
 		if(display){
 			LogDisplay.display(make);
 		}
+		
+		if(export){
+			LogFileWriter.write(make);
+		} 
 
 	}
 	

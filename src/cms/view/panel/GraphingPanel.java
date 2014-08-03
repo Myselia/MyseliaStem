@@ -9,7 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 //import cms.controller.LogSystem;
-import cms.model.DataFactory;
+import cms.model.DataStore;
 import cms.view.DisplayType;
 import cms.view.GraphicsConstants;
 
@@ -27,7 +27,7 @@ GraphicsConstants{
 		addMouseListener(this);
 		setVisible(true);
 
-		this.barcount = DataFactory.core.length;
+		this.barcount = DataStore.core.length;
 		this.displaytype = displaytype;
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP));
 		
@@ -53,16 +53,16 @@ GraphicsConstants{
 		for(int i = 0; i < barcount; i++){
 			if(displaytype == DisplayType.TEMPERATURE){
 				max = 100.0;
-				value[i] = DataFactory.core[i].getTemperature();
+				value[i] = DataStore.core[i].getTemperature();
 			} else if(displaytype == DisplayType.CPU){
 				max = 100.0;
-				value[i] = DataFactory.core[i].getCpu();
+				value[i] = DataStore.core[i].getCpu();
 			} else if(displaytype == DisplayType.RAM){
 				max = 512.0;
-				value[i] = DataFactory.core[i].getRam();
+				value[i] = DataStore.core[i].getRam();
 			} else if(displaytype == DisplayType.PARTICLES){
 				max = 0.0;
-				value[i] = DataFactory.core[i].getParticles();
+				value[i] = DataStore.core[i].getParticles();
 			}
 			
 			average += (double)(value[i]/barcount);

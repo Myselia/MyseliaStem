@@ -1,6 +1,6 @@
 package cms.controller.command;
 
-import cms.model.DataFactory;
+import cms.model.DataStore;
 import cms.view.AddressBar;
 
 public class CommandMake extends AbstractCommand{
@@ -29,8 +29,8 @@ public class CommandMake extends AbstractCommand{
 	}
 	
 	private void make(int type){
-		int coreid = DataFactory.getSelectedCore();
-		DataFactory.core[coreid].setType(type);
+		int coreid = DataStore.getSelectedCore();
+		DataStore.core[coreid].setType(type);
 		AddressBar.nodeButton(coreid).repaint();
 	}
 

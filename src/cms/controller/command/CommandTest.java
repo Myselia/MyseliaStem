@@ -1,7 +1,7 @@
 package cms.controller.command;
 
 import cms.controller.LogSystem;
-import cms.model.DataFactory;
+import cms.model.DataStore;
 
 public class CommandTest extends AbstractCommand {
 	
@@ -41,7 +41,7 @@ public class CommandTest extends AbstractCommand {
 	
 	private static void testdata(){
 		LogSystem.log(true, false, "Testing new data");
-		DataFactory.newData();
+		DataStore.newData();
 	}
 
 }

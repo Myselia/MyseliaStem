@@ -3,15 +3,16 @@ package cms.model;
 import java.util.Random;
 
 import cms.model.communication.format.Transmission;
+import cms.model.communication.format.TransmissionParser;
 import cms.model.data.BeanNetwork;
 import cms.model.data.BeanNode;
 
-public class DataFactory {
+public class DataStore {
 
 	public static BeanNode[] core = new BeanNode[8];
 	public static BeanNetwork network = new BeanNetwork();
 
-	public DataFactory() {
+	public DataStore() {
 	}
 
 	public static void build() {

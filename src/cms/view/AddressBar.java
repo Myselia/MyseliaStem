@@ -6,7 +6,7 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import cms.model.DataFactory;
+import cms.model.DataStore;
 import cms.view.element.NodeButton;
 
 public class AddressBar extends JPanel implements GraphicsConstants {
@@ -19,7 +19,7 @@ public class AddressBar extends JPanel implements GraphicsConstants {
 	public AddressBar() {
 		this.setBackground(BACK);
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, 0, ADDRESS_GAP, 0));
-		int rows = (int) Math.ceil((double) DataFactory.core.length
+		int rows = (int) Math.ceil((double) DataStore.core.length
 				/ ADDRESS_COLUMNS);
 
 		this.setPreferredSize(new Dimension(800, rows * 100));
@@ -29,9 +29,9 @@ public class AddressBar extends JPanel implements GraphicsConstants {
 
 		this.setLayout(coreLayout);
 		
-		button = new NodeButton[DataFactory.core.length];
-		for (int i = 0; i < DataFactory.core.length; i++) {
-			button[i] = new NodeButton(size, DataFactory.core[i]);
+		button = new NodeButton[DataStore.core.length];
+		for (int i = 0; i < DataStore.core.length; i++) {
+			button[i] = new NodeButton(size, DataStore.core[i]);
 			this.add("Button", button[i]);
 		}
 	}

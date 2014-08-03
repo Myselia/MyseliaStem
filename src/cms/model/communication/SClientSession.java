@@ -8,9 +8,9 @@ import java.net.Socket;
 
 import cms.controller.LogSystem;
 import cms.helpers.ThreadHelper;
-import cms.model.DataFactory;
-import cms.model.XMLParser;
+import cms.model.DataStore;
 import cms.model.communication.format.Transmission;
+import cms.model.communication.format.XMLParser;
 
 public class SClientSession extends ThreadHelper {
 
@@ -27,7 +27,6 @@ public class SClientSession extends ThreadHelper {
 	}
 
 	public void run() {
-		System.out.println("CLIENT THREAD RUNNING!!!!!!!!!!");
 		try {
 			System.out.println("STARTING CLIENT SESSION");
 			BufferedReader input =  new BufferedReader(new InputStreamReader(
@@ -47,7 +46,7 @@ public class SClientSession extends ThreadHelper {
 				XMLParser xmlp = new XMLParser();
 				trans = xmlp.makedoc(inputS);
 				if(trans.type.equals("sys")){
-					DataFactory.insertData(trans);
+					DataStore.insertData(trans);
 				}
 				trans.printTransmission();
 
