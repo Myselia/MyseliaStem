@@ -126,6 +126,7 @@ public class TextAreaOutputStream extends OutputStream {
 				if (val.endsWith(EOL1) || val.endsWith(EOL2)) {
 					if (lengths.size() >= maxLines) {
 						LogSystem.log(true, false, "Console Output Exceeding Limit");
+						clear();
 					}
 					lengths.addLast(curLength);
 					curLength = 0;

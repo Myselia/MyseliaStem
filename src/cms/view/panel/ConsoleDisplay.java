@@ -46,7 +46,7 @@ public class ConsoleDisplay extends JPanel implements KeyListener,
 
 	private void areaSetup() {
 		textpane = new JTextPane();
-		TextAreaOutputStream taos = new TextAreaOutputStream(textpane, 0, 400);
+		TextAreaOutputStream taos = new TextAreaOutputStream(textpane, 0, 4000);
 		PrintStream ps = new PrintStream(taos);
 
 		System.setOut(ps);
@@ -89,13 +89,9 @@ public class ConsoleDisplay extends JPanel implements KeyListener,
 	 * Loops until focus is given to field. Average of 9 loops so far.
 	 */
 	public void setFocus(){
-		//int loop = 0;
 		while(!field.hasFocus()){
 			field.grabFocus();
-			//loop++;
 		}
-		//Debug
-		//System.out.println("Focus is set, finally: " + field.hasFocus() + ". Loops: " + loop);
 	}
 	
 	@Override
