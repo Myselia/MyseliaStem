@@ -1,4 +1,4 @@
-package cms.model;
+package cms.model.communication.format;
 
 import java.io.StringReader;
 
@@ -9,8 +9,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-
-import cms.model.communication.format.Transmission;
 
 public class XMLParser {
 
@@ -39,7 +37,7 @@ public class XMLParser {
 			InputSource is = new InputSource();
 		    is.setCharacterStream(new StringReader(input));
 			doc = dBuilder.parse(is);
-		    System.out.println("||" + doc.toString() + "||");
+		    //System.out.println("||" + doc.toString() + "||");
 			particles = doc.getElementsByTagName("particle");
 		} catch (Exception e) {
 			e.printStackTrace();

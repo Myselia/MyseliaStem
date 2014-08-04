@@ -33,8 +33,8 @@ public class Transmission {
 		this.opcode = opcode;
 	}
 	public void printTransmission(){
-		System.out.print("id:" + id + " type" + type);
-		System.out.print(" to:" + to + " from" + from);
+		System.out.print("id:" + id + " type:" + type);
+		System.out.print(" to:" + to + " from:" + from);
 		System.out.println(" opcode:" + opcode + " length:" + particles.length);
 	}
 	

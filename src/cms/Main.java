@@ -1,29 +1,39 @@
 package cms;
 
+import cms.controller.CommandSystem;
 import cms.controller.LogSystem;
-import cms.helpers.ThreadHelper;
-import cms.model.DataFactory;
+import cms.model.DataStore;
+import cms.model.communication.Broadcast;
 import cms.model.communication.Server;
 import cms.view.ProgramWindow;
 
 public class Main {
 	
-	public static final int DEFAULT_PORT = 6969; //fya know what i mean
-	//Route STD error to console?
-	public static boolean REROUTE_ERR = false;
+	public static final int DEFAULT_PORT = 6969; //*wink* *wink* *nudge* *nudge*
+	public static boolean REROUTE_ERR = false;	//Error Re-Routing to CMS Console
+	
+	private static Broadcast bcastRunnable;
+	private static Server serverRunnable;
+	
+	public static Thread bCastCommunicator;
+	private static Thread communicator;
+	private static Thread data;
+	private static Thread display;
 	
 	public static void main(String[] args) {
-		final Server server = new Server(DEFAULT_PORT, 100);
+		bcastRunnable = new Broadcast();
+		serverRunnable = new Server(DEFAULT_PORT, 100);
+		loadCommands();
 		
 		//Model
-		Thread data = new Thread(new Runnable(){
+		data = new Thread(new Runnable(){
 			public void run() {
-				DataFactory.build();	
+				DataStore.build();	
 			}
 		});
 		
 		//View
-		Thread display = new Thread(new Runnable(){
+		display = new Thread(new Runnable(){
 			public void run() {
 				ProgramWindow.init();
 				LogSystem.log(true, false, "Log System Started");
@@ -32,31 +42,49 @@ public class Main {
 			}
 		});
 
-		Thread communicator = new Thread(server);
+		communicator = new Thread(serverRunnable);
+		//bCastCommunicator = new Thread(bcastRunnable);
 
 		try {
-			data.start();
-			Thread.sleep(200);
 			display.start();
-			Thread.sleep(200);
+			Thread.sleep(400);
+			data.start();
+			Thread.sleep(400);
 			communicator.start();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		
 	}
-}
-
-class Test extends ThreadHelper {
-
-	public void run() {
-		try {
-			while (true) {
-				DataFactory.newData();
-				Thread.sleep(250);
-			}
-		} catch (InterruptedException e) {
+	
+	private static void loadCommands(){
+		try{
+			CommandSystem.setClasses("cms.controller.command");
+		}catch(Exception e){
+			System.out.println("b>" + "&>" + "cms.controller.CommandSystem.setClasses(String) called in");
+			System.out.println("b>" + "&>" + "cms.view.panel.ConsoleDisplay.ConsoleDisplay() threw an exception.");
+			System.out.println("b>" + "&>" + "Force kill the app and investigate.");
+			e.printStackTrace();
 		}
 	}
+
+	public static void startBCastThread(Runnable instance, Thread thread) {
+		thread = new Thread(instance);
+		setbCastCommunicator(thread);
+		thread.start();
+	}
+
+	public static Broadcast getBcastRunnable() {
+		return bcastRunnable;
+	}
+
+	public static Thread getbCastCommunicator() {
+		return bCastCommunicator;
+	}
+
+	public static void setbCastCommunicator(Thread bCastCommunicator) {
+		Main.bCastCommunicator = bCastCommunicator;
+	}
+	
 
 }
