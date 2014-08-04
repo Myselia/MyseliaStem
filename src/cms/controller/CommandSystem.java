@@ -2,7 +2,9 @@ package cms.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -16,21 +18,24 @@ public class CommandSystem {
 	private static String[] history = new String[20];
 	private static String[] commandparts;
 	private static String command;
-	@SuppressWarnings("rawtypes")
-	private static Class[] commandClasses = null;
+	private static ReflectionCommand[] commandClasses = null;
 	
 	
 	/**
 	 * Scans all classes accessible from the context class loader which belong
 	 * to the given package and subpackages.
+	 * Fetches all the useful fields for later use and store them in commandClasses
 	 * @author Victor Tatai
+	 * Adapted for project needs by
+	 * @author Philippe Hebert
 	 * @source http://dzone.com/snippets/get-all-classes-within-package
 	 * @param packageName
 	 * @throws ClassNotFoundException
 	 * @throws IOException
 	 */
 	@SuppressWarnings("rawtypes")
-	public static void setClasses(String packageName) throws ClassNotFoundException, IOException {
+	public static void setClasses(String packageName) throws ClassNotFoundException, IOException,
+	NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		
 		//Error #001 Verification
@@ -52,7 +57,38 @@ public class CommandSystem {
 		for (File directory : dirs) {
 			classes.addAll(findClasses(directory, packageName));
 		}
-		commandClasses = classes.toArray(new Class[classes.size()]);
+		classes.trimToSize();
+		
+		
+		int abstract_count = 0;
+		for(Class c : classes){
+			if(Modifier.isAbstract(c.getModifiers())) abstract_count++;
+		}
+		
+		commandClasses = new ReflectionCommand[classes.size() - abstract_count];
+		for (int i = 0 ; i < commandClasses.length ; i++){
+			//THIS LINE IS THE CULPRIT, WHEN IT HITS CLASS COMMANDSEEK.
+			//CAN'T FIGURE OUT WHY
+			
+			
+			
+			
+			Class current = classes.get(i);
+			
+			
+			
+						
+			//END OF WAY TO BIG WHITESPACE FOR EMPHASIS
+			if(current == null) System.out.println("wtf " + i);
+			System.out.println(current.getName().equals("cms.controller.command.CommandSeek"));
+			if(Modifier.isAbstract(current.getModifiers())) continue;
+			System.out.println("Printing Class current object, i=" + i + ": " + current);
+			Method[] methods = {current.getMethod("getCommandSignature"), current.getMethod("action", new Class[]{String.class})};
+			Command c_obj = (Command) current.getConstructor().newInstance();
+			String comm_current = (String) methods[0].invoke(c_obj);
+			commandClasses[i] = new ReflectionCommand(current, comm_current, methods);
+		}
+		//CommandHelp.setCommands(commandClasses); //commented out for compiler while I'm still having issues and try catch things
 	}
 	
 	/**
@@ -76,7 +112,7 @@ public class CommandSystem {
 		
 		for (File file : files) {
 			if (file.isDirectory()) {
-				assert !file.getName().contains(".");
+				//assert !file.getName().contains(".");
 				classes.addAll(findClasses(file, packageName + "." + file.getName()));
 			} else if (file.getName().endsWith(".class")) {
 				classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
@@ -105,15 +141,14 @@ public class CommandSystem {
 		for(String s : commandparts){
 			System.out.print("'" + s + "' ");
 		}*/
-		for(@SuppressWarnings("rawtypes") Class c :commandClasses){
-			if(c.isInterface() || c.getCanonicalName() == "cms.controller.command.AbstractCommand") continue;
+		for(ReflectionCommand c :commandClasses){
 			try{
-				Method[] methods = {c.getMethod("getCommandSignature", null), c.getMethod("action", new Class[]{String.class})};
-				Command c_obj = (Command) c.getConstructor().newInstance();
 				/*Debug
 				System.out.println("" + methods[0].invoke(c_obj));*/
-				if(commandparts[0].equalsIgnoreCase((String) methods[0].invoke(c_obj))){
+				if(commandparts[0].equalsIgnoreCase(c.getCommand())){
 					print(true);
+					Method[] methods = c.getMethods();
+					Command c_obj = (Command) c.getClassField().getConstructor().newInstance();
 					methods[1].invoke(c_obj, command);
 					return;
 				}

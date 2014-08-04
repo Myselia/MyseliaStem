@@ -1,7 +1,10 @@
 package cms.controller.command;
 
+import cms.controller.ReflectionCommand;
+
 public class CommandHelp extends AbstractCommand {
 	private final static String command_signature = "help";
+	private static String[] command_list;
 
 	@Override
 	public void action(String arg) {
@@ -14,7 +17,14 @@ public class CommandHelp extends AbstractCommand {
 			}
 		} else {
 			//TODO: replace with proper loaded commands list
-			System.out.println("help - seek - call - test - exit");
+			System.out.println(command_list);
+		}
+	}
+	
+	public static void setCommands(ReflectionCommand[] commandClasses){
+		command_list = new String[commandClasses.length - 1];
+		for(int i = 0; i < commandClasses.length ; i++){
+			command_list[i] = commandClasses[i].getCommand();
 		}
 	}
 
