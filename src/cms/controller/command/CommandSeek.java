@@ -1,5 +1,7 @@
 package cms.controller.command;
 
+import cms.Main;
+
 public class CommandSeek extends AbstractCommand {
 	private final static String command_signature = "seek";
 
@@ -9,9 +11,9 @@ public class CommandSeek extends AbstractCommand {
 		if(parameters.length > 1){
 			if(parameters[1].equals("def")){
 				define();
-			} else if(parameters[1].equals("on")){
+			} else if(parameters[1].equals("on") || parameters[1].equals("start")){
 				turnon();
-			} else if(parameters[1].equals("off")){
+			} else if(parameters[1].equals("off") || parameters[1].equals("stop")){
 				turnoff();
 			} else {
 				System.out.println("e>" + "Wrong Parameters");
@@ -20,13 +22,16 @@ public class CommandSeek extends AbstractCommand {
 			System.out.println("e>" + "Command Incomplete");
 		}
 	}
-	private void turnon(){
+
+	private void turnon() {
+
+		Main.startBCastThread(Main.getBcastRunnable(), Main.getbCastCommunicator());
 		System.out.println("Seek mode activated");
-		
 	}
+
 	private void turnoff(){
+		Main.getbCastCommunicator().interrupt();
 		System.out.println("Seek mode deactivated");
-		
 	}
 
 	@Override

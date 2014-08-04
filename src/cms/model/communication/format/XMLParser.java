@@ -37,7 +37,7 @@ public class XMLParser {
 			InputSource is = new InputSource();
 		    is.setCharacterStream(new StringReader(input));
 			doc = dBuilder.parse(is);
-		    System.out.println("||" + doc.toString() + "||");
+		    //System.out.println("||" + doc.toString() + "||");
 			particles = doc.getElementsByTagName("particle");
 		} catch (Exception e) {
 			e.printStackTrace();
