@@ -1,5 +1,6 @@
 package cms.model;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import cms.model.communication.format.Transmission;
@@ -9,10 +10,13 @@ import cms.model.data.BeanNode;
 
 public class DataStore {
 
-	public static BeanNode[] core = new BeanNode[8];
+	//public static ArrayList<BeanNode> coreA = new ArrayList<BeanNode>();
+	public static BeanNode[] core = new BeanNode[4];
 	public static BeanNetwork network = new BeanNetwork();
+	public static int nodeCount = -1;
 
 	public DataStore() {
+		
 	}
 
 	public static void build() {
@@ -43,5 +47,10 @@ public class DataStore {
 	
 	public static void insertData(Transmission trans){
 		TransmissionParser.parse(trans, core);
+	}
+	
+	public static int nextNodeID() {
+		nodeCount++;
+		return nodeCount;
 	}
 }
