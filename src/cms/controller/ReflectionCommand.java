@@ -2,20 +2,20 @@ package cms.controller;
 
 import java.lang.reflect.Method;
 
+import cms.controller.command.Command;
+
 public class ReflectionCommand {
-	private @SuppressWarnings("rawtypes")Class c;
+	private Class<Command> c;
 	private Method[] methods;
 	private String command_signature;
 	
-	@SuppressWarnings("rawtypes")
-	public ReflectionCommand(Class c, String command, Method ... methods){
+	public ReflectionCommand(Class<Command> c, String command, Method ... methods){
 		this.c = c;
 		this.command_signature = command;
 		this.methods = methods;
 	}
-	
-	@SuppressWarnings("rawtypes")
-	public Class getClassField(){
+
+	public Class<Command> getClassField(){
 		return this.c;
 	}
 	

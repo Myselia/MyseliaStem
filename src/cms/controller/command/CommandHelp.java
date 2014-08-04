@@ -21,7 +21,7 @@ public class CommandHelp extends AbstractCommand {
 				if(i < command_list.length - 1)
 					System.out.print(command_list[i] + " - ");
 				else
-					System.out.print(command_list[i]);
+					System.out.println(command_list[i]);
 			}	
 		}
 	}
@@ -35,7 +35,7 @@ public class CommandHelp extends AbstractCommand {
 
 	@Override
 	public void define() {
-		System.out.println("Prints a list of all commands that have been recongnised.");
+		System.out.println("Prints a list of all commands that have been recognised.");
 	}
 	
 	@Override

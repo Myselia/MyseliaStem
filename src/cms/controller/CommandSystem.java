@@ -33,7 +33,6 @@ public class CommandSystem {
 	 * @throws ClassNotFoundException
 	 * @throws IOException
 	 */
-	@SuppressWarnings("rawtypes")
 	public static void setClasses(String packageName) throws ClassNotFoundException, IOException,
 	NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -53,21 +52,22 @@ public class CommandSystem {
 			dirs.add(new File(resource.getFile()));
 		}
 		
-		ArrayList<Class> classes = new ArrayList<Class>();
+		ArrayList<Class<Command>> classes = new ArrayList<Class<Command>>();
 		for (File directory : dirs) {
 			classes.addAll(findClasses(directory, packageName));
 		}
+		
 		classes.trimToSize();
-		
-		
+		//We don't want abstract classes or interfaces in commandClasses.
 		int abstract_count = 0;
-		for(Class c : classes){
+		for(Class<Command> c : classes){
 			if(Modifier.isAbstract(c.getModifiers())) abstract_count++;
 		}
 		
+		//Populating commandClasses and its members.
 		commandClasses = new ReflectionCommand[classes.size() - abstract_count];
 		for (int i = 0, j = 0 ; i < classes.size() ; i++){
-			Class current = classes.get(i);			
+			Class<Command> current = classes.get(i);			
 			if(Modifier.isAbstract(current.getModifiers())) continue;
 			Method[] methods = {current.getMethod("getCommandSignature"), current.getMethod("action", new Class[]{String.class})};
 			Command c_obj = (Command) current.getConstructor().newInstance();
@@ -75,12 +75,7 @@ public class CommandSystem {
 			commandClasses[j] = new ReflectionCommand(current, comm_current, methods);
 			j++;
 		}
-		/*Debug loop
-		for(ReflectionCommand c: commandClasses){
-			System.out.println(c);
-		}*/
-		System.out.println("Now onto setCommands");
-		CommandHelp.setCommands(commandClasses); //commented out for compiler while I'm still having issues and try catch things
+		CommandHelp.setCommands(commandClasses);
 	}
 	
 	/**
@@ -93,9 +88,9 @@ public class CommandSystem {
 	 * @return
 	 * @throws ClassNotFoundException
 	 */
-	@SuppressWarnings("rawtypes")
-	private static List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException, IOException {
-		List<Class> classes = new ArrayList<Class>();
+	@SuppressWarnings("unchecked")
+	private static List<Class<Command>> findClasses(File directory, String packageName) throws ClassNotFoundException, IOException {
+		List<Class<Command>> classes = new ArrayList<Class<Command>>();
 		
 		if (!directory.exists()) {
 			return classes;
@@ -107,7 +102,7 @@ public class CommandSystem {
 				//assert !file.getName().contains(".");
 				classes.addAll(findClasses(file, packageName + "." + file.getName()));
 			} else if (file.getName().endsWith(".class")) {
-				classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+				classes.add((Class<Command>) Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
 			}
 		}
 		return classes;
@@ -121,7 +116,6 @@ public class CommandSystem {
 	 * @author Philippe Hebert
 	 * @param str
 	 */
-	@SuppressWarnings("unchecked")
 	public static void command(String str) {
 		history(str);
 		str = str.trim();

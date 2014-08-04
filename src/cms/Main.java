@@ -23,7 +23,7 @@ public class Main {
 	public static void main(String[] args) {
 		bcastRunnable = new Broadcast();
 		serverRunnable = new Server(DEFAULT_PORT, 100);
-		//loadCommands(); //commented out because need to see the println statements. Called a few line below
+		loadCommands();
 		
 		//Model
 		data = new Thread(new Runnable(){
@@ -36,7 +36,6 @@ public class Main {
 		display = new Thread(new Runnable(){
 			public void run() {
 				ProgramWindow.init();
-				loadCommands(); //here, this is just for debug statements
 				LogSystem.log(true, false, "Log System Started");
 				System.out.println("Welcome to the CMS v0.5 alpha");
 				System.out.println("Enter 'help' for a list of commands");
