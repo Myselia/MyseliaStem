@@ -26,7 +26,7 @@ public class LogDisplay extends JPanel implements GraphicsConstants{
 		this.setBorder(BorderFactory.createEmptyBorder(14, 14, 14, 14));
 		
 		textpane = new JTextPane();
-		TextAreaOutputStream taos = new TextAreaOutputStream(textpane, 1, 400);
+		TextAreaOutputStream taos = new TextAreaOutputStream(textpane, 1, 4000);
         log = new PrintStream(taos);
 		textpane.setBackground(BACK);
 		textpane.setForeground(Color.WHITE);

@@ -6,27 +6,29 @@ public class CommandExit extends AbstractCommand {
 	public void action(String arg) {
 		String[] parameters = super.commandParam(arg);
 		if (parameters.length > 1) {
-			switch (parameters[1]) {
-			case "now":
-				System.exit(0);
-				break;
-			case "def":
+			if(parameters[1].equals("def")){
 				define();
-				break;
-			default:
-				System.out.println("e>Wrong parameter for command 'exit'");
-				break;
+			} else if(parameters[1].equals("now")){
+				System.exit(0);
+			} else if(parameters[1].equals("clean")){
+				cleanExit();
+			} else {
+				System.out.println("e>" + "Wrong Parameters");
 			}
 		} else {
-			System.out.println("e>Exit Command Incomplete");
+			System.out.println("e>" + "Command Incomplete");
 		}
 
+	}
+	private void cleanExit(){
+		System.out.println("s>" + "Cleaning");
+		System.exit(0);
 	}
 
 	@Override
 	public void define() {
-		System.out.println("Parameters: 'def' 'now' 'clean' ");
-		System.out.println("Exits and closes all processes.");
+		System.out.println("Parameter 'now' : exits without warning or secondary check.");
+		System.out.println("Parameter: 'clean' : rries to exit cleanly (announces it to grid).");
 	}
 	
 	@Override

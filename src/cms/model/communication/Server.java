@@ -3,8 +3,17 @@ package cms.model.communication;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -12,14 +21,15 @@ import cms.controller.LogSystem;
 import cms.helpers.ThreadHelper;
 
 public class Server extends ThreadHelper {
+
 	public boolean SERVER_RUNNING = false;
 	public int MAX_SERVER_THREAD_POOLS = 10;
-	
 	protected int port, backlog;
-		
+
 	protected PrintWriter output;
 	protected BufferedReader input;
 	protected ServerSocket serverSocket;
+
 	protected Socket clientConnectionSocket;
 	protected ExecutorService threadPool;
 
@@ -31,9 +41,9 @@ public class Server extends ThreadHelper {
 		this.SERVER_RUNNING = true;
 		threadPool = Executors.newFixedThreadPool(MAX_SERVER_THREAD_POOLS);
 	}
-	
+
 	public void startRunning() throws ClassNotFoundException {
-		System.out.println("STARTING SERVER LISTENING ON PORT " + port);
+		LogSystem.log(true, false, "STARTING SERVER LISTENING ON PORT " + port);
 
 		openServerSocket(this.port);
 
@@ -47,19 +57,21 @@ public class Server extends ThreadHelper {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
-			//Create a thread for a client if accepted containing an SClientSession
+
+			// Create a thread for a client if accepted containing an
+			// SClientSession
 			this.threadPool.execute(new Thread(new SClientSession(clientConnectionSocket, "Multithreaded Server")));
-			
-			}
-		
+
+		}
+
 		LogSystem.log(true, false, "Server has stopped running");
 		System.out.println("Server no longer listening on port: " + port);
 	}
 
+
 	private void openServerSocket(int port) {
 		try {
-			this.serverSocket = new ServerSocket(port);
+			serverSocket = new ServerSocket(port);
 		} catch (Exception e) {
 			System.err.println("Cant open port on " + port);
 			e.printStackTrace();
@@ -69,58 +81,11 @@ public class Server extends ThreadHelper {
 	@Override
 	public void run() {
 		try {
-			startRunning();
+			while (!Thread.currentThread().isInterrupted()) {
+				startRunning();
+			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		}
+		} 
 	}
-
 }
-
-/*if (clientConnectionSocket.isConnected() && !NOCONN) {
-System.out.println("Client connected on port "
-		+ clientConnectionSocket.getPort());
-
-output = new PrintWriter(
-		clientConnectionSocket.getOutputStream(), true);
-LogSystem.log(true, false, "Started output stream buffer: "
-		+ output.toString());
-// output.flush();
-input = new BufferedReader(new InputStreamReader(
-		clientConnectionSocket.getInputStream()));
-LogSystem.log(true, false, "Started input stream buffer: "
-		+ input.toString());
-// output.flush();
-}*/
-
-// }
-/*
-* LOGIC
-*/
-/*String inputL = "";
-
-int c = 0;
-if (c == 0)
-LogSystem.log(true, false, "Starting communication..");
-
-do {
-if (clientConnectionSocket.isClosed())
-	break;
-c = 1;
-inputL = input.readLine();
-LogSystem.log(true, false, "Read line.");
-System.out.println("inputL: " + inputL);
-LogSystem.log(true, false, "Response from Client("
-		+ clientConnectionSocket.getInetAddress()
-				.getHostAddress() + ": " + inputL + "(BYTES: "
-		+ inputL.getBytes().length + ")");
-output.println("You said: " + inputL);
-
-Thread.sleep(100);
-} while (inputL != null);
-
-LogSystem.log(true, false, "Client "
-	+ clientConnectionSocket.getInetAddress().getHostAddress()
-	+ " has stopped communicating");
-NOCONN = true;*/
-

@@ -17,21 +17,20 @@ public class CommandCall extends AbstractCommand{
 					AddressBar.nodeButton(call).select(true);
 				}catch(NumberFormatException e){
 					AddressBar.unselectLast(null);
-					System.out.println("e>Call Command: Wrong Parameters");
+					System.out.println("e>" + "Wrong Parameters");
 				}catch(Exception e){
-					System.out.println("e>No such node ID");
+					System.out.println("e>" + "No such node ID");
 				}
 			}	
 		}else{
-			System.out.println("e>Call Command Incomplete");
+			System.out.println("e>" + "Command Incomplete");
 		}		
 	}
 
 	@Override
 	public void define() {
-		System.out.println("Parameters: 'def' '#' 'void' ");
-		System.out.println("Selects a node in the grid.");
-		
+		System.out.println("Selects a node in the grid based on id number.");
+		System.out.println("Parameters: # or 'void'. Void deselects all nodes.");
 	}
 	
 	@Override
