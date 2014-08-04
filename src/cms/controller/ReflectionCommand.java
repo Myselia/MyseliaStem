@@ -27,4 +27,8 @@ public class ReflectionCommand {
 		return this.command_signature;
 	}
 	
+	//Mainly for debug
+	public String toString(){
+		return "class: " + c + " methods: " + methods + " command: " + command_signature;
+	}
 }

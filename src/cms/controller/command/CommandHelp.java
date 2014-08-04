@@ -4,7 +4,7 @@ import cms.controller.ReflectionCommand;
 
 public class CommandHelp extends AbstractCommand {
 	private final static String command_signature = "help";
-	private static String[] command_list;
+	private static String[] command_list = null;
 
 	@Override
 	public void action(String arg) {
@@ -17,14 +17,19 @@ public class CommandHelp extends AbstractCommand {
 			}
 		} else {
 			//TODO: replace with proper loaded commands list
-			System.out.println(command_list);
+			for(int i = 0; i < command_list.length ; i++){
+				if(i < command_list.length - 1)
+					System.out.print(command_list[i] + " - ");
+				else
+					System.out.print(command_list[i]);
+			}	
 		}
 	}
 	
 	public static void setCommands(ReflectionCommand[] commandClasses){
-		command_list = new String[commandClasses.length - 1];
-		for(int i = 0; i < commandClasses.length ; i++){
-			command_list[i] = commandClasses[i].getCommand();
+		command_list = new String[commandClasses.length];
+		for(int j = 0; j < command_list.length ; j++){
+			command_list[j] = commandClasses[j].getCommand();
 		}
 	}
 

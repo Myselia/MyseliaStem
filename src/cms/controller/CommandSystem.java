@@ -66,29 +66,21 @@ public class CommandSystem {
 		}
 		
 		commandClasses = new ReflectionCommand[classes.size() - abstract_count];
-		for (int i = 0 ; i < commandClasses.length ; i++){
-			//THIS LINE IS THE CULPRIT, WHEN IT HITS CLASS COMMANDSEEK.
-			//CAN'T FIGURE OUT WHY
-			
-			
-			
-			
-			Class current = classes.get(i);
-			
-			
-			
-						
-			//END OF WAY TO BIG WHITESPACE FOR EMPHASIS
-			if(current == null) System.out.println("wtf " + i);
-			System.out.println(current.getName().equals("cms.controller.command.CommandSeek"));
+		for (int i = 0, j = 0 ; i < classes.size() ; i++){
+			Class current = classes.get(i);			
 			if(Modifier.isAbstract(current.getModifiers())) continue;
-			System.out.println("Printing Class current object, i=" + i + ": " + current);
 			Method[] methods = {current.getMethod("getCommandSignature"), current.getMethod("action", new Class[]{String.class})};
 			Command c_obj = (Command) current.getConstructor().newInstance();
 			String comm_current = (String) methods[0].invoke(c_obj);
-			commandClasses[i] = new ReflectionCommand(current, comm_current, methods);
+			commandClasses[j] = new ReflectionCommand(current, comm_current, methods);
+			j++;
 		}
-		//CommandHelp.setCommands(commandClasses); //commented out for compiler while I'm still having issues and try catch things
+		/*Debug loop
+		for(ReflectionCommand c: commandClasses){
+			System.out.println(c);
+		}*/
+		System.out.println("Now onto setCommands");
+		CommandHelp.setCommands(commandClasses); //commented out for compiler while I'm still having issues and try catch things
 	}
 	
 	/**
@@ -141,7 +133,9 @@ public class CommandSystem {
 		for(String s : commandparts){
 			System.out.print("'" + s + "' ");
 		}*/
+		int j = 0;
 		for(ReflectionCommand c :commandClasses){
+			if(c == null) System.out.println("c" + j + " is null");
 			try{
 				/*Debug
 				System.out.println("" + methods[0].invoke(c_obj));*/
