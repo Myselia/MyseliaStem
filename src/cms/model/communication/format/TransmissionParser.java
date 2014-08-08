@@ -8,12 +8,10 @@ public class TransmissionParser {
 		int coreid = Integer.parseInt(trans.from);
 		
 		if(trans.opcode.equals("110")){
-			System.out.println("opcode check passed");
 			for(int i = 0; i < trans.particles.length; i++){	
 				String particleClass = trans.particles[i].getParticleClass();
 				
 				if(particleClass.equals("temp")){
-					System.out.println("istemp");
 					core[coreid].setTemperature(Double.parseDouble(trans.particles[i].getContent()));
 					
 				} else if(particleClass.equals("ram")){
@@ -24,6 +22,9 @@ public class TransmissionParser {
 					
 				} else if(particleClass.equals("part")){
 					core[coreid].setParticles(Double.parseDouble(trans.particles[i].getContent()));
+					
+				} else if(particleClass.equals("ip")){
+					core[coreid].setIp(trans.particles[i].getContent());
 				}
 
 			}
