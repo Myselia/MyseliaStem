@@ -1,7 +1,7 @@
 package cms.controller.command;
 
 import cms.model.DataStore;
-import cms.view.AddressBar;
+import cms.view.panel.AddressBar;
 
 public class CommandMake extends AbstractCommand{
 	private final static String command_signature = "make";
@@ -37,7 +37,7 @@ public class CommandMake extends AbstractCommand{
 	@Override
 	public void define() {
 		System.out.println("Changes the type of a node in the cluster.");
-		System.out.println("Parameters: 'this', 'AMS', or 'DB'.");
+		System.out.println("Parameters: 'CMS', 'AMS', 'DB', or 'node'.");
 	}
 	
 	@Override

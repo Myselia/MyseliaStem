@@ -18,6 +18,12 @@ public class CommandTest extends AbstractCommand {
 			case "def":
 				define();
 				break;
+			case "console":
+				testconsole();
+				break;
+			case "log":
+				testlog();
+				break;
 			default:
 				System.out.println("e>" + "Wrong Parameters");
 			}
@@ -42,6 +48,20 @@ public class CommandTest extends AbstractCommand {
 	private static void testdata(){
 		LogSystem.log(true, false, "Testing new data");
 		DataStore.newData();
+	}
+	
+	public void testconsole(){
+		System.out.println("Testing scroll and caret");
+		for(int i = 0 ; i < 40 ; i++){
+			System.out.println("Line test for caret: " + (i+1));
+		}
+	}
+	
+	public void testlog(){
+		LogSystem.log(true, false, "Testing scroll and caret");
+		for(int i = 0 ; i < 40 ; i++){
+			LogSystem.log(true, false, "Line test for caret: " + (i+1));
+		}
 	}
 
 }

@@ -7,6 +7,9 @@ import java.awt.GraphicsEnvironment;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+
+import cms.view.panel.AddressBar;
 
 public class ProgramWindow extends JFrame implements GraphicsConstants {
 	private static final long serialVersionUID = 1L;
@@ -51,7 +54,7 @@ public class ProgramWindow extends JFrame implements GraphicsConstants {
 		Communication comm_pane= new Communication();
 		panels[0] = comm_pane;
 		contentPane.add(panels[0], BorderLayout.SOUTH);
-		panels[1] = new AddressBar();
+		panels[1] = new InfoBar();
 		contentPane.add(panels[1], BorderLayout.NORTH);
 		panels[2] = new Graph();
 		contentPane.add(panels[2], BorderLayout.CENTER);

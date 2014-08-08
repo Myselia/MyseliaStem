@@ -2,7 +2,9 @@ package cms.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -16,21 +18,23 @@ public class CommandSystem {
 	private static String[] history = new String[20];
 	private static String[] commandparts;
 	private static String command;
-	@SuppressWarnings("rawtypes")
-	private static Class[] commandClasses = null;
+	private static ReflectionCommand[] commandClasses = null;
 	
 	
 	/**
 	 * Scans all classes accessible from the context class loader which belong
 	 * to the given package and subpackages.
+	 * Fetches all the useful fields for later use and store them in commandClasses
 	 * @author Victor Tatai
+	 * Adapted for project needs by
+	 * @author Philippe Hebert
 	 * @source http://dzone.com/snippets/get-all-classes-within-package
 	 * @param packageName
 	 * @throws ClassNotFoundException
 	 * @throws IOException
 	 */
-	@SuppressWarnings("rawtypes")
-	public static void setClasses(String packageName) throws ClassNotFoundException, IOException {
+	public static void setClasses(String packageName) throws ClassNotFoundException, IOException,
+	NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		
 		//Error #001 Verification
@@ -48,11 +52,30 @@ public class CommandSystem {
 			dirs.add(new File(resource.getFile()));
 		}
 		
-		ArrayList<Class> classes = new ArrayList<Class>();
+		ArrayList<Class<Command>> classes = new ArrayList<Class<Command>>();
 		for (File directory : dirs) {
 			classes.addAll(findClasses(directory, packageName));
 		}
-		commandClasses = classes.toArray(new Class[classes.size()]);
+		
+		classes.trimToSize();
+		//We don't want abstract classes or interfaces in commandClasses.
+		int abstract_count = 0;
+		for(Class<Command> c : classes){
+			if(Modifier.isAbstract(c.getModifiers())) abstract_count++;
+		}
+		
+		//Populating commandClasses and its members.
+		commandClasses = new ReflectionCommand[classes.size() - abstract_count];
+		for (int i = 0, j = 0 ; i < classes.size() ; i++){
+			Class<Command> current = classes.get(i);			
+			if(Modifier.isAbstract(current.getModifiers())) continue;
+			Method[] methods = {current.getMethod("getCommandSignature"), current.getMethod("action", new Class[]{String.class})};
+			Command c_obj = (Command) current.getConstructor().newInstance();
+			String comm_current = (String) methods[0].invoke(c_obj);
+			commandClasses[j] = new ReflectionCommand(current, comm_current, methods);
+			j++;
+		}
+		CommandHelp.setCommands(commandClasses);
 	}
 	
 	/**
@@ -65,9 +88,9 @@ public class CommandSystem {
 	 * @return
 	 * @throws ClassNotFoundException
 	 */
-	@SuppressWarnings("rawtypes")
-	private static List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException, IOException {
-		List<Class> classes = new ArrayList<Class>();
+	@SuppressWarnings("unchecked")
+	private static List<Class<Command>> findClasses(File directory, String packageName) throws ClassNotFoundException, IOException {
+		List<Class<Command>> classes = new ArrayList<Class<Command>>();
 		
 		if (!directory.exists()) {
 			return classes;
@@ -76,10 +99,10 @@ public class CommandSystem {
 		
 		for (File file : files) {
 			if (file.isDirectory()) {
-				assert !file.getName().contains(".");
+				//assert !file.getName().contains(".");
 				classes.addAll(findClasses(file, packageName + "." + file.getName()));
 			} else if (file.getName().endsWith(".class")) {
-				classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+				classes.add((Class<Command>) Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
 			}
 		}
 		return classes;
@@ -93,7 +116,6 @@ public class CommandSystem {
 	 * @author Philippe Hebert
 	 * @param str
 	 */
-	@SuppressWarnings("unchecked")
 	public static void command(String str) {
 		history(str);
 		str = str.trim();
@@ -105,15 +127,16 @@ public class CommandSystem {
 		for(String s : commandparts){
 			System.out.print("'" + s + "' ");
 		}*/
-		for(@SuppressWarnings("rawtypes") Class c :commandClasses){
-			if(c.isInterface() || c.getCanonicalName() == "cms.controller.command.AbstractCommand") continue;
+		int j = 0;
+		for(ReflectionCommand c :commandClasses){
+			if(c == null) System.out.println("c" + j + " is null");
 			try{
-				Method[] methods = {c.getMethod("getCommandSignature", null), c.getMethod("action", new Class[]{String.class})};
-				Command c_obj = (Command) c.getConstructor().newInstance();
 				/*Debug
 				System.out.println("" + methods[0].invoke(c_obj));*/
-				if(commandparts[0].equalsIgnoreCase((String) methods[0].invoke(c_obj))){
+				if(commandparts[0].equalsIgnoreCase(c.getCommand())){
 					print(true);
+					Method[] methods = c.getMethods();
+					Command c_obj = (Command) c.getClassField().getConstructor().newInstance();
 					methods[1].invoke(c_obj, command);
 					return;
 				}

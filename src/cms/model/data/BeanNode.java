@@ -13,6 +13,8 @@ public class BeanNode implements java.io.Serializable {
 	private double cpu = 50;				// core cpu usage
 	private double ram = 256;				// core leftover ram
 	private double particles = 1000;		// core ams particles
+	
+	private String ip = "000.000.000.000";			// ip of core
 
 	// Constructor
 	public BeanNode() {
@@ -80,6 +82,14 @@ public class BeanNode implements java.io.Serializable {
 
 	public void setCpu(double cpu) {
 		this.cpu = cpu;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
 

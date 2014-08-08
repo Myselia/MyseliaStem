@@ -9,8 +9,8 @@ import java.awt.event.MouseListener;
 import javax.swing.JComponent;
 
 import cms.model.data.BeanNode;
-import cms.view.AddressBar;
 import cms.view.GraphicsConstants;
+import cms.view.panel.AddressBar;
 
 public class NodeButton extends JComponent implements MouseListener, GraphicsConstants {
 	private static final long serialVersionUID = 1L;
@@ -60,7 +60,7 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 		case 40: foreground = ERR; break;
 		default: foreground = ABS; break;
 		}
-		IconFactory.icon(g, foreground, background, getWidth(), getHeight(), core.getType());
+		IconFactory.icon(g, foreground, background, getWidth(), getHeight(), core.getType(), core);
 	}
 
 	@Override
