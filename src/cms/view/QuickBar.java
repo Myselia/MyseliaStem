@@ -1,5 +1,6 @@
 package cms.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -12,7 +13,7 @@ public class QuickBar extends JPanel implements GraphicsConstants {
 	private int col = 5;
 	
 	public QuickBar(){
-		this.setBackground(PRE);
+		this.setBackground(Color.BLACK);
 		this.setPreferredSize(new Dimension(800,20));
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, 0, ADDRESS_GAP, 0));
 		GridLayout layout = new GridLayout(col, ADDRESS_COLUMNS);
@@ -21,4 +22,6 @@ public class QuickBar extends JPanel implements GraphicsConstants {
 		layout.setVgap(ADDRESS_GAP);
 		this.setLayout(layout);
 	}
+	
+	public void updateTime(){}
 }

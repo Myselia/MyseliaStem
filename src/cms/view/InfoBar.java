@@ -23,10 +23,8 @@ public class InfoBar extends JPanel implements GraphicsConstants {
 		quickbar = new QuickBar();
 		this.add(quickbar, BorderLayout.NORTH);
 		addressbar = new AddressBar();
+		this.setPreferredSize(new Dimension(800, 20 + addressbar.getRows() * 100));
 		this.add(addressbar, BorderLayout.SOUTH);
-		if(!quickbar.getBackground().equals(PRE)){
-			System.out.println("Not PRE");
-		}
 
 		Thread refresh = new Thread(new Runnable() {
 			public void run() {

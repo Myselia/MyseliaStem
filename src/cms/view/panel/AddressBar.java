@@ -16,11 +16,12 @@ public class AddressBar extends JPanel implements GraphicsConstants {
 	private static NodeButton[] button;
 	private static NodeButton lastButtonClicked;
 	private Dimension size;
-
+	private int rows;
+	
 	public AddressBar() {
 		this.setBackground(BACK);
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, 0, ADDRESS_GAP, 0));
-		int rows = (int) Math.ceil((double) DataStore.core.length
+		rows = (int) Math.ceil((double) DataStore.core.length
 				/ ADDRESS_COLUMNS);
 
 		this.setPreferredSize(new Dimension(800, rows * 100));
@@ -45,6 +46,10 @@ public class AddressBar extends JPanel implements GraphicsConstants {
 	}
 	public static NodeButton nodeButton(int ID){
 		return button[ID];
+	}
+	
+	public int getRows(){
+		return rows;
 	}
 
 }
