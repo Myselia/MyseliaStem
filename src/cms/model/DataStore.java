@@ -11,7 +11,7 @@ import cms.model.data.BeanNode;
 public class DataStore {
 
 	//public static ArrayList<BeanNode> coreA = new ArrayList<BeanNode>();
-	public static BeanNode[] core = new BeanNode[4];
+	public static BeanNode[] core = new BeanNode[16];
 	public static BeanNetwork network = new BeanNetwork();
 	public static int nodeCount = -1;
 

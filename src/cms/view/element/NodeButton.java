@@ -60,7 +60,7 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 		case 40: foreground = ERR; break;
 		default: foreground = ABS; break;
 		}
-		IconFactory.icon(g, foreground, background, getWidth(), getHeight(), core.getType());
+		IconFactory.icon(g, foreground, background, getWidth(), getHeight(), core.getType(), core);
 	}
 
 	@Override
