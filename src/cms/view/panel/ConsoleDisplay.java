@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.JTextField;
+import javax.swing.text.DefaultCaret;
 
 import cms.Main;
 import cms.controller.CommandSystem;
@@ -86,7 +87,7 @@ public class ConsoleDisplay extends JPanel implements KeyListener,
 	}
 
 	/**
-	 * Loops until focus is given to field. Average of 9 loops so far.
+	 * Loops until focus is given to field. Average of 9 loops so far. (as of merge of ISS7)
 	 */
 	public void setFocus(){
 		while(!field.hasFocus()){

@@ -85,6 +85,6 @@ public class TextAreaFormatting implements GraphicsConstants{
 			} catch (Exception e) {
 			}
 		}
-
+		
 	}
 }
