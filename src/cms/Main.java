@@ -63,7 +63,7 @@ public class Main {
 		}catch(Exception e){
 			System.out.println("b>" + "&>" + "cms.controller.CommandSystem.setClasses(String) called in");
 			System.out.println("b>" + "&>" + "cms.view.panel.ConsoleDisplay.ConsoleDisplay() threw an exception.");
-			System.out.println("b>" + "!> " + "Exception thrown:" + e.getClass().getCanonicalName());
+			System.out.println("b>" + "!> " + "Exception thrown by:" + e.getClass().getCanonicalName());
 			System.out.println("Please force kill the application and investigate.");
 			e.printStackTrace();
 		}
