@@ -1,6 +1,6 @@
 package cms.controller.command;
 
-public abstract class AbstractCommand implements Command {
+public abstract class AbstractCommand implements Command{
 	private final static String command_signature = null;
 	
 	public abstract void action(String arg);
