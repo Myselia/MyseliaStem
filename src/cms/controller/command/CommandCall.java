@@ -1,5 +1,5 @@
 package cms.controller.command;
-import cms.view.AddressBar;
+import cms.view.panel.AddressBar;
 
 public class CommandCall extends AbstractCommand{
 	private final static String command_signature = "call";

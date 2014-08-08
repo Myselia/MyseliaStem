@@ -1,4 +1,4 @@
-package cms.view;
+package cms.view.panel;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -7,6 +7,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import cms.model.DataStore;
+import cms.view.GraphicsConstants;
 import cms.view.element.NodeButton;
 
 public class AddressBar extends JPanel implements GraphicsConstants {

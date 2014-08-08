@@ -9,8 +9,8 @@ import java.awt.event.MouseListener;
 import javax.swing.JComponent;
 
 import cms.model.data.BeanNode;
-import cms.view.AddressBar;
 import cms.view.GraphicsConstants;
+import cms.view.panel.AddressBar;
 
 public class NodeButton extends JComponent implements MouseListener, GraphicsConstants {
 	private static final long serialVersionUID = 1L;

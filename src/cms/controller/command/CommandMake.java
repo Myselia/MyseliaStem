@@ -1,7 +1,7 @@
 package cms.controller.command;
 
 import cms.model.DataStore;
-import cms.view.AddressBar;
+import cms.view.panel.AddressBar;
 
 public class CommandMake extends AbstractCommand{
 	private final static String command_signature = "make";
