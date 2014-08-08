@@ -17,7 +17,7 @@ public class TransmissionParser {
 					core[coreid].setTemperature(Double.parseDouble(trans.particles[i].getContent()));
 					
 				} else if(particleClass.equals("ram")){
-					core[coreid].setRam(Double.parseDouble(trans.particles[i].getContent()));
+					core[coreid].setRam(Double.parseDouble(trans.particles[i].getContent())/1000);
 					
 				} else if(particleClass.equals("cpu")){
 					core[coreid].setCpu(Double.parseDouble(trans.particles[i].getContent()));
