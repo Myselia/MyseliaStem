@@ -7,6 +7,7 @@ import java.awt.GraphicsEnvironment;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 public class ProgramWindow extends JFrame implements GraphicsConstants {
 	private static final long serialVersionUID = 1L;

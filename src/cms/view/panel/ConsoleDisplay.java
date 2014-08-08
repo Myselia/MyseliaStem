@@ -8,11 +8,7 @@ import java.awt.event.KeyListener;
 import java.io.PrintStream;
 
 import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
 import javax.swing.JTextField;
-import javax.swing.text.DefaultCaret;
 
 import cms.Main;
 import cms.controller.CommandSystem;
@@ -20,33 +16,20 @@ import cms.view.GraphicsConstants;
 import cms.view.element.TextAreaOutputStream;
 
 @SuppressWarnings("serial")
-public class ConsoleDisplay extends JPanel implements KeyListener,
+public class ConsoleDisplay extends ParentDisplay implements KeyListener,
 		GraphicsConstants {
 
-	private JTextPane textpane;
 	private JTextField field;
 
 	public ConsoleDisplay() {
-		this.setBackground(BACK);
-		this.setLayout(new BorderLayout());
-		this.setBorder(BorderFactory.createEmptyBorder(14, 14, 14, 0));
-
+		super();
 		areaSetup();
-		JScrollPane sp = new JScrollPane(textpane);
-		sp.setBorder(BorderFactory.createEmptyBorder());
-		sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		this.add(sp, BorderLayout.CENTER);
-
 		fieldSetup();
 		this.add(field, BorderLayout.SOUTH);
-		
-		field.grabFocus();
 		setVisible(true);
 	}
 
 	private void areaSetup() {
-		textpane = new JTextPane();
 		TextAreaOutputStream taos = new TextAreaOutputStream(textpane, 0, 4000);
 		PrintStream ps = new PrintStream(taos);
 
