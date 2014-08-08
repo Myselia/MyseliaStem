@@ -6,8 +6,6 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 
 import cms.view.panel.AddressBar;
-import cms.view.panel.GraphingMenu;
-import cms.view.panel.GraphingPanel;
 
 public class InfoBar extends JPanel implements GraphicsConstants {
 
@@ -19,13 +17,16 @@ public class InfoBar extends JPanel implements GraphicsConstants {
 	public InfoBar() {
 
 		this.setBackground(BACK);
-		this.setPreferredSize(new Dimension(100, 390));
+		this.setPreferredSize(new Dimension(800, 120));
 		this.setLayout(new BorderLayout());
 		
-		quickbar = new QuickBar(/* QuickBar */);
+		quickbar = new QuickBar();
 		this.add(quickbar, BorderLayout.NORTH);
 		addressbar = new AddressBar();
 		this.add(addressbar, BorderLayout.SOUTH);
+		if(!quickbar.getBackground().equals(PRE)){
+			System.out.println("Not PRE");
+		}
 
 		Thread refresh = new Thread(new Runnable() {
 			public void run() {
