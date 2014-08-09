@@ -1,6 +1,9 @@
 package cms.controller.command;
 
 import cms.Main;
+import cms.view.InfoBar;
+import cms.view.button.QuickSeekButton;
+import cms.view.panel.QuickBar;
 
 public class CommandSeek extends AbstractCommand {
 	private final static String command_signature = "seek";
@@ -24,14 +27,15 @@ public class CommandSeek extends AbstractCommand {
 	}
 
 	private void turnon() {
-
 		Main.startBCastThread(Main.getBcastRunnable(), Main.getbCastCommunicator());
 		System.out.println("Seek mode activated");
+		InfoBar.quickbar.seekbutton.setSelect();
 	}
 
 	private void turnoff(){
 		Main.getbCastCommunicator().interrupt();
 		System.out.println("Seek mode deactivated");
+		InfoBar.quickbar.seekbutton.setSelect();
 	}
 
 	@Override

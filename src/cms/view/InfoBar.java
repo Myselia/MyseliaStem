@@ -6,13 +6,14 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 
 import cms.view.panel.AddressBar;
+import cms.view.panel.QuickBar;
 
 public class InfoBar extends JPanel implements GraphicsConstants {
 
 	private static final long serialVersionUID = 1L;
 
-	private static QuickBar quickbar;
-	private static AddressBar addressbar;
+	public static QuickBar quickbar;
+	public static AddressBar addressbar;
 	
 	public InfoBar() {
 

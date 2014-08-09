@@ -46,10 +46,10 @@ public class Main {
 		//bCastCommunicator = new Thread(bcastRunnable);
 
 		try {
-			display.start();
-			Thread.sleep(400);
 			data.start();
-			Thread.sleep(400);
+			Thread.sleep(1000);
+			display.start();
+			Thread.sleep(1000);
 			communicator.start();
 		} catch (InterruptedException e) {
 			e.printStackTrace();

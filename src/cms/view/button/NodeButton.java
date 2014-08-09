@@ -1,4 +1,4 @@
-package cms.view.element;
+package cms.view.button;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JComponent;
 
 import cms.model.data.BeanNode;
+import cms.model.data.NodeState;
 import cms.view.GraphicsConstants;
 import cms.view.panel.AddressBar;
 
@@ -52,12 +53,13 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
 		//Icon
-		switch(core.getState()){
-		case 0: foreground = ABS; break;
-		case 10: foreground = PRE; break;
-		case 20: foreground = AVA; break;
-		case 30: foreground = RUN; break;
-		case 40: foreground = ERR; break;
+		NodeState state = core.getState();
+		switch(state){
+		case ABSENT: foreground = ABS; break;
+		case PRESENT: foreground = PRE; break;
+		case AVAILABLE: foreground = AVA; break;
+		case RUNNING: foreground = RUN; break;
+		case ERROR: foreground = ERR; break;
 		default: foreground = ABS; break;
 		}
 		IconFactory.icon(g, foreground, background, getWidth(), getHeight(), core.getType(), core);

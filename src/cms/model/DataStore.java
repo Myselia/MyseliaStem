@@ -7,6 +7,7 @@ import cms.model.communication.format.Transmission;
 import cms.model.communication.format.TransmissionParser;
 import cms.model.data.BeanNetwork;
 import cms.model.data.BeanNode;
+import cms.model.data.NodeState;
 
 public class DataStore {
 
@@ -24,7 +25,7 @@ public class DataStore {
 			core[i] = new BeanNode();
 			core[i].setType(0);
 			core[i].setId(i);
-			core[i].setState(20);
+			core[i].setState(NodeState.ABSENT);
 		}
 	}
 	

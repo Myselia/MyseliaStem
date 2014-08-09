@@ -1,4 +1,4 @@
-package cms.view.element;
+package cms.view.button;
 
 import java.awt.Color;
 import java.awt.Graphics;

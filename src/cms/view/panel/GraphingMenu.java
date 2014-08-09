@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import cms.view.DisplayType;
 import cms.view.Graph;
 import cms.view.GraphicsConstants;
-import cms.view.element.GraphingMenuButton;
+import cms.view.button.GraphingMenuButton;
 
 public class GraphingMenu extends JPanel implements GraphicsConstants{
 	private static final long serialVersionUID = 1L;
