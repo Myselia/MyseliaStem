@@ -47,9 +47,9 @@ public class Main {
 
 		try {
 			data.start();
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 			display.start();
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 			communicator.start();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
