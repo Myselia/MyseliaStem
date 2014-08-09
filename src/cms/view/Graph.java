@@ -11,7 +11,7 @@ import cms.view.panel.GraphingMenu;
 public class Graph extends JPanel implements GraphicsConstants {
 	private static final long serialVersionUID = 1L;
 
-	private static GraphingLevels graphingpanel;
+	private static GraphingLevels graphinglevels;
 	private static GraphingMenu graphingmenu;
 	private static DisplayType displaytype = DisplayType.TEMPERATURE;
 
@@ -20,8 +20,8 @@ public class Graph extends JPanel implements GraphicsConstants {
 		this.setBackground(BACK);
 		this.setPreferredSize(new Dimension(100, 390));
 		this.setLayout(new BorderLayout());
-		graphingpanel = new GraphingLevels(displaytype);
-		this.add(graphingpanel, BorderLayout.CENTER);
+		graphinglevels = new GraphingLevels(displaytype);
+		this.add(graphinglevels, BorderLayout.CENTER);
 		graphingmenu = new GraphingMenu();
 		this.add(graphingmenu, BorderLayout.EAST);
 
@@ -30,7 +30,7 @@ public class Graph extends JPanel implements GraphicsConstants {
 				while (true) {
 					try {
 						Thread.sleep(200);
-						graphingpanel.repaint();
+						graphinglevels.repaint();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -44,7 +44,7 @@ public class Graph extends JPanel implements GraphicsConstants {
 	
 	public static void setDisplayType(DisplayType dt){
 		displaytype = dt;
-		graphingpanel.setDisplayType(displaytype);
+		graphinglevels.setDisplayType(displaytype);
 	}
 	
 	public static DisplayType getDisplayType(){
