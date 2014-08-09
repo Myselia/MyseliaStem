@@ -1,4 +1,4 @@
-package cms.view.panel;
+package cms.view.element;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -13,24 +13,22 @@ import cms.model.DataStore;
 import cms.view.DisplayType;
 import cms.view.GraphicsConstants;
 
-public class GraphingPanel extends JPanel implements MouseListener,
+public class GraphingLevels extends GraphingParent implements MouseListener,
 GraphicsConstants{
 	private static final long serialVersionUID = 1L;
-	
-	private int barcount;
-	private DisplayType displaytype;
 
-	public GraphingPanel(DisplayType displaytype){
-		super();
-		enableInputMethods(true);
-		setFocusable(true);
+	public GraphingLevels(DisplayType displaytype){
+		super(displaytype);
 		addMouseListener(this);
+<<<<<<< HEAD:src/cms/view/panel/GraphingPanel.java
 		setVisible(true);
 
 		this.barcount = DataStore.coreA.size();
 		this.displaytype = displaytype;
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP));
 		
+=======
+>>>>>>> b6e6682b7f90b595b031ec69dee7a859e1948b89:src/cms/view/element/GraphingLevels.java
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -49,7 +47,6 @@ GraphicsConstants{
 		double average = 0.0;
 		double sum = 0.0;
 		double max = 0.0;
-		
 		for(int i = 0; i < barcount; i++){
 			if(displaytype == DisplayType.TEMPERATURE){
 				max = 100.0;
@@ -85,6 +82,7 @@ GraphicsConstants{
 		String bob = Double.toString(average) + "extrainfo";
 		if(bob.length() > 4){
 			bob = bob.substring(0,4);
+			bob += " bob";
 		}
 		g.drawString(bob, 4, getHeight() - ((int)(average*scale) + 2)); //text	
 		

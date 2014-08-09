@@ -5,13 +5,13 @@ import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
+import cms.view.element.GraphingLevels;
 import cms.view.panel.GraphingMenu;
-import cms.view.panel.GraphingPanel;
 
 public class Graph extends JPanel implements GraphicsConstants {
 	private static final long serialVersionUID = 1L;
 
-	private static GraphingPanel graphingpanel;
+	private static GraphingLevels graphingpanel;
 	private static GraphingMenu graphingmenu;
 	private static DisplayType displaytype = DisplayType.TEMPERATURE;
 
@@ -20,7 +20,7 @@ public class Graph extends JPanel implements GraphicsConstants {
 		this.setBackground(BACK);
 		this.setPreferredSize(new Dimension(100, 390));
 		this.setLayout(new BorderLayout());
-		graphingpanel = new GraphingPanel(displaytype);
+		graphingpanel = new GraphingLevels(displaytype);
 		this.add(graphingpanel, BorderLayout.CENTER);
 		graphingmenu = new GraphingMenu();
 		this.add(graphingmenu, BorderLayout.EAST);
