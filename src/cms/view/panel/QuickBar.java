@@ -18,7 +18,6 @@ public class QuickBar extends JPanel implements GraphicsConstants {
 	public QuickBar(){
 		this.setBackground(GraphicsConstants.BACK);
 		this.setPreferredSize(new Dimension(800,20));
-		this.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		
 		GridLayout layout = new GridLayout(1, 16);
 		layout.setHgap(2);

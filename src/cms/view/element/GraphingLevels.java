@@ -4,8 +4,12 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
+
+
 //import cms.controller.LogSystem;
 import cms.model.DataStore;
 import cms.view.DisplayType;
@@ -73,12 +77,11 @@ GraphicsConstants{
 		//average drawing
 		g.setColor(AVA);
 		g.fillRect(0, getHeight() - (int)(average*scale), getWidth(), 1);
-		String bob = Double.toString(average) + "extrainfo";
-		if(bob.length() > 4){
-			bob = bob.substring(0,4);
-			bob += " bob";
-		}
-		g.drawString(bob, 4, getHeight() - ((int)(average*scale) + 2)); //text	
+		String avg = Double.toString(average);
+		Pattern p = Pattern.compile("^([1-9]\\d*|0)(\\.\\d)?$");
+		Matcher m = p.matcher(avg);
+		avg = avg.substring(m.regionStart(), m.regionEnd());
+		g.drawString(avg, 4, getHeight() - ((int)(average*scale) + 2)); //text	
 		
 		//design values
 		int offset = getWidth()/(barcount+1);
