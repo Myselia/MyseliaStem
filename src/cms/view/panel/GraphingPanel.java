@@ -27,7 +27,7 @@ GraphicsConstants{
 		addMouseListener(this);
 		setVisible(true);
 
-		this.barcount = DataStore.core.length;
+		this.barcount = DataStore.coreA.size();
 		this.displaytype = displaytype;
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP));
 		
@@ -53,16 +53,16 @@ GraphicsConstants{
 		for(int i = 0; i < barcount; i++){
 			if(displaytype == DisplayType.TEMPERATURE){
 				max = 100.0;
-				value[i] = DataStore.core[i].getTemperature();
+				value[i] = DataStore.coreA.get(i).getTemperature();
 			} else if(displaytype == DisplayType.CPU){
 				max = 100.0;
-				value[i] = DataStore.core[i].getCpu();
+				value[i] = DataStore.coreA.get(i).getCpu();
 			} else if(displaytype == DisplayType.RAM){
 				max = 512.0;
-				value[i] = DataStore.core[i].getRam();
+				value[i] = DataStore.coreA.get(i).getRam();
 			} else if(displaytype == DisplayType.PARTICLES){
 				max = 0.0;
-				value[i] = DataStore.core[i].getParticles();
+				value[i] = DataStore.coreA.get(i).getParticles();
 			}
 			
 			average += (double)(value[i]/barcount);
