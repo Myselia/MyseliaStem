@@ -13,7 +13,11 @@ import cms.model.DataStore;
 import cms.model.communication.format.Transmission;
 import cms.model.communication.format.XMLParser;
 import cms.model.data.BeanNode;
+<<<<<<< HEAD
 import cms.view.element.GraphingParent;
+=======
+import cms.model.data.NodeState;
+>>>>>>> 95fd28df67da74fa98a3b2cd76ec027c9571e0e3
 import cms.view.panel.AddressBar;
 
 public class SClientSession extends ThreadHelper {
@@ -51,7 +55,7 @@ public class SClientSession extends ThreadHelper {
 			DataStore.coreA.get(DataStore.coreA.size() - 1).setType(0);
 			DataStore.coreA.get(DataStore.coreA.size() - 1).setId(DataStore.nextNodeID());
 			System.err.println("NODE ID IS: " + DataStore.coreA.get(DataStore.coreA.size() - 1).getId());
-			DataStore.coreA.get(DataStore.coreA.size() - 1).setState(20);
+			DataStore.coreA.get(DataStore.coreA.size() - 1).setState(NodeState.ABSENT);
 			System.out.println("CLIENT STORE AT: " + DataStore.coreA.get(DataStore.coreA.size() - 1));
 			sessionID = DataStore.coreA.get(DataStore.coreA.size() - 1).getId();
 			AddressBar.updateButtonList();

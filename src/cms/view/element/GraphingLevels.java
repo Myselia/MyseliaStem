@@ -25,7 +25,11 @@ GraphicsConstants{
 		this.barcount = DataStore.coreA.size();
 		this.displaytype = displaytype;
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP));
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> 95fd28df67da74fa98a3b2cd76ec027c9571e0e3
 	}
 	
 	public void paintComponent(Graphics g) {

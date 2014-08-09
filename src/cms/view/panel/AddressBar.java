@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 import cms.model.DataStore;
 import cms.view.GraphicsConstants;
-import cms.view.element.NodeButton;
+import cms.view.button.NodeButton;
 
 public class AddressBar extends JPanel implements GraphicsConstants {
 	private static final long serialVersionUID = 1L;

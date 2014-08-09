@@ -1,4 +1,4 @@
-package cms.view.element;
+package cms.view.button;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -55,12 +55,20 @@ public class IconFactory {
 		case 57:
 			particlesIcon();
 			break;
+		case 100:
+			quickSeek();
+			break;
 		default:
 			nodeIcon();
 			break;
 		}
 
 	}
+	
+	private static void quickSeek(){
+		
+	}
+	
 
 	private static void tempIcon() {
 		graphics.setColor(foregrnd);

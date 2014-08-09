@@ -1,12 +1,13 @@
 package cms.model.data;
 
 public class BeanNode implements java.io.Serializable {
+	
 	private static final long serialVersionUID = 1L;
 
 	// Properties
 	private int id = 0;
 	private int type = 0;				// core type: 0node, 1cms, 2ams, 3db
-	private int state = 0; 				// core state as viewed by model
+	private NodeState state = NodeState.ABSENT;			// core state as viewed by model
 	private boolean selected = false; 	// core state as viewed by view
 	
 	private double temperature = 25; 		// core temperature
@@ -36,11 +37,11 @@ public class BeanNode implements java.io.Serializable {
 		this.type = type;
 	}
 
-	public int getState() {
+	public NodeState getState() {
 		return state;
 	}
 
-	public void setState(int state) {
+	public void setState(NodeState state) {
 		this.state = state;
 	}
 
