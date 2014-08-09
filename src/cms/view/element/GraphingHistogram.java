@@ -33,16 +33,16 @@ public class GraphingHistogram extends GraphingParent {
 			for(int i = 0; i < barcount; i++){
 				if(displaytype == DisplayType.TEMPERATURE){
 					max = 100.0;
-					value[i] = DataStore.core[i].getTemperature();
+					value[i] = DataStore.coreA.get(i).getTemperature();
 				} else if(displaytype == DisplayType.CPU){
 					max = 100.0;
-					value[i] = DataStore.core[i].getCpu();
+					value[i] = DataStore.coreA.get(i).getCpu();
 				} else if(displaytype == DisplayType.RAM){
 					max = 512.0;
-					value[i] = DataStore.core[i].getRam();
+					value[i] = DataStore.coreA.get(i).getRam();
 				} else if(displaytype == DisplayType.PARTICLES){
 					max = 0.0;
-					value[i] = DataStore.core[i].getParticles();
+					value[i] = DataStore.coreA.get(i).getParticles();
 				}
 				
 				average += (double)(value[i]/barcount);

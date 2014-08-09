@@ -20,15 +20,12 @@ GraphicsConstants{
 	public GraphingLevels(DisplayType displaytype){
 		super(displaytype);
 		addMouseListener(this);
-<<<<<<< HEAD:src/cms/view/panel/GraphingPanel.java
 		setVisible(true);
 
 		this.barcount = DataStore.coreA.size();
 		this.displaytype = displaytype;
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP));
-		
-=======
->>>>>>> b6e6682b7f90b595b031ec69dee7a859e1948b89:src/cms/view/element/GraphingLevels.java
+	
 	}
 	
 	public void paintComponent(Graphics g) {

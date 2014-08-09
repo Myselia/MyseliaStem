@@ -1,6 +1,6 @@
 package cms.view.element;
 
-import java.awt.Graphics;
+import java.awt.Container;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -11,15 +11,17 @@ import cms.view.GraphicsConstants;
 
 public class GraphingParent extends JPanel implements GraphicsConstants{
 	private static final long serialVersionUID = 1L;
-	protected int barcount;
+	protected static int barcount;
 	protected DisplayType displaytype;
+	private static Container thisContainer;
 	
 	public GraphingParent(DisplayType displaytype){
 		super();
+		thisContainer = this;
 		enableInputMethods(true);
 		setFocusable(true);
 		setVisible(true);
-		this.barcount = DataStore.core.length;
+		this.barcount = DataStore.coreA.size();
 		this.displaytype = displaytype;
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP));	
 	}
@@ -32,5 +34,9 @@ public class GraphingParent extends JPanel implements GraphicsConstants{
 		return this.displaytype;
 	}
 	
+	public static void updateBarCount() {
+		barcount = DataStore.coreA.size();
+		thisContainer.revalidate();
+	}
 	
 }

@@ -13,6 +13,7 @@ import cms.model.DataStore;
 import cms.model.communication.format.Transmission;
 import cms.model.communication.format.XMLParser;
 import cms.model.data.BeanNode;
+import cms.view.element.GraphingParent;
 import cms.view.panel.AddressBar;
 
 public class SClientSession extends ThreadHelper {
@@ -54,6 +55,7 @@ public class SClientSession extends ThreadHelper {
 			System.out.println("CLIENT STORE AT: " + DataStore.coreA.get(DataStore.coreA.size() - 1));
 			sessionID = DataStore.coreA.get(DataStore.coreA.size() - 1).getId();
 			AddressBar.updateButtonList();
+			GraphingParent.updateBarCount();
 			
 			input =  new BufferedReader(new InputStreamReader(
 					clientConnectionSocket.getInputStream()));
