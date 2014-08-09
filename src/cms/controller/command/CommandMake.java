@@ -30,7 +30,7 @@ public class CommandMake extends AbstractCommand{
 	
 	private void make(int type){
 		int coreid = DataStore.getSelectedCore();
-		DataStore.core[coreid].setType(type);
+		DataStore.coreA.get(coreid).setType(type);
 		AddressBar.nodeButton(coreid).repaint();
 	}
 

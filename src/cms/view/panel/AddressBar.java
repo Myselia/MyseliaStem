@@ -1,5 +1,6 @@
 package cms.view.panel;
 
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -15,14 +16,15 @@ public class AddressBar extends JPanel implements GraphicsConstants {
 
 	private static NodeButton[] button;
 	private static NodeButton lastButtonClicked;
-	private Dimension size;
-	private int rows;
+	private static Dimension size;
+	private static Container thisContainer;
+	private static int rows;
 	
 	public AddressBar() {
+		thisContainer = this;
 		this.setBackground(BACK);
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, 0, ADDRESS_GAP, 0));
-		rows = (int) Math.ceil((double) DataStore.core.length
-				/ ADDRESS_COLUMNS);
+		rows = (int) Math.ceil((double) DataStore.coreA.size()/ ADDRESS_COLUMNS);
 
 		this.setPreferredSize(new Dimension(800, rows * 100));
 		GridLayout coreLayout = new GridLayout(rows, ADDRESS_COLUMNS);
@@ -31,9 +33,9 @@ public class AddressBar extends JPanel implements GraphicsConstants {
 
 		this.setLayout(coreLayout);
 		
-		button = new NodeButton[DataStore.core.length];
-		for (int i = 0; i < DataStore.core.length; i++) {
-			button[i] = new NodeButton(size, DataStore.core[i]);
+		button = new NodeButton[DataStore.coreA.size()];
+		for (int i = 0; i < DataStore.coreA.size(); i++) {
+			button[i] = new NodeButton(size, DataStore.coreA.get(i));
 			this.add("Button", button[i]);
 		}
 	}
@@ -44,8 +46,20 @@ public class AddressBar extends JPanel implements GraphicsConstants {
 		}
 		lastButtonClicked = nextLast;
 	}
+	
 	public static NodeButton nodeButton(int ID){
 		return button[ID];
+	}
+	
+	public static void updateButtonList() {
+		thisContainer.removeAll();
+		rows = (int) Math.ceil((double) DataStore.coreA.size()/ ADDRESS_COLUMNS);
+		button = new NodeButton[DataStore.coreA.size()];
+		for (int i = 0; i < button.length; i++) {
+			button[i] = new NodeButton(size, DataStore.coreA.get(i));
+			thisContainer.add("Button", button[i]);
+		}
+		thisContainer.revalidate();
 	}
 	
 	public int getRows(){
