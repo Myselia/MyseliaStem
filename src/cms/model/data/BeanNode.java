@@ -10,6 +10,8 @@ public class BeanNode implements java.io.Serializable {
 	private NodeState state = NodeState.ABSENT;			// core state as viewed by model
 	private boolean selected = false; 	// core state as viewed by view
 	
+	
+	public DisplayMemoryStorage[] memstore = new DisplayMemoryStorage[4];
 	private double temperature = 25; 		// core temperature
 	private double cpu = 50;				// core cpu usage
 	private double ram = 256;				// core leftover ram
