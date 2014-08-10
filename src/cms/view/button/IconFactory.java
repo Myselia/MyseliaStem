@@ -3,6 +3,8 @@ package cms.view.button;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cms.model.data.BeanNode;
 
@@ -98,6 +100,19 @@ public class IconFactory {
 		graphics.setColor(foregrnd);
 		graphics.fillOval(x_pos - 8, y_pos - 8, 16, 16);
 		graphics.fillRect(x_pos - 3, y_pos - 35, 6, 70);
+		
+		String textone = node_bean.getIp();
+	    Pattern pattern = Pattern.compile("\\.\\d{1,3}$");
+	    Matcher matcher = pattern.matcher(textone);
+	    if (matcher.find()){
+	    	textone = textone.substring(matcher.start(), matcher.end());
+	    } else {
+	    	textone = "...";
+	    }
+		graphics.drawString(textone, x_pos + 5, y_pos - 23);
+		
+		String texttwo = "id:" + node_bean.getId();
+		graphics.drawString(texttwo, x_pos + 5, y_pos + 34);
 	}
 
 	private static void cmsIcon() {
