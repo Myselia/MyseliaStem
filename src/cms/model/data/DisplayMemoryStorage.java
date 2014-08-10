@@ -25,10 +25,18 @@ public class DisplayMemoryStorage {
 		
 	}
 	
+	/**
+	 * TODO: return the storage as a reassembled linear array
+	 * @return
+	 */
 	public double[][] getmem(){
 		return mem;
 	}
 	
+	/**
+	 * TODO: rewrite the storage as a circular array
+	 * @param num
+	 */
 	private void shiftForward(int num){
 		for(int i = (size - 1); i > 0; i--){
 			mem[num][i] = mem[num][i - 1];
