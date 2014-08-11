@@ -34,6 +34,10 @@ public class GraphingParent extends JPanel implements GraphicsConstants{
 		return this.displaytype;
 	}
 	
+	public void setDisplayType(DisplayType dt){
+		displaytype = dt;
+	}
+	
 	public static void updateBarCount() {
 		barcount = DataStore.coreA.size();
 		thisContainer.revalidate();

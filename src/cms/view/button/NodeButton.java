@@ -39,6 +39,10 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 		repaint();
 	}
 	
+	public BeanNode getCore(){
+		return this.core;
+	}
+	
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
