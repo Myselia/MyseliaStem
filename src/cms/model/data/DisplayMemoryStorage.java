@@ -4,9 +4,9 @@ package cms.model.data;
 public class DisplayMemoryStorage {
 	private double[][] mem;
 	private int[] count;
-	private int level = 4;
-	private int size = 30;
-	private int echo = 10;
+	private static final int level = 4;
+	private static final int size = 30;
+	private static final int echo = 10;
 	
 	public DisplayMemoryStorage(){
 		mem = new double[level][size];
@@ -18,7 +18,7 @@ public class DisplayMemoryStorage {
 		mem[0][0] = value;
 
 		for(int i = 0; i < (level - 1); i++){
-			if(count[i] == 10){
+			if(count[i] == echo){
 				pushUp(i);
 			}
 		}
@@ -48,6 +48,10 @@ public class DisplayMemoryStorage {
 		
 		//resetting the counter
 		count[num] = 0;
+	}
+	
+	public static int getSize(){
+		return size;
 	}
 
 }

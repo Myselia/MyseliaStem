@@ -97,14 +97,6 @@ GraphicsConstants{
 			g.drawString(Double.toString(value[i]), (int)x_pos + 4, (int)y_pos - 2); //text	
 		}
 	}
-	
-	public void setDisplayType(DisplayType dt){
-		displaytype = dt;
-	}
-	
-	public DisplayType getDisplayType(){
-		return displaytype;
-	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
