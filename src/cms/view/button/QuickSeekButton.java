@@ -44,9 +44,9 @@ public class QuickSeekButton extends JComponent implements MouseListener, Graphi
 		if(select){
 			foreground = RUN;
 		} else {
-			foreground = BACK;
+			foreground = ABS;
 		}
-		g.setColor(foreground);
+		g.setColor(BACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
 		IconFactory.icon(g, foreground, BACK, getWidth(), getHeight(), type, null);
