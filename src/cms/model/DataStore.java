@@ -21,7 +21,6 @@ public class DataStore {
 
 	public static void build() {
 		for (int i = 0; i < INITIAL_CORE_NUM; i++) {
-			System.out.println("here test");
 			coreA.add(new BeanNode());
 			coreA.get(i).setType(0);
 			coreA.get(i).setId(i);

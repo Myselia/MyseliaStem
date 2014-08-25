@@ -27,7 +27,7 @@ public class AddressBar extends JPanel implements GraphicsConstants {
 		rows = (int) Math.ceil((double) DataStore.coreA.size()/ ADDRESS_COLUMNS);
 
 		this.setPreferredSize(new Dimension(800, rows * 100));
-		GridLayout coreLayout = new GridLayout(rows, ADDRESS_COLUMNS);
+		GridLayout coreLayout = new GridLayout(0, ADDRESS_COLUMNS);
 		coreLayout.setHgap(ADDRESS_GAP);
 		coreLayout.setVgap(ADDRESS_GAP);
 
