@@ -1,5 +1,6 @@
 package cms.model.data;
 
+
 public class BeanNode implements java.io.Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -7,7 +8,7 @@ public class BeanNode implements java.io.Serializable {
 	// Properties
 	private int id = 0;
 	private int type = 0;				// core type: 0node, 1cms, 2ams, 3db
-	private NodeState state = NodeState.ABSENT;			// core state as viewed by model
+	private NodeState state;			// core state as viewed by model
 	private boolean selected = false; 	// core state as viewed by view
 	
 	
@@ -17,7 +18,7 @@ public class BeanNode implements java.io.Serializable {
 	private double ram = 256;				// core leftover ram
 	private double particles = 1000;		// core ams particles
 	
-	private String ip = "000.000.000.000";			// ip of core
+	private String ip = "";		// ip of core
 
 	// Constructor
 	public BeanNode() {

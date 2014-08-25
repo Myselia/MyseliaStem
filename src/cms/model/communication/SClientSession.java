@@ -27,6 +27,8 @@ public class SClientSession extends ThreadHelper {
 	private String ipAddress;
 	//This flag is true once the setup phase of the session is complete 
 	private boolean SETUP = false;
+	//This flag is true if the node is already known to the CMS by IP
+	private boolean HAS_CONNECTED = false;
 	//This is the id of the session which is the same as the node id in datastore
 	private int sessionID = -1;
 	//Input stream buffer
@@ -37,15 +39,14 @@ public class SClientSession extends ThreadHelper {
 	//The string currently being processed by the server (\r\n terminated from client)
 	protected String inputS;
 	
-	public SClientSession(Socket clientConnectionSocket, String serverTransmission) {
+	public SClientSession(Socket clientConnectionSocket) {
 		this.clientConnectionSocket = clientConnectionSocket;
-		this.serverTransmission = serverTransmission;
 		this.ipAddress = clientConnectionSocket.getInetAddress().getHostAddress();
 	}
 
 	public void run() {
 		try {
-			sessionID = DataStore.nextNodeID();
+			
 			System.out.println("STARTING CLIENT SESSION");
 			
 
@@ -56,29 +57,43 @@ public class SClientSession extends ThreadHelper {
 			
 			if (!SETUP) {
 				//Once connected perform initial setup (assign node ID, etc)
-				String infoParams = Integer.toString(sessionID);
-				System.out.println("infoparams: " + infoParams);
+				String infoParams;
+				if (DataStore.getIPInClusterPosition(ipAddress) != -1) {
+					//This node has already connected before, give it its old position
+					sessionID = DataStore.getIPInClusterPosition(ipAddress);
+					HAS_CONNECTED = true;
+				} else {
+					sessionID = DataStore.nextNodeID();
+				}
+				infoParams = Integer.toString(sessionID);
 				output.println(infoParams);
 				SETUP = true;
 			}
 			
-			//Add a graphic node
-			DataStore.coreA.add(new BeanNode());
-			System.err.println("SIZE: " + DataStore.coreA.size());
-			DataStore.coreA.get(DataStore.coreA.size() - 1).setType(0);
-			DataStore.coreA.get(DataStore.coreA.size() - 1).setId(sessionID);
-			System.err.println("NODE ID IS: " + DataStore.coreA.get(DataStore.coreA.size() - 1).getId());
-			DataStore.coreA.get(DataStore.coreA.size() - 1).setState(NodeState.PRESENT);
-			System.out.println("CLIENT STORE AT: " + DataStore.coreA.get(DataStore.coreA.size() - 1));
+			BeanNode curNode;
+			if (!HAS_CONNECTED) {
+				DataStore.coreA.add(new BeanNode());
+				System.err.println("SIZE: " + DataStore.coreA.size());
+				curNode = DataStore.coreA.get(DataStore.coreA.size() - 1);
+			} else {
+				curNode = DataStore.coreA.get(sessionID);
+			}
+
+			curNode.setType(0);
+			curNode.setId(sessionID);
+			curNode.setIp(ipAddress);
+			System.err.println("NODE ID IS: " + curNode.getId());
+			curNode.setState(NodeState.AVAILABLE);
 			System.err.println("SID " + sessionID);
+			
+			//UPDATE THE GRAPHICS TO MATCH THE ADDITION OF A NEW NODE
 			AddressBar.updateButtonList();
 			GraphingHistogram.updateBarCount();
-
+			//
 			
 			Transmission trans;
 		
 			while (SETUP && ((inputS = input.readLine() ) != null)) {
-				// System.out.println("inputS: " + inputS);
 				LogSystem.log(true, false, "Response from Client(" + ipAddress + ")");
 				XMLParser xmlp = new XMLParser();
 				trans = xmlp.makedoc(inputS);
@@ -89,13 +104,15 @@ public class SClientSession extends ThreadHelper {
 			}
 
 			// If the program gets here the connection has been lost, do some clean up stuff
-			System.out.println("Lost connection from client: " + ipAddress);
-			cleanUp();
+			System.out.println("Lost connection from client( " + sessionID + " ): " +  ipAddress);
+			curNode.setState(NodeState.ABSENT);
+			//cleanUp();
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
 
 	public synchronized void cleanUp() {
 		try {
@@ -106,7 +123,5 @@ public class SClientSession extends ThreadHelper {
 			e.printStackTrace();
 		}
 		DataStore.removeNode(sessionID);
-		AddressBar.updateButtonList();
-		GraphingHistogram.updateBarCount();
 	}
 }

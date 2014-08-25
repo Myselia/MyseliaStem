@@ -8,11 +8,13 @@ import cms.model.communication.format.TransmissionParser;
 import cms.model.data.BeanNetwork;
 import cms.model.data.BeanNode;
 import cms.model.data.NodeState;
+import cms.view.element.GraphingHistogram;
+import cms.view.panel.AddressBar;
 
 public class DataStore {
 
 	//The minimum number of cores to initialize
-	private static int INITIAL_CORE_NUM = 2;
+	private static int INITIAL_CORE_NUM = 0;
 	//The ArrayList in charge of storing BeanNode objects. All calls to individual BeanNode instances must be done from this ArrayList
 	public static ArrayList<BeanNode> coreA = new ArrayList<BeanNode>(10);
 	public static BeanNetwork network = new BeanNetwork();
@@ -56,7 +58,30 @@ public class DataStore {
 		coreA.remove(id);
 		nodeCount--;
 		coreIDTracker--;
+		AddressBar.updateButtonList();
+		GraphingHistogram.updateBarCount();
 	}
+	
+	public static boolean isNodeAcive(int id) {
+		//if the id is smaller than the core size and larger than zero and it is currently available, return true.
+		System.out.println( coreA.get(id).getState());
+		if (id <= (coreA.size() - 1) && id >= 0 && coreA.get(id).getState().equals(NodeState.AVAILABLE))
+			return true;
+		
+		return false;
+	}
+
+	public static int getIPInClusterPosition(String ip) {
+	
+		for (int i = 0; i < coreA.size(); i++) {
+		
+			if (coreA.get(i).getIp().equals(ip)) 
+				return i;
+		}
+		
+		return -1;
+	}
+
 	
 	public synchronized static int nextNodeID() {
 		coreIDTracker++;

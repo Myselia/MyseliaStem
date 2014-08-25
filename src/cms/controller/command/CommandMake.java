@@ -4,7 +4,7 @@ import cms.model.DataStore;
 import cms.view.panel.AddressBar;
 
 public class CommandMake extends AbstractCommand{
-	private final static String command_signature = "make";
+	final static String command_signature = "make";
 	
 	@Override
 	public void action(String arg){

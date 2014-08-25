@@ -27,6 +27,7 @@ public class AddressBar extends JPanel implements GraphicsConstants {
 		rows = (int) Math.ceil((double) DataStore.coreA.size()/ ADDRESS_COLUMNS);
 
 		this.setPreferredSize(new Dimension(800, rows * 100));
+		this.setMinimumSize(new Dimension(800, 100));
 		GridLayout coreLayout = new GridLayout(0, ADDRESS_COLUMNS);
 		coreLayout.setHgap(ADDRESS_GAP);
 		coreLayout.setVgap(ADDRESS_GAP);
@@ -59,7 +60,13 @@ public class AddressBar extends JPanel implements GraphicsConstants {
 			button[i] = new NodeButton(size, DataStore.coreA.get(i));
 			thisContainer.add("Button", button[i]);
 		}
+
+		thisContainer.setPreferredSize(new Dimension(800, rows * 100));
+		thisContainer.setMinimumSize(new Dimension(800, 100));
+		thisContainer.setSize(thisContainer.getPreferredSize());
+		thisContainer.repaint();
 		thisContainer.revalidate();
+		thisContainer.repaint();
 	}
 	
 	public int getRows(){
