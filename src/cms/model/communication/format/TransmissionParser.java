@@ -4,6 +4,7 @@ import cms.model.DataStore;
 import cms.model.data.BeanNode;
 
 public class TransmissionParser {
+	
 	public static void parse(Transmission trans, BeanNode[] core){
 		trans.printTransmission();
 		int coreid = Integer.parseInt(trans.from);
@@ -33,7 +34,6 @@ public class TransmissionParser {
 	}
 	
 	public static void parseNew(Transmission trans){
-		trans.printTransmission();
 		int coreid = Integer.parseInt(trans.from);
 		
 		if(trans.opcode.equals("110")){
@@ -41,6 +41,7 @@ public class TransmissionParser {
 				String particleClass = trans.particles[i].getParticleClass();
 				
 				if(particleClass.equals("temp")){
+					System.err.println("CoreID: " + coreid);
 					DataStore.coreA.get(coreid).setTemperature(Double.parseDouble(trans.particles[i].getContent()));
 					
 				} else if(particleClass.equals("ram")){
@@ -52,8 +53,6 @@ public class TransmissionParser {
 				} else if(particleClass.equals("part")){
 					DataStore.coreA.get(coreid).setParticles(Double.parseDouble(trans.particles[i].getContent()));
 					
-				} else if(particleClass.equals("ip")){
-					DataStore.coreA.get(coreid).setIp(trans.particles[i].getContent());
 				}
 
 			}

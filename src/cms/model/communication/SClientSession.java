@@ -45,56 +45,59 @@ public class SClientSession extends ThreadHelper {
 
 	public void run() {
 		try {
+			sessionID = DataStore.nextNodeID();
 			System.out.println("STARTING CLIENT SESSION");
-			//Add a graphic node
-			DataStore.coreA.add(new BeanNode());
-			System.err.println("SIZE: " + DataStore.coreA.size());
-			DataStore.coreA.get(DataStore.coreA.size() - 1).setType(0);
-			DataStore.coreA.get(DataStore.coreA.size() - 1).setId(DataStore.nextNodeID());
-			System.err.println("NODE ID IS: " + DataStore.coreA.get(DataStore.coreA.size() - 1).getId());
-			DataStore.coreA.get(DataStore.coreA.size() - 1).setState(NodeState.ABSENT);
-			System.out.println("CLIENT STORE AT: " + DataStore.coreA.get(DataStore.coreA.size() - 1));
-			sessionID = DataStore.coreA.get(DataStore.coreA.size() - 1).getId();
-			AddressBar.updateButtonList();
-			GraphingHistogram.updateBarCount();
 			
+
 			input =  new BufferedReader(new InputStreamReader(
 					clientConnectionSocket.getInputStream()));
 			output =  new PrintWriter(
 					clientConnectionSocket.getOutputStream(), true);
-
-			Transmission trans;
 			
 			if (!SETUP) {
 				//Once connected perform initial setup (assign node ID, etc)
-				String infoParams = Integer.toString(DataStore.nextNodeID());
+				String infoParams = Integer.toString(sessionID);
 				System.out.println("infoparams: " + infoParams);
 				output.println(infoParams);
 				SETUP = true;
 			}
 			
+			//Add a graphic node
+			DataStore.coreA.add(new BeanNode());
+			System.err.println("SIZE: " + DataStore.coreA.size());
+			DataStore.coreA.get(DataStore.coreA.size() - 1).setType(0);
+			DataStore.coreA.get(DataStore.coreA.size() - 1).setId(sessionID);
+			System.err.println("NODE ID IS: " + DataStore.coreA.get(DataStore.coreA.size() - 1).getId());
+			DataStore.coreA.get(DataStore.coreA.size() - 1).setState(NodeState.PRESENT);
+			System.out.println("CLIENT STORE AT: " + DataStore.coreA.get(DataStore.coreA.size() - 1));
+			System.err.println("SID " + sessionID);
+			AddressBar.updateButtonList();
+			GraphingHistogram.updateBarCount();
+
+			
+			Transmission trans;
+		
 			while (SETUP && ((inputS = input.readLine() ) != null)) {
-				//System.out.println("inputS: " + inputS);
+				// System.out.println("inputS: " + inputS);
 				LogSystem.log(true, false, "Response from Client(" + ipAddress + ")");
 				XMLParser xmlp = new XMLParser();
 				trans = xmlp.makedoc(inputS);
-				if(trans.type.equals("sys")){
+				if (trans.type.equals("sys")) {
 					DataStore.insertData(trans);
 				}
-				//trans.printTransmission();
 
 			}
-			
-			//If the program gets here the connection has been lost, do some cleanup stuff
+
+			// If the program gets here the connection has been lost, do some clean up stuff
 			System.out.println("Lost connection from client: " + ipAddress);
 			cleanUp();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
-		} 
+		}
 	}
-	
-	public void cleanUp() {
+
+	public synchronized void cleanUp() {
 		try {
 			input.close();
 			output.close();

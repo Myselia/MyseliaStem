@@ -14,12 +14,15 @@ public class DataStore {
 	//The minimum number of cores to initialize
 	private static int INITIAL_CORE_NUM = 2;
 	//The ArrayList in charge of storing BeanNode objects. All calls to individual BeanNode instances must be done from this ArrayList
-	public static ArrayList<BeanNode> coreA = new ArrayList<BeanNode>(16);
+	public static ArrayList<BeanNode> coreA = new ArrayList<BeanNode>(10);
 	public static BeanNetwork network = new BeanNetwork();
 	//This int keeps track of the amount of cores currently connected to the server and is used to assign core ID
-	public static int nodeCount = -1;
+	public static volatile int nodeCount = -1;
+	public static volatile int coreIDTracker = 0;
 
 	public static void build() {
+		coreIDTracker = INITIAL_CORE_NUM - 1;
+	
 		for (int i = 0; i < INITIAL_CORE_NUM; i++) {
 			System.out.println("here test");
 			coreA.add(new BeanNode());
@@ -51,12 +54,14 @@ public class DataStore {
 	}
 	
 	public static void removeNode(int id) {
-		coreA.remove(id + INITIAL_CORE_NUM);
+		coreA.remove(id);
 		nodeCount--;
+		coreIDTracker--;
 	}
 	
-	public static int nextNodeID() {
+	public synchronized static int nextNodeID() {
+		coreIDTracker++;
 		nodeCount++;
-		return nodeCount;
+		return coreIDTracker;
 	}
 }
