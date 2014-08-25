@@ -18,13 +18,13 @@ public class InfoBar extends JPanel implements GraphicsConstants {
 	public InfoBar() {
 
 		this.setBackground(BACK);
-		this.setPreferredSize(new Dimension(800, 120));
+		this.setPreferredSize(new Dimension(800, 130));
 		this.setLayout(new BorderLayout());
 		
 		quickbar = new QuickBar();
 		this.add(quickbar, BorderLayout.NORTH);
 		addressbar = new AddressBar();
-		this.setPreferredSize(new Dimension(800, 20 + addressbar.getRows() * 100));
+		this.setPreferredSize(new Dimension(800, 24 + addressbar.getRows() * 100));
 		this.add(addressbar, BorderLayout.SOUTH);
 
 		Thread refresh = new Thread(new Runnable() {

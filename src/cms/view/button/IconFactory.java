@@ -66,11 +66,19 @@ public class IconFactory {
 		}
 
 	}
-	
-	private static void quickSeek(){
-		
+
+	private static void quickSeek() {
+		int circ = 8;
+		int scale = 3;
+		for(int i = circ*2; i > 1; i--){
+			if(i % 2 == 0){
+				graphics.setColor(foregrnd);
+			} else {
+				graphics.setColor(backgrnd);
+			}
+			graphics.fillOval(x_pos - i*scale, y_pos - i*scale, i*scale*2, i*scale*2);
+		}
 	}
-	
 
 	private static void tempIcon() {
 		graphics.setColor(foregrnd);
@@ -100,17 +108,17 @@ public class IconFactory {
 		graphics.setColor(foregrnd);
 		graphics.fillOval(x_pos - 8, y_pos - 8, 16, 16);
 		graphics.fillRect(x_pos - 3, y_pos - 35, 6, 70);
-		
+
 		String textone = node_bean.getIp();
-	    Pattern pattern = Pattern.compile("\\.\\d{1,3}$");
-	    Matcher matcher = pattern.matcher(textone);
-	    if (matcher.find()){
-	    	textone = textone.substring(matcher.start(), matcher.end());
-	    } else {
-	    	textone = "...";
-	    }
+		Pattern pattern = Pattern.compile("\\.\\d{1,3}$");
+		Matcher matcher = pattern.matcher(textone);
+		if (matcher.find()) {
+			textone = textone.substring(matcher.start(), matcher.end());
+		} else {
+			textone = "...";
+		}
 		graphics.drawString(textone, x_pos + 5, y_pos - 23);
-		
+
 		String texttwo = "id:" + node_bean.getId();
 		graphics.drawString(texttwo, x_pos + 5, y_pos + 34);
 	}
