@@ -6,22 +6,24 @@ public class BeanNode implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	// Properties
-	private int id = 0;
-	private int type = 0;				// core type: 0node, 1cms, 2ams, 3db
-	private NodeState state;			// core state as viewed by model
-	private boolean selected = false; 	// core state as viewed by view
+	private volatile int id = 0;
+	private volatile int type = 0;				// core type: 0node, 1cms, 2ams, 3db
+	private volatile NodeState state = NodeState.ABSENT;			// core state as viewed by model
+	private volatile boolean selected = false; 	// core state as viewed by view
 	
+	public volatile DisplayMemoryStorage[] memstore = new DisplayMemoryStorage[4];
+	private volatile double temperature = 25; 		// core temperature
+	private volatile double cpu = 50;				// core cpu usage
+	private volatile double ram = 256;				// core leftover ram
+	private volatile double particles = 1000;		// core ams particles
 	
-	public DisplayMemoryStorage[] memstore = new DisplayMemoryStorage[4];
-	private double temperature = 25; 		// core temperature
-	private double cpu = 50;				// core cpu usage
-	private double ram = 256;				// core leftover ram
-	private double particles = 1000;		// core ams particles
-	
-	private String ip = "";		// ip of core
+	private volatile String ip = "000.000.000.000";			// ip of core
 
 	// Constructor
 	public BeanNode() {
+		for(int i = 0; i < 4; i++){
+			memstore[i] = new DisplayMemoryStorage();
+		}
 	}
 
 	public int getId() {
@@ -62,6 +64,7 @@ public class BeanNode implements java.io.Serializable {
 
 	public void setTemperature(double temperature) {
 		this.temperature = temperature;
+		memstore[0].add(temperature);
 	}
 
 	public double getParticles() {
@@ -70,6 +73,7 @@ public class BeanNode implements java.io.Serializable {
 
 	public void setParticles(double particles) {
 		this.particles = particles;
+		memstore[3].add(particles);
 	}
 
 	public double getRam() {
@@ -78,6 +82,7 @@ public class BeanNode implements java.io.Serializable {
 
 	public void setRam(double ram) {
 		this.ram = ram;
+		memstore[2].add(ram);
 	}
 
 	public double getCpu() {
@@ -86,6 +91,7 @@ public class BeanNode implements java.io.Serializable {
 
 	public void setCpu(double cpu) {
 		this.cpu = cpu;
+		memstore[1].add(cpu);
 	}
 
 	public String getIp() {

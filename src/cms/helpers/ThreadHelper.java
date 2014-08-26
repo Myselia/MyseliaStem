@@ -1,5 +1,7 @@
 package cms.helpers;
 
+import cms.controller.command.CommandTest;
+
 public class ThreadHelper implements Runnable {
 
 	private Thread t;
@@ -14,5 +16,4 @@ public class ThreadHelper implements Runnable {
 			t.start();
 		}
 	}
-
 }

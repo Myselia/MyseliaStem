@@ -30,8 +30,13 @@ public class CommandMake extends AbstractCommand{
 	
 	private void make(int type){
 		int coreid = DataStore.getSelectedCore();
+		if(coreid == -1){
+			System.out.println("e>" + "No core currently selected");
+			return; /**TODO make(int): verify if the -1 case is checked appropriately**/
+		}else{
 		DataStore.coreA.get(coreid).setType(type);
 		AddressBar.nodeButton(coreid).repaint();
+		}
 	}
 
 	@Override

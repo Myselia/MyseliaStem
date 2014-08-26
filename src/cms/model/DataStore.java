@@ -12,7 +12,6 @@ import cms.view.element.GraphingHistogram;
 import cms.view.panel.AddressBar;
 
 public class DataStore {
-
 	//The minimum number of cores to initialize
 	private static int INITIAL_CORE_NUM = 6;
 	//The ArrayList in charge of storing BeanNode objects. All calls to individual BeanNode instances must be done from this ArrayList
@@ -21,6 +20,7 @@ public class DataStore {
 	//This int keeps track of the amount of cores currently connected to the server and is used to assign core ID
 	public static volatile int nodeCount = -1;
 	public static volatile int coreIDTracker = 0;
+
 
 	public static void build() {
 		coreIDTracker = INITIAL_CORE_NUM - 1;
@@ -32,28 +32,32 @@ public class DataStore {
 			coreA.get(i).setState(NodeState.ABSENT);
 		}
 	}
-	
-	public static int getSelectedCore(){
-		for(int i = 0; i < coreA.size(); i++){
-			if(coreA.get(i).isSelected()){
+
+	public static int getSelectedCore() {
+		for (int i = 0; i < coreA.size(); i++) {
+			if (coreA.get(i).isSelected()) {
 				return coreA.get(i).getId();
 			}
 		}
-		return 0;
+		return -1;
 	}
-	
+
 	public static void newData(){
 		Random rand = new Random();	
 		for(int i = 0; i < coreA.size(); i++){
-			coreA.get(i).setTemperature((int)(coreA.get(i).getTemperature()*1 + (rand.nextInt()%2)*1));
-			//LogSystem.log(true,false, "NewValue : " + core[i].getTemperature());
+			if(coreA.get(i).getState() == NodeState.ABSENT){
+				coreA.get(i).setTemperature((int)(coreA.get(i).getTemperature()*1 + (rand.nextInt()%2)*1));
+				coreA.get(i).setCpu((int)(coreA.get(i).getCpu()*1 + (rand.nextInt()%2)*1));
+				coreA.get(i).setRam((int)(coreA.get(i).getRam()*1 + (rand.nextInt()%2)*1));
+				coreA.get(i).setParticles((int)(coreA.get(i).getParticles()*1 + (rand.nextInt()%2)*1));
+			}
 		}
 	}
-	
-	public static void insertData(Transmission trans){
+
+	public static void insertData(Transmission trans) {
 		TransmissionParser.parseNew(trans);
 	}
-	
+
 	public static void removeNode(int id) {
 		coreA.remove(id);
 		nodeCount--;
@@ -82,7 +86,6 @@ public class DataStore {
 		return -1;
 	}
 
-	
 	public synchronized static int nextNodeID() {
 		coreIDTracker++;
 		nodeCount++;
