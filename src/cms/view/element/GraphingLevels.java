@@ -83,9 +83,14 @@ GraphicsConstants{
 		g.setColor(AVA);
 		g.fillRect(0, getHeight() - (int)(average*scale), getWidth(), 1);
 		String avg = Double.toString(average);
-		Pattern p = Pattern.compile("^([1-9]\\d*|0)(\\.\\d)?$");
-		Matcher m = p.matcher(avg);
-		avg = avg.substring(m.regionStart(), m.regionEnd());
+		Pattern pattern = Pattern.compile("^\\d+(\\.\\d)?");
+		Matcher matcher = pattern.matcher(avg);
+		if (matcher.find()) {
+			avg = avg.substring(matcher.start(), matcher.end());
+		} else {
+			avg = "err";
+		}
+		
 		g.drawString(avg, 4, getHeight() - ((int)(average*scale) + 2)); //text	
 		
 		//design valuess
@@ -99,7 +104,16 @@ GraphicsConstants{
 			double y_pos = getHeight() - values[i]*scale;
 			
 			g.fillRect((int)x_pos , (int)y_pos , (int)(offset - 2), (int)5); //x position, y position, width, height
-			g.drawString(Double.toString(values[i]), (int)x_pos + 4, (int)y_pos - 2); //text	
+			
+			String val = Double.toString(values[i]);
+			Matcher valm = pattern.matcher(val);
+			if (valm.find()) {
+				val = val.substring(valm.start(), valm.end());
+			} else {
+				val = "err";
+			}
+			
+			g.drawString(val, (int)x_pos + 4, (int)y_pos - 2); //text	
 		}
 	}
 

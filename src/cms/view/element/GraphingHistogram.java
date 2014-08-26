@@ -1,7 +1,10 @@
 package cms.view.element;
 
+import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Line2D;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -116,10 +119,15 @@ public class GraphingHistogram extends GraphingParent {
 		g.setColor(AVA);
 		g.fillRect(0, getHeight() - (int)(average*displayscale), getWidth()/*- y_axis*/, 1);
 		String avg = Double.toString(average);
-		Pattern p = Pattern.compile("^([1-9]\\d*|0)(\\.\\d)?$");
-		Matcher m = p.matcher(avg);
-		avg = avg.substring(m.regionStart(), m.regionEnd());
-		g.drawString(avg, 4, getHeight() - ((int)(average*displayscale) + 2)); //text	
+		Pattern pattern = Pattern.compile("^\\d+(\\.\\d)?");
+		Matcher matcher = pattern.matcher(avg);
+		if (matcher.find()) {
+			avg = avg.substring(matcher.start(), matcher.end());
+		} else {
+			avg = "err";
+		}
+		
+		g.drawString(avg, 4, getHeight() - ((int)(average*displayscale) + 2)); //text
 		
 		//design values
 		int offset = (getWidth()-150)/(size-1);
@@ -132,10 +140,21 @@ public class GraphingHistogram extends GraphingParent {
 		for(int i = 0; i < size-1; i++){
 			y_values[0] = getHeight()- (int)(displayscale*values[i]);
 			y_values[1] = getHeight()- (int)(displayscale * values[i+1]);
-			g.drawLine(getWidth()- offset*i - line, y_values[0], getWidth() - offset*(i+1) - line, y_values[1]);
+			Graphics2D g2 = (Graphics2D)g;
+			g2.setStroke(new BasicStroke(3));
+			g2.draw(new Line2D.Float(getWidth()- offset*i - line, y_values[0], getWidth() - offset*(i+1) - line, y_values[1]));
 			g.drawString(Double.toString(values[i]), getWidth() - offset*i - num, getHeight() - ((int)(values[i]*displayscale) + 8));
 		}
 		g.drawLine(getWidth(), getHeight()- (int)(displayscale * values[0]), getWidth() - line, getHeight()- (int)(displayscale * values[0]));
-		g.drawString(Double.toString(values[size-1]), getWidth() - offset*(size-1) - num, getHeight() - ((int)(values[size-1]*displayscale) + 8));
+		
+		String val = Double.toString(values[size-1]);
+		Matcher valm = pattern.matcher(val);
+		if (valm.find()) {
+			val = val.substring(valm.start(), valm.end());
+		} else {
+			val = "err";
+		}
+		
+		g.drawString(val, getWidth() - offset*(size-1) - num, getHeight() - ((int)(values[size-1]*displayscale) + 8));
 	}
 }
