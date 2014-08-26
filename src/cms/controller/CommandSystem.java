@@ -14,7 +14,7 @@ import cms.controller.command.*;
 
 public class CommandSystem {
 
-	private static int index = -1;
+	private static int index = 0;
 	private static String[] history = new String[20];
 	private static String[] commandparts;
 	private static String command;
@@ -68,11 +68,13 @@ public class CommandSystem {
 		commandClasses = new ReflectionCommand[classes.size() - abstract_count];
 		for (int i = 0, j = 0 ; i < classes.size() ; i++){
 			Class<Command> current = classes.get(i);
-			System.err.println(current);
+			//Debug
+			//System.err.println(current);
 			Method[] allofthem = current.getMethods();
-			for(Method m : allofthem){
+			//Debug
+			/*for(Method m : allofthem){
 				System.err.println(m);
-			}
+			}*/
 			if(Modifier.isAbstract(current.getModifiers())) continue;
 			Method[] methods = {current.getMethod("getCommandSignature"), current.getMethod("action", new Class[]{String.class})};
 			Command c_obj = (Command) current.getConstructor().newInstance();

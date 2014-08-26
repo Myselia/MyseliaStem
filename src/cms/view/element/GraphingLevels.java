@@ -29,39 +29,38 @@ GraphicsConstants{
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP));
 	}
 	
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
 		//background
 		g.setColor(BACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		//font values
+		//font valuess
 		Font f = new Font("Dialog", Font.BOLD, 12);
 		g.setFont(f);
 
-		//read-through values and average
-		double[] value = new double[barcount];
+		//read-through valuess and average
+		double[] values = new double[barcount];
 		double average = 0.0;
 		double sum = 0.0;
 		double max = 0.0;
 		for(int i = 0; i < barcount; i++){
 			if(displaytype == DisplayType.TEMPERATURE){
 				max = 100.0;
-				value[i] = DataStore.coreA.get(i).getTemperature();
+				values[i] = DataStore.coreA.get(i).getTemperature();
 			} else if(displaytype == DisplayType.CPU){
 				max = 100.0;
-				value[i] = DataStore.coreA.get(i).getCpu();
+				values[i] = DataStore.coreA.get(i).getCpu();
 			} else if(displaytype == DisplayType.RAM){
 				max = 512.0;
-				value[i] = DataStore.coreA.get(i).getRam();
+				values[i] = DataStore.coreA.get(i).getRam();
 			} else if(displaytype == DisplayType.PARTICLES){
 				max = 0.0;
-				value[i] = DataStore.coreA.get(i).getParticles();
+				values[i] = DataStore.coreA.get(i).getParticles();
 			}
 			
-			average += (double)(value[i]/barcount);
-			sum += value[i];
+			average += (double)(values[i]/barcount);
 		}
 		
 		//LogSystem.log(true, false, "Average:" + average + " || Sum: "+ sum);
@@ -69,6 +68,12 @@ GraphicsConstants{
 		
 		if(displaytype == DisplayType.PARTICLES){
 			max = sum;
+			for(int i = 0 ; i < values.length ; i++){
+				if(values[i] > max){
+					max = values[i];
+				}
+			}
+			max *= 2;
 		}
 	
 		//scale calculator
@@ -83,7 +88,7 @@ GraphicsConstants{
 		avg = avg.substring(m.regionStart(), m.regionEnd());
 		g.drawString(avg, 4, getHeight() - ((int)(average*scale) + 2)); //text	
 		
-		//design values
+		//design valuess
 		int offset = getWidth()/(barcount+1);
 		int extra = (getWidth() - (((int)(getWidth()/(barcount+1))) * (barcount+1))) / 2;
 		
@@ -91,10 +96,10 @@ GraphicsConstants{
 		for(int i = 0; i < barcount; i++){
 			g.setColor(ABS);
 			double x_pos = offset*(i+1) + extra;
-			double y_pos = getHeight() - value[i]*scale;
+			double y_pos = getHeight() - values[i]*scale;
 			
 			g.fillRect((int)x_pos , (int)y_pos , (int)(offset - 2), (int)5); //x position, y position, width, height
-			g.drawString(Double.toString(value[i]), (int)x_pos + 4, (int)y_pos - 2); //text	
+			g.drawString(Double.toString(values[i]), (int)x_pos + 4, (int)y_pos - 2); //text	
 		}
 	}
 

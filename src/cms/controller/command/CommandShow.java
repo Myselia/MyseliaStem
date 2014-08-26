@@ -31,7 +31,7 @@ public class CommandShow extends AbstractCommand {
 				histogram(DisplayType.TEMPERATURE, parameters[2]);
 			}else if(parameters[1].equals("levels")){
 				try{
-					DisplayType displaytype = displayType(parameters[3]);
+					DisplayType displaytype = displayType(parameters[2]);
 					levels(displaytype);
 				}catch(IllegalArgumentException e){
 					System.out.println("e>" + "Wrong Parameters");
@@ -61,8 +61,10 @@ public class CommandShow extends AbstractCommand {
 		if(coreid == -1){
 			System.out.println("e>" + "No core currently selected");
 		}else{
-			if(Graph.isHistogram()){
+			if(Graph.isHistogram() && displaytype == Graph.getDisplayType()){
 				System.out.println("!>" + "Already displaying Histogram");
+			}else if(Graph.isHistogram()){
+				Graph.setDisplayType(displaytype);
 			}else{
 				Graph.setDisplayType(displaytype);
 				Graph.toggle();
