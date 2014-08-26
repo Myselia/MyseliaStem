@@ -14,7 +14,7 @@ import cms.view.panel.AddressBar;
 public class DataStore {
 
 	//The minimum number of cores to initialize
-	private static int INITIAL_CORE_NUM = 0;
+	private static int INITIAL_CORE_NUM = 6;
 	//The ArrayList in charge of storing BeanNode objects. All calls to individual BeanNode instances must be done from this ArrayList
 	public static ArrayList<BeanNode> coreA = new ArrayList<BeanNode>(10);
 	public static BeanNetwork network = new BeanNetwork();
