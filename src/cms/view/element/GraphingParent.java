@@ -13,7 +13,7 @@ public class GraphingParent extends JPanel implements GraphicsConstants{
 	private static final long serialVersionUID = 1L;
 	protected static int barcount;
 	protected DisplayType displaytype;
-	private static Container thisContainer;
+	public static Container thisContainer;
 	
 	public GraphingParent(DisplayType displaytype){
 		super();
@@ -42,5 +42,6 @@ public class GraphingParent extends JPanel implements GraphicsConstants{
 		barcount = DataStore.coreA.size();
 		thisContainer.revalidate();
 	}
+	
 	
 }

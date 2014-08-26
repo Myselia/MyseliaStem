@@ -56,7 +56,7 @@ public class ProgramWindow extends JFrame implements GraphicsConstants {
 		contentPane.add(panels[0], BorderLayout.SOUTH);
 		panels[1] = new InfoBar();
 		contentPane.add(panels[1], BorderLayout.NORTH);
-		panels[2] = new Graph();
+		panels[2] = Graph.setGraph();
 		contentPane.add(panels[2], BorderLayout.CENTER);
 		comm_pane.setFocusOnTextField();
 		setVisible(true);

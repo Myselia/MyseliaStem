@@ -13,15 +13,15 @@ import cms.view.panel.GraphingMenu;
 public class Graph extends JPanel implements GraphicsConstants {
 	private static final long serialVersionUID = 1L;
 
+	private static Graph singleton = null;
 	private static GraphingLevels graphinglevels;
 	private static GraphingHistogram graphinghistogram;
 	private static GraphingMenu graphingmenu;
-	private static GraphingParent graph;
+	private volatile static GraphingParent graph;
 	private static DisplayType displaytype = DisplayType.TEMPERATURE;
 	private static boolean isHistogram = false;
 
-	public Graph() {
-
+	private Graph() {
 		this.setBackground(BACK);
 		this.setPreferredSize(new Dimension(100, 390));
 		this.setLayout(new BorderLayout());
@@ -39,7 +39,7 @@ public class Graph extends JPanel implements GraphicsConstants {
 				while (true) {
 					try {
 						Thread.sleep(200);
-						graph.revalidate();
+						graph.repaint();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -49,6 +49,12 @@ public class Graph extends JPanel implements GraphicsConstants {
 		});
 
 		refresh.start();
+	}
+	
+	public static Graph setGraph(){
+		if(singleton == null)
+			singleton = new Graph();
+			return singleton;
 	}
 	
 	public static void setDisplayType(DisplayType dt){
@@ -68,9 +74,15 @@ public class Graph extends JPanel implements GraphicsConstants {
 	public static boolean toggle(){
 		Graph.isHistogram = !Graph.isHistogram;
 		if(isHistogram){
-			Graph.graph = graphinghistogram;
+			singleton.remove(graph);
+			graph = graphinghistogram;
+			singleton.add(graph);
+			singleton.revalidate();
 		}else{
-			Graph.graph = graphinglevels;
+			singleton.remove(graph);
+			graph = graphinglevels;
+			singleton.add(graph);
+			singleton.revalidate();
 		}
 		return Graph.isHistogram;
 	}

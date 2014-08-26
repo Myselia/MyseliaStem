@@ -8,9 +8,12 @@ import java.util.regex.Pattern;
 import cms.model.DataStore;
 import cms.model.data.DisplayMemoryStorage;
 import cms.view.DisplayType;
+import cms.view.Graph;
 
 public class GraphingHistogram extends GraphingParent {
 	private static final long serialVersionUID = 1L;
+	public static int number_offset = 50;
+	public static int line_offset = 42;
 
 	public GraphingHistogram(DisplayType displaytype) {
 		super(displaytype);
@@ -47,9 +50,9 @@ public class GraphingHistogram extends GraphingParent {
 		}
 	}*/
 	
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-	
 		//background
 		g.setColor(BACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
@@ -57,6 +60,8 @@ public class GraphingHistogram extends GraphingParent {
 		//font values
 		Font f = new Font("Dialog", Font.BOLD, 12);
 		g.setFont(f);
+		
+		this.setDisplayType(Graph.getDisplayType());
 	
 		//read-through values and average
 		double[] values;
@@ -69,37 +74,47 @@ public class GraphingHistogram extends GraphingParent {
 		
 		if(displaytype == DisplayType.TEMPERATURE){
 			max = 100.0;
-			values = DataStore.coreA.get(coreid).memstore[1].getmem()[scale];
+			values = DataStore.coreA.get(coreid).memstore[0].getmem()[scale];
 		} else if(displaytype == DisplayType.CPU){
 			max = 100.0;
-			values = DataStore.coreA.get(coreid).memstore[2].getmem()[scale];
+			values = DataStore.coreA.get(coreid).memstore[1].getmem()[scale];
 		} else if(displaytype == DisplayType.RAM){
 			max = 512.0;
-			values = DataStore.coreA.get(coreid).memstore[3].getmem()[scale];
+			values = DataStore.coreA.get(coreid).memstore[2].getmem()[scale];
 		} else if(displaytype == DisplayType.PARTICLES){
 			max = 0.0;
-			values = DataStore.coreA.get(coreid).memstore[4].getmem()[scale];
+			values = DataStore.coreA.get(coreid).memstore[3].getmem()[scale];
 		} else{
 			values = new double[size];
 		}
 		
 		//Calculating average and sum
 		double average = 0.0;
-		double sum = 0.0;
 		for(int i = 0 ; i < values.length ; i++){
 			average += values[i];
-			sum += values[i];
 		}
 		average /= size;
-		if(displaytype == DisplayType.PARTICLES)
-			max = sum;
-
+		
+		if(displaytype == DisplayType.PARTICLES){
+			/*double scatter = 0.0;
+			for(int i = 0 ; i < values.length ; i++){
+				scatter += (values[i]-average)*(values[i]-average);
+			}
+			scatter /= values.length-1;
+			max = average + 3*Math.sqrt(scatter);*/
+			for(int i = 0 ; i < values.length ; i++){
+				if(values[i] > max){
+					max = values[i];
+				}
+			}
+			max *= 2;
+		}
+		
 		//displayscale
 		double displayscale = getHeight()/max;
-		
 		//average drawing
 		g.setColor(AVA);
-		g.fillRect(0, getHeight() - (int)(average*displayscale), getWidth(), 1);
+		g.fillRect(0, getHeight() - (int)(average*displayscale), getWidth()/*- y_axis*/, 1);
 		String avg = Double.toString(average);
 		Pattern p = Pattern.compile("^([1-9]\\d*|0)(\\.\\d)?$");
 		Matcher m = p.matcher(avg);
@@ -107,18 +122,20 @@ public class GraphingHistogram extends GraphingParent {
 		g.drawString(avg, 4, getHeight() - ((int)(average*displayscale) + 2)); //text	
 		
 		//design values
-		int offset = (getWidth()-100)/(size-1);
+		int offset = (getWidth()-150)/(size-1);
+		int num = number_offset;
+		int line = line_offset;
 		
 		//indicator drawing
 		int[] y_values = new int[2];
-		for(int i = 0, j = 50; i < size; i++){
-			g.setColor(ABS);
-			g.drawLine(j, 0, j, getHeight());
-			g.setColor(PRE);
-			y_values[0] = (int)(displayscale*values[i]);
-			y_values[1] = (int)(displayscale * values[i+1]);
-			g.drawLine( j, y_values[0], j + offset*(i), y_values[1]);
-			g.drawString(Double.toString(values[i]), (int) + 4, (int)getHeight() - (int)(values[i]*displayscale) - 2);
+		g.setColor(ABS);
+		for(int i = 0; i < size-1; i++){
+			y_values[0] = getHeight()- (int)(displayscale*values[i]);
+			y_values[1] = getHeight()- (int)(displayscale * values[i+1]);
+			g.drawLine(getWidth()- offset*i - line, y_values[0], getWidth() - offset*(i+1) - line, y_values[1]);
+			g.drawString(Double.toString(values[i]), getWidth() - offset*i - num, getHeight() - ((int)(values[i]*displayscale) + 8));
 		}
+		g.drawLine(getWidth(), getHeight()- (int)(displayscale * values[0]), getWidth() - line, getHeight()- (int)(displayscale * values[0]));
+		g.drawString(Double.toString(values[size-1]), getWidth() - offset*(size-1) - num, getHeight() - ((int)(values[size-1]*displayscale) + 8));
 	}
 }

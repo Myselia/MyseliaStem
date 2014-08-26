@@ -1,13 +1,14 @@
 package cms.controller.command;
 
 import cms.controller.LogSystem;
+import cms.helpers.TestThread;
 import cms.model.DataStore;
+import cms.view.element.GraphingHistogram;
 
 public class CommandTest extends AbstractCommand {
 	
 	private final static String command_signature = "test";
-	private static Thread feed_thread;
-	private static boolean is_running;
+	private static Thread thread;
 
 	@Override
 	public void action(String arg) {
@@ -26,13 +27,15 @@ public class CommandTest extends AbstractCommand {
 			case "log":
 				testlog();
 				break;
-			case "continuous":
-				is_running = true;
-				testthread();
+			case "num":
+				testnum(parameters);
+				break;
+			case "start":
+				teststart(parameters);
 				break;
 			case "stop":
-				is_running = false;
-				testthread();
+				testloop(new TestThread(), -1, false);
+				break;
 			default:
 				System.out.println("e>" + "Wrong Parameters");
 			}
@@ -58,7 +61,7 @@ public class CommandTest extends AbstractCommand {
 		return CommandTest.command_signature;
 	}
 	
-	private static void testdata(){
+	public static void testdata(){
 		LogSystem.log(true, false, "Testing new data");
 		DataStore.newData();
 	}
@@ -77,26 +80,52 @@ public class CommandTest extends AbstractCommand {
 		}
 	}
 	
-	private void testthread(){
-		if(feed_thread == null){
-			feed_thread = new Thread(new Runnable() {
-				public void run() {
-					while (true) {
-						try {
-							testdata();
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-
-					}
-				}
-			});
+	private void testnum(String[] args){
+		try{
+			switch(args.length){
+			case 4:
+				GraphingHistogram.number_offset = Integer.parseInt(args[3]);
+			case 3:
+				GraphingHistogram.line_offset = Integer.parseInt(args[2]);
+				break;
+			default:
+				System.out.println("Fuck off.");
+			}
+		}catch(Exception e){}
+	}
+	
+	public static void teststart(String[] args){
+		switch(args.length){
+		case 2:
+			testloop(new TestThread(), -1, true);
+			break;
+		case 3:
+			int loops = 0;
+			try{
+				loops = Integer.parseInt(args[2]);
+			}catch(Exception e){
+				return;
+			}
+			testloop(new TestThread(), loops, true);
+		default:
+			System.out.println("e>" + "Wrong Parameters");
 		}
-		if(is_running)
-			feed_thread.start();
-		else
-			feed_thread.interrupt();
+	}
+	
+	public static void testloop(TestThread instance, int loops, boolean start) {
+		if(start){
+			instance.setLoops(loops);
+			thread = new Thread(instance);
+			thread.start();
+		}else if(thread != null){
+			try{
+				thread.interrupt();
+			}catch(Exception e){	
+				e.printStackTrace();
+			}
+		}else{
+			System.out.println("e>" + "Test thread is not running");
+		}
 	}
 
 }
