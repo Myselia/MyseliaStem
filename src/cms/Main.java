@@ -1,11 +1,11 @@
 package cms;
 
-import cms.controller.CommandSystem;
-import cms.controller.LogSystem;
-import cms.model.DataStore;
-import cms.model.communication.Broadcast;
-import cms.model.communication.Server;
-import cms.view.ProgramWindow;
+import cms.communication.Broadcast;
+import cms.communication.Server;
+import cms.control.CommandSystem;
+import cms.databank.OverLord;
+import cms.display.ProgramWindow;
+import cms.monitoring.LogSystem;
 
 public class Main {
 	
@@ -28,7 +28,7 @@ public class Main {
 		//Model
 		data = new Thread(new Runnable(){
 			public void run() {
-				DataStore.build();	
+				OverLord.build();	
 			}
 		});
 		

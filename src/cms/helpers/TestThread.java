@@ -1,6 +1,6 @@
 package cms.helpers;
 
-import cms.controller.command.CommandTest;
+import cms.control.user.CommandTest;
 
 public class TestThread extends ThreadHelper{
 
