@@ -6,7 +6,7 @@ public class DisplayMemoryStorage {
 	private int[] count;
 	private static final int level = 4;
 	private static final int size = 30;
-	private static final int echo = 10;
+	private static final int echo = 8;
 	
 	public DisplayMemoryStorage(){
 		mem = new double[level][size];
