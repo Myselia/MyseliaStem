@@ -1,6 +1,8 @@
-package cms.control.user;
+package cms.control;
 
 import java.lang.reflect.Method;
+
+import cms.control.user.Command;
 
 public class ReflectionCommand {
 	private Class<Command> c;

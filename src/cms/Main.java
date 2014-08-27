@@ -59,7 +59,7 @@ public class Main {
 	
 	private static void loadCommands(){
 		try{
-			CommandSystem.setClasses("cms.controller.command");
+			CommandSystem.setClasses("cms.control.user");
 		}catch(Exception e){
 			System.out.println("b>" + "&>" + "cms.controller.CommandSystem.setClasses(String) called in");
 			System.out.println("b>" + "&>" + "cms.view.panel.ConsoleDisplay.ConsoleDisplay() threw an exception.");

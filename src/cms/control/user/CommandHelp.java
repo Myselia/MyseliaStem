@@ -1,5 +1,7 @@
 package cms.control.user;
 
+import cms.control.ReflectionCommand;
+
 
 public class CommandHelp extends AbstractCommand {
 	private final static String command_signature = "help";

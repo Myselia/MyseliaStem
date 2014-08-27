@@ -69,12 +69,12 @@ public class CommandSystem {
 		for (int i = 0, j = 0 ; i < classes.size() ; i++){
 			Class<Command> current = classes.get(i);
 			//Debug
-			//System.err.println(current);
-			//Method[] allofthem = current.getMethods();
+			System.err.println(current);
+			Method[] allofthem = current.getMethods();
 			//Debug
-			/*for(Method m : allofthem){
+			for(Method m : allofthem){
 				System.err.println(m);
-			}*/
+			}
 			if(Modifier.isAbstract(current.getModifiers())) continue;
 			Method[] methods = {current.getMethod("getCommandSignature"), current.getMethod("action", new Class[]{String.class})};
 			Command c_obj = (Command) current.getConstructor().newInstance();
