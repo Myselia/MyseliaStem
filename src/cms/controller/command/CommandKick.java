@@ -10,9 +10,9 @@ public class CommandKick extends AbstractCommand{
 		String[] parameters = super.commandParam(arg);
 		if(parameters.length > 1){
 			if(isInteger(parameters[1])){
-				int param = Integer.parseInt(parameters[1]);
+				int coreID = Integer.parseInt(parameters[1]);
 				
-				kick(param);
+				kick(coreID);
 				
 			} else {
 				System.out.println("e>" + "Not Supported");
