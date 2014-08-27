@@ -1,10 +1,6 @@
 package cms.control.user;
 
-import cms.Main;
 import cms.control.methods.CMSCommand;
-import cms.display.bars.InfoBar;
-import cms.display.buttons.quick.QuickSeekButton;
-import cms.display.info.QuickPanel;
 
 public class CommandSeek extends AbstractCommand {
 	private final static String command_signature = "seek";

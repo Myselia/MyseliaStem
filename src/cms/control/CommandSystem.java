@@ -70,7 +70,7 @@ public class CommandSystem {
 			Class<Command> current = classes.get(i);
 			//Debug
 			//System.err.println(current);
-			Method[] allofthem = current.getMethods();
+			//Method[] allofthem = current.getMethods();
 			//Debug
 			/*for(Method m : allofthem){
 				System.err.println(m);

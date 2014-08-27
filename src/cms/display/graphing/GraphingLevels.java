@@ -26,7 +26,7 @@ GraphicsConstants{
 		addMouseListener(this);
 		setVisible(true);
 
-		this.barcount = OverLord.nodeCore.size();
+		GraphingParent.barcount = OverLord.nodeCore.size();
 		this.displaytype = displaytype;
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP));
 	}

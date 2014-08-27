@@ -1,7 +1,5 @@
 package cms.helpers;
 
-import cms.control.user.CommandTest;
-
 public class ThreadHelper implements Runnable {
 
 	private Thread t;
