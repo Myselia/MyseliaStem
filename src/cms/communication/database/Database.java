@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import cms.monitoring.LogSystem;
+
  
 public class Database{ 
 	public Database(){ 
@@ -19,7 +21,8 @@ public class Database{
 			Class.forName(driver).newInstance(); 
 			Connection conn = DriverManager.getConnection(url+dbName,userName,password);
 			dostuff(conn);
-			conn.close(); 
+			conn.close();
+			
 		}catch (Exception e){ 
 			System.out.println("e>Database connection error");
 			e.printStackTrace(); 
@@ -28,8 +31,11 @@ public class Database{
 	private void dostuff(Connection conn){
 		try {
 			Statement statement = conn.createStatement();
+			long time = System.nanoTime();
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM nodestatus");
 			writeResultSet(resultSet);
+			time = System.nanoTime() - time;
+			LogSystem.log(true, false, time + "");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
