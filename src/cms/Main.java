@@ -3,6 +3,7 @@ package cms;
 import cms.communication.Broadcast;
 import cms.communication.Server;
 import cms.control.CommandSystem;
+import cms.control.ConfigHandler;
 import cms.databank.OverLord;
 import cms.databank.structures.Database;
 import cms.display.ProgramWindow;
@@ -23,6 +24,7 @@ public class Main {
 	
 	public static void main(String[] args) {		
 		loadCommands(); //loads the user commands
+		ConfigHandler.init();
 		
 		//Model
 		data = new Thread(new Runnable(){
@@ -54,9 +56,18 @@ public class Main {
 			//e.printStackTrace();
 		}
 		
-		Database db = new Database("jdbc:mysql://132.205.84.209:3306/", "mycelia", "root", "mycelia");
-		db.startConnection();
-		db.closeConnection();
+		//Add all user defined DBs into the OverLord's database list
+		for (int i = 0; i < ConfigHandler.DBCount; i++) {
+			Database db = new Database(ConfigHandler.configProperties.get("DB_" + i + "_" + "name"), 
+					ConfigHandler.configProperties.get("DB_" + i + "_" + "url"), 
+					ConfigHandler.configProperties.get("DB_" + i + "_" + "dbName"), 
+					ConfigHandler.configProperties.get("DB_" + i + "_" + "userName"), 
+					ConfigHandler.configProperties.get("DB_" + i + "_" + "password"));
+			OverLord.dbCore.add(db);
+			db.startConnection();
+			db.closeConnection();
+		}
+	
 		
 	}
 	

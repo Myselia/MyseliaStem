@@ -5,6 +5,7 @@ import java.util.Random;
 
 import cms.communication.parsers.TransmissionParser;
 import cms.communication.structures.Transmission;
+import cms.databank.structures.Database;
 import cms.databank.structures.Network;
 import cms.databank.structures.Node;
 import cms.databank.structures.NodeState;
@@ -16,6 +17,7 @@ public class OverLord {
 	private static int INITIAL_CORE_NUM = 6;
 	//The ArrayList in charge of storing BeanNode objects. All calls to individual BeanNode instances must be done from this ArrayList
 	public static ArrayList<Node> nodeCore = new ArrayList<Node>(10);
+	public static ArrayList<Database> dbCore = new ArrayList<Database>(5);
 	public static Network network = new Network();
 	//This int keeps track of the amount of cores currently connected to the server and is used to assign core ID
 	public static volatile int nodeCount = -1;

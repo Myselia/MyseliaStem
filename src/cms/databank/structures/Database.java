@@ -12,12 +12,14 @@ public class Database{
 	
 	private Connection connection;
 	
+	private String name;
 	private String url;
 	private String dbName;
 	private String userName;
 	private String password;
 	
-	public Database(String url, String dbName, String userName, String password){ 
+	public Database(String name, String url, String dbName, String userName, String password){ 
+		this.name = name;
 		this.url = url; 
 		this.dbName = dbName;
 		this.userName = userName;
