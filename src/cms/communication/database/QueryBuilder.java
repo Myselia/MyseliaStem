@@ -13,16 +13,15 @@ public class QueryBuilder {
 	
 	private PreparedStatement preparedStatement;
 	private ResultSet resultSet;
-	private Connection connection;
 	
 	public QueryBuilder(){
 		
 	}
 	
 	
-	public void printlastfive(){
+	public void printLastFive(Connection connection){
 		try {
-			preparedStatement = connection.prepareStatement("SELECT * FROM nodestatus ORDER BY id DESC LIMIT 5");
+			preparedStatement = connection.prepareStatement("SELECT * FROM connectiontracker ORDER BY id DESC LIMIT 5");
 			resultSet = preparedStatement.executeQuery();
 			writeResultSet(resultSet);
 		} catch (SQLException e) {
@@ -35,11 +34,11 @@ public class QueryBuilder {
 	public void sendNew(Connection connection){
 		try {			
 
-			Enumeration e = NetworkInterface.getNetworkInterfaces();
+			Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
 			e.nextElement();
 			e.nextElement();
 			NetworkInterface n = (NetworkInterface) e.nextElement();
-			Enumeration ee = n.getInetAddresses();
+			Enumeration<InetAddress> ee = n.getInetAddresses();
 			InetAddress i = (InetAddress) ee.nextElement();
 	        String ip = i.getHostAddress(); //---------------------THIS
 	        
@@ -61,12 +60,10 @@ public class QueryBuilder {
 	private void writeResultSet(ResultSet resultSet) throws SQLException {
 		while (resultSet.next()) {
 			int id = resultSet.getInt("id");
-	    	int no = resultSet.getInt("node_id");
-	    	double temp = resultSet.getDouble("temp");
-	    	double cpu = resultSet.getDouble("cpu");
-	    	double ram = resultSet.getDouble("ram");
-	    	int part = resultSet.getInt("part");
-	    	System.out.println(id + " " + no + " " + temp + " " + cpu + " " + ram + " " + part);
+	    	String ip = resultSet.getString("ip");
+	    	String ts = resultSet.getString("ts");
+
+	    	System.out.println("Connection number: " + id + " from " + ip + " at " + ts);
 		}
 		System.out.println();
 	}

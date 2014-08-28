@@ -59,6 +59,7 @@ public class Main {
 		db.startConnection();
 		QueryBuilder bob = new QueryBuilder();
 		bob.sendNew(db.getConnection());
+		bob.printLastFive(db.getConnection());
 		db.closeConnection();
 	}
 	
