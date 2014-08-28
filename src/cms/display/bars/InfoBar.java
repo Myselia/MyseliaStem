@@ -43,7 +43,7 @@ public class InfoBar extends JPanel implements GraphicsConstants, Runnable {
 		
 		this.quickpanel = new QuickPanel();
 		this.add(quickpanel, BorderLayout.NORTH);
-		this.addresspanel = AddressPanel.getPanel();
+		this.addresspanel = new AddressPanel();
 		this.add(addresspanel, BorderLayout.SOUTH);
 		this.refresh = new Thread(this);
 		refresh.start();

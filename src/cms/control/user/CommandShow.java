@@ -7,8 +7,7 @@ import cms.display.info.AddressPanel;
 
 public class CommandShow extends AbstractCommand {
 	private final static String command_signature = "show";
-	private final static AddressPanel addresspanel = AddressPanel.getPanel();
-
+	
 	@Override
 	public void action(String arg) {
 		String[] parameters = super.commandParam(arg);
@@ -76,10 +75,10 @@ public class CommandShow extends AbstractCommand {
 	private static void histogram(DisplayType displaytype, String parameter){
 		try{
 			int call = Integer.parseInt(parameter);
-			addresspanel.unselectLast(addresspanel.nodeButton(call));
-			addresspanel.nodeButton(call).select(true);
+			AddressPanel.unselectLast(AddressPanel.nodeButton(call));
+			AddressPanel.nodeButton(call).select(true);
 		}catch(NumberFormatException e){
-			addresspanel.unselectLast(null);
+			AddressPanel.unselectLast(null);
 			System.out.println("e>" + "Wrong Parameters");
 		}catch(Exception e){
 			System.out.println("e>" + "No such node ID");
@@ -89,7 +88,7 @@ public class CommandShow extends AbstractCommand {
 	}
 	
 	private static void levels(DisplayType displaytype){
-		addresspanel.unselectLast(null); /**TODO Verify if AddressBar.unselectedLast(null) creates NullPointerExceptions**/
+		AddressPanel.unselectLast(null); /**TODO Verify if AddressBar.unselectedLast(null) creates NullPointerExceptions**/
 		if(GraphBar.isHistogram()){
 			GraphBar.setDisplayType(displaytype);
 			GraphBar.toggle();

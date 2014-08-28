@@ -71,7 +71,7 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		AddressPanel.getPanel().unselectLast(this);
+		AddressPanel.unselectLast(this);
 		select(true);
 		if(select){
 			System.out.println("g>Call: " + core.getId());

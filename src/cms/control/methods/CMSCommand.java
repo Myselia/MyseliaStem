@@ -6,8 +6,6 @@ import cms.display.bars.InfoBar;
 import cms.display.info.AddressPanel;
 
 public class CMSCommand {
-
-	private static AddressPanel addresspanel = AddressPanel.getPanel();
 	
 	/*
 	 * GENERAL NODE OPERATIONS
@@ -37,7 +35,7 @@ public class CMSCommand {
 			return; /**TODO make(int): verify if the -1 case is checked appropriately**/
 		}else{
 		OverLord.nodeCore.get(coreid).setType(type);
-		AddressPanel.getPanel().nodeButton(coreid).repaint();
+		AddressPanel.nodeButton(coreid).repaint();
 		}
 	}
 	
@@ -47,8 +45,8 @@ public class CMSCommand {
 	 */
 	public static void call(String s) {
 		int call = Integer.parseInt(s);
-		addresspanel.unselectLast(addresspanel.nodeButton(call));
-		addresspanel.nodeButton(call).select(true);
+		AddressPanel.unselectLast(AddressPanel.nodeButton(call));
+		AddressPanel.nodeButton(call).select(true);
 	}
 	
 	/*
