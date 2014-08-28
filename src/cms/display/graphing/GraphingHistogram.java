@@ -24,12 +24,18 @@ public class GraphingHistogram extends GraphingParent {
 	public static int number_offset = 50;
 	public static int line_offset = 42;
 
+	/**
+	 * GraphingHistogram default constructor
+	 * Creates a histogram displaying the DisplayType displaytype
+	 * @param displaytype
+	 */
 	public GraphingHistogram(DisplayType displaytype) {
 		super(displaytype);
 	}
 	
 	/**
-	 * Inner class Vector
+	 * Inner class Vector.
+	 * Might be used at a later time.
 	 * @deprecated
 	 */
 	/*private class Vector{
@@ -63,6 +69,12 @@ public class GraphingHistogram extends GraphingParent {
 		}
 	}*/
 	
+	/**
+	 * Calls the delegate paint method for the UI.
+	 * Paint the histogram according to the current displaytype.
+	 * TODO Fetch time scale chosen by user on GUI (1s, 10s, 5min, 2h30)
+	 * TODO Extend to multiple displaytypes at the same time
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -79,7 +91,8 @@ public class GraphingHistogram extends GraphingParent {
 		//read-through values and average
 		double[] values;
 		
-		/**TODO Receive which scale chosen from a slider on the GUI, ranges from 0 to 3 (1s, 10s, 5min, 2h30)*/
+		//read parameters
+		//scale is the time scale [0,3]
 		int scale = 0;
 		int size = DisplayMemoryStorage.getSize();
 		double max = 0.0;
@@ -125,6 +138,7 @@ public class GraphingHistogram extends GraphingParent {
 		
 		//displayscale
 		double displayscale = getHeight()/max;
+		
 		//average drawing
 		g.setColor(AVA);
 		g.fillRect(0, getHeight() - (int)(average*displayscale), getWidth()/*- y_axis*/, 1);
@@ -147,10 +161,10 @@ public class GraphingHistogram extends GraphingParent {
 		//indicator drawing
 		int[] y_values = new int[2];
 		g.setColor(ABS);
+		Graphics2D g2 = (Graphics2D)g;
 		for(int i = 0; i < size-1; i++){
 			y_values[0] = getHeight()- (int)(displayscale*values[i]);
 			y_values[1] = getHeight()- (int)(displayscale * values[i+1]);
-			Graphics2D g2 = (Graphics2D)g;
 			g2.setStroke(new BasicStroke(3));
 			g2.draw(new Line2D.Float(getWidth()- offset*i - line, y_values[0], getWidth() - offset*(i+1) - line, y_values[1]));
 			g.drawString(Double.toString(values[i]), getWidth() - offset*i - num, getHeight() - ((int)(values[i]*displayscale) + 8));

@@ -1,25 +1,27 @@
 package cms.communication.database;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Random;
+import java.util.Date;
+import java.util.Enumeration;
 
 public class QueryBuilder {
 	
 	private PreparedStatement preparedStatement;
 	private ResultSet resultSet;
-	private Connection connection;
 	
 	public QueryBuilder(){
 		
 	}
 	
 	
-	public void printlastfive(){
+	public void printLastFiveConnections(Connection connection){
 		try {
-			preparedStatement = connection.prepareStatement("SELECT * FROM nodestatus ORDER BY id DESC LIMIT 5");
+			preparedStatement = connection.prepareStatement("SELECT * FROM connectiontracker ORDER BY id DESC LIMIT 5");
 			resultSet = preparedStatement.executeQuery();
 			writeResultSet(resultSet);
 		} catch (SQLException e) {
@@ -29,20 +31,22 @@ public class QueryBuilder {
 		
 	}
 
-	public void dostuff(){
-		Random rand = new Random();
-		try {			
-			preparedStatement = connection.prepareStatement("INSERT INTO nodestatus"
-			        		  + "(node_id, temp, cpu, ram, part)"
+	public void sendNewConnectionIP(Connection connection){
+		try {						
+			InetAddress inetaddr = InetAddress.getLocalHost();
+            String ip = (inetaddr.getHostAddress()).trim();//------------THIS
+	        
+	        Date dateobj = new Date();
+	        String date = dateobj.toString();//--------------------------THIS
+			
+			preparedStatement = connection.prepareStatement("INSERT INTO connectiontracker"
+			        		  + "(ip, ts)"
 			        		  + "VALUES"
-			        		  + "(?, ?, ?, ?, ?);");
-			preparedStatement.setInt(1, Math.abs(rand.nextInt())%10);
-			preparedStatement.setDouble(2, Math.abs(rand.nextDouble())%5 * 10 +10);
-			preparedStatement.setDouble(3, Math.abs(rand.nextDouble())%10 * 5);
-			preparedStatement.setDouble(4, 430.0);
-			preparedStatement.setInt(5, 2150);
+			        		  + "(?, ?);");
+			preparedStatement.setString(1, ip);
+			preparedStatement.setString(2, date);
 			preparedStatement.executeUpdate();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -50,12 +54,10 @@ public class QueryBuilder {
 	private void writeResultSet(ResultSet resultSet) throws SQLException {
 		while (resultSet.next()) {
 			int id = resultSet.getInt("id");
-	    	int no = resultSet.getInt("node_id");
-	    	double temp = resultSet.getDouble("temp");
-	    	double cpu = resultSet.getDouble("cpu");
-	    	double ram = resultSet.getDouble("ram");
-	    	int part = resultSet.getInt("part");
-	    	System.out.println(id + " " + no + " " + temp + " " + cpu + " " + ram + " " + part);
+	    	String ip = resultSet.getString("ip");
+	    	String ts = resultSet.getString("ts");
+
+	    	System.out.println("Connection number: " + id + " from " + ip + " at " + ts);
 		}
 		System.out.println();
 	}

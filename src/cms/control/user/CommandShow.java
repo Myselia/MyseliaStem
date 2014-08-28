@@ -7,7 +7,7 @@ import cms.display.info.AddressPanel;
 
 public class CommandShow extends AbstractCommand {
 	private final static String command_signature = "show";
-
+	
 	@Override
 	public void action(String arg) {
 		String[] parameters = super.commandParam(arg);

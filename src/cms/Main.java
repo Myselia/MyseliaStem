@@ -2,6 +2,7 @@ package cms;
 
 import cms.communication.Broadcast;
 import cms.communication.Server;
+import cms.communication.database.QueryBuilder;
 import cms.control.CommandSystem;
 import cms.control.ConfigHandler;
 import cms.databank.OverLord;
@@ -56,6 +57,7 @@ public class Main {
 			//e.printStackTrace();
 		}
 		
+<<<<<<< HEAD
 		//Add all user defined DBs into the OverLord's database list
 		for (int i = 0; i < ConfigHandler.DBCount; i++) {
 			Database db = new Database(ConfigHandler.configProperties.get("DB_" + i + "_" + "name"), 
@@ -69,6 +71,14 @@ public class Main {
 		}
 	
 		
+=======
+		Database db = new Database("jdbc:mysql://132.205.84.209:3306/", "mycelia", "root", "mycelia");
+		db.startConnection();
+		QueryBuilder bob = new QueryBuilder();
+		bob.sendNewConnectionIP(db.getConnection());
+		bob.printLastFiveConnections(db.getConnection());
+		db.closeConnection();
+>>>>>>> 54b37060e82e4de5596d67dc13248af6ff0eb41d
 	}
 	
 	private static void loadCommands(){
@@ -79,7 +89,6 @@ public class Main {
 			System.out.println("e>" + "cms.display.communication.ConsoleDisplay.ConsoleDisplay() threw an exception");
 			System.out.println("e>" + "Exception thrown by:" + e.getClass().getCanonicalName());
 			System.out.println("Please force kill the application and investigate.");
-			//e.printStackTrace();
 		}
 	}
 
