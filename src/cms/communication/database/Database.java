@@ -2,14 +2,17 @@ package cms.communication.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import cms.monitoring.LogSystem;
-
  
 public class Database{ 
+	
+	private Connection conn;
+	private Statement statement;
+	private PreparedStatement preparedStatement;
+	
 	public Database(){ 
 		String url = "jdbc:mysql://132.205.84.209:3306/"; 
 		String dbName = "mycelia";
@@ -19,23 +22,48 @@ public class Database{
 		String driver = "com.mysql.jdbc.Driver";
 		try { 
 			Class.forName(driver).newInstance(); 
-			Connection conn = DriverManager.getConnection(url+dbName,userName,password);
-			dostuff(conn);
-			conn.close();
-			
+			conn = DriverManager.getConnection(url+dbName,userName,password);
+			dostuff();
+			closeconn();
 		}catch (Exception e){ 
 			System.out.println("e>Database connection error");
 			e.printStackTrace(); 
 		} 
 	}
-	private void dostuff(Connection conn){
+	
+	private void closeconn() {
 		try {
-			Statement statement = conn.createStatement();
-			long time = System.nanoTime();
+			conn.close();
+		} catch (SQLException e) {
+			System.out.println("e>Error closing connection");
+			e.printStackTrace();
+		}
+	}
+
+	private void dostuff(){
+		try {
+			statement = conn.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM nodestatus");
 			writeResultSet(resultSet);
-			time = System.nanoTime() - time;
-			LogSystem.log(true, false, time + "");
+			
+			
+			/*preparedStatement = conn.prepareStatement("INSERT INTO nodestatus values"
+			        		  + "(node_id, temp, cpu, ram, part)"
+			        		  + "VALUES"
+			        		  + "(?, ?, ?, ?, ?)");
+
+			      preparedStatement.setString(1, "1");
+			      preparedStatement.setString(2, "35.4");
+			      preparedStatement.setString(3, "9.3");
+			      preparedStatement.setString(4, "430.0");
+			      preparedStatement.setString(5, "2150");
+			      preparedStatement.executeUpdate();
+			*/
+			
+			
+			statement = conn.createStatement();
+			ResultSet resultSetTwo = statement.executeQuery("SELECT * FROM nodestatus");
+			writeResultSet(resultSetTwo);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -51,7 +79,7 @@ public class Database{
 	    	int part = resultSet.getInt("part");
 	    	System.out.println(id + " " + no + " " + temp + " " + cpu + " " + ram + " " + part);
 		}
+		System.out.println();
 	}
 
 }
-
