@@ -32,15 +32,9 @@ public class QueryBuilder {
 	}
 
 	public void sendNew(Connection connection){
-		try {			
-
-			Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
-			e.nextElement();
-			e.nextElement();
-			NetworkInterface n = (NetworkInterface) e.nextElement();
-			Enumeration<InetAddress> ee = n.getInetAddresses();
-			InetAddress i = (InetAddress) ee.nextElement();
-	        String ip = i.getHostAddress(); //---------------------THIS
+		try {						
+			InetAddress inetaddr = InetAddress.getLocalHost();
+            String ip = (inetaddr.getHostAddress()).trim();//------------THIS
 	        
 	        Date dateobj = new Date();
 	        String date = dateobj.toString();//--------------------------THIS
