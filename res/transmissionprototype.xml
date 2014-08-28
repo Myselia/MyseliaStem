@@ -2,20 +2,20 @@
 
 <transmission>
 
-	<head id="894fh23nu9v8ybvw4o4" type="sys" from="node1" to="cms">
-		110 <!-- OPCODE FOR NODE INFO UPDATE -->
-	</head>
+	<header id="123456789" from="node:#" to="cms:server">
+		110
+	</header>
 
-	<particle type="sys" class="temp" count="1"> <!-- TEMPERATURE -->
+	<atom type="system" class="temp">
 		54.1
-	</particle>
+	</atom>
 
-	<particle type="sys" class="ram" count="1"> <!-- LEFTOVER RAM -->
+	<atom type="system" class="ram">
 		198.1
-	</particle>
+	</atom>
 
-	<particle type="sys" class="proc" count="1"> <!-- PROCESSOR USAGE -->
+	<atom type="system" class="cpu">
 		198.1
-	</particle>
+	</atom>
 
 </trasmission>

@@ -71,7 +71,6 @@ public class Main {
 			System.out.println("e>" + "cms.display.communication.ConsoleDisplay.ConsoleDisplay() threw an exception");
 			System.out.println("e>" + "Exception thrown by:" + e.getClass().getCanonicalName());
 			System.out.println("Please force kill the application and investigate.");
-			//e.printStackTrace();
 		}
 	}
 

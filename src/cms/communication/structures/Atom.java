@@ -1,12 +1,12 @@
 package cms.communication.structures;
 
-public class Particle {
-	private String particle_type, particle_class;
+public class Atom {
+	private String atom_type, atom_class;
 	private String content;
 	
-	public Particle(String particle_type, String particle_class){
-		this.particle_type = particle_type;
-		this.particle_class = particle_class;
+	public Atom(String atom_type, String atom_class){
+		this.atom_type = atom_type;
+		this.atom_class = atom_class;
 	}
 	
 	public void addContent(String content){
@@ -18,11 +18,11 @@ public class Particle {
 	}
 	
 	public String getParticleType(){
-		return particle_type;
+		return atom_type;
 	}
 	
 	public String getParticleClass(){
-		return particle_class;
+		return atom_class;
 	}
 
 }
