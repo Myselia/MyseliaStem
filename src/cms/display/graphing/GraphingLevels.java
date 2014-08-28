@@ -2,8 +2,6 @@ package cms.display.graphing;
 
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,34 +13,47 @@ import javax.swing.BorderFactory;
 
 import cms.databank.OverLord;
 import cms.display.GraphicsConstants;
-//import cms.controller.LogSystem;
 
-public class GraphingLevels extends GraphingParent implements MouseListener,
-GraphicsConstants{
+/**
+* The <code>GraphingLevels</code> class is a Graphing JPanel used to display all nodes' levels.
+* @author Eduard Parachivescu
+* @version 1
+* -tag @refactor Philippe Hebert
+*/
+public class GraphingLevels extends GraphingParent implements GraphicsConstants{
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * GraphingLevels default constructor
+	 * Creates a levels graph displaying the DisplayType displaytype of all nodes
+	 * @param displaytype
+	 */
 	public GraphingLevels(DisplayType displaytype){
 		super(displaytype);
-		addMouseListener(this);
-		setVisible(true);
+		this.setVisible(true);
 
 		GraphingParent.barcount = OverLord.nodeCore.size();
 		this.displaytype = displaytype;
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP));
 	}
 	
+	/**
+	 * Calls the delegate paint method for the UI.
+	 * Paint the levels according to the current displaytype.
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		//background
+		
+		//Setting Background
 		g.setColor(BACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		//font valuess
+		//Setting Font
 		Font f = new Font("Dialog", Font.BOLD, 12);
 		g.setFont(f);
 
-		//read-through valuess and average
+		//Read-through values and average
 		double[] values = new double[barcount];
 		double average = 0.0;
 		double sum = 0.0;
@@ -60,13 +71,9 @@ GraphicsConstants{
 			} else if(displaytype == DisplayType.PARTICLES){
 				max = 0.0;
 				values[i] = OverLord.nodeCore.get(i).getParticles();
-			}
-			
+			}	
 			average += (double)(values[i]/barcount);
 		}
-		
-		//LogSystem.log(true, false, "Average:" + average + " || Sum: "+ sum);
-		//LogSystem.log(true, false, "Display Type:" + displaytype);
 		
 		if(displaytype == DisplayType.PARTICLES){
 			max = sum;
@@ -78,10 +85,10 @@ GraphicsConstants{
 			max *= 2;
 		}
 	
-		//scale calculator
+		//Scale calculator
 		double scale = getHeight()/max;
 		
-		//average drawing
+		//Average drawing
 		g.setColor(AVA);
 		g.fillRect(0, getHeight() - (int)(average*scale), getWidth(), 1);
 		String avg = Double.toString(average);
@@ -92,19 +99,17 @@ GraphicsConstants{
 		} else {
 			avg = "err";
 		}
-		
 		g.drawString(avg, 4, getHeight() - ((int)(average*scale) + 2)); //text	
 		
-		//design valuess
+		//Design values
 		int offset = getWidth()/(barcount+1);
 		int extra = (getWidth() - (((int)(getWidth()/(barcount+1))) * (barcount+1))) / 2;
 		
-		//indicator drawing
+		//Indicator drawing
 		for(int i = 0; i < barcount; i++){
 			g.setColor(ABS);
 			double x_pos = offset*(i+1) + extra;
 			double y_pos = getHeight() - values[i]*scale;
-			
 			g.fillRect((int)x_pos , (int)y_pos , (int)(offset - 2), (int)5); //x position, y position, width, height
 			
 			String val = Double.toString(values[i]);
@@ -114,27 +119,8 @@ GraphicsConstants{
 			} else {
 				val = "err";
 			}
-			
 			g.drawString(val, (int)x_pos + 4, (int)y_pos - 2); //text	
 		}
 	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		repaint();
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {}
-
-	@Override
-	public void mouseExited(MouseEvent e) {}
-
-	@Override
-	public void mousePressed(MouseEvent e) {}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {}
-
 	
 }
