@@ -96,7 +96,7 @@ public class ClientSession extends ThreadHelper {
 				LogSystem.log(true, false, "Response from Client(" + ipAddress + ")");
 				XMLParser xmlp = new XMLParser();
 				trans = xmlp.makedoc(inputS);
-				if (trans.type.equals("sys")) {
+				if (trans.to.equals("cms:server")) {
 					OverLord.insertData(trans);
 				}
 

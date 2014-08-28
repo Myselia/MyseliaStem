@@ -40,7 +40,7 @@ public class XMLParser {
 		    is.setCharacterStream(new StringReader(input));
 			doc = dBuilder.parse(is);
 		    //System.out.println("||" + doc.toString() + "||");
-			particles = doc.getElementsByTagName("particle");
+			particles = doc.getElementsByTagName("atom");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
@@ -58,15 +58,14 @@ public class XMLParser {
 	}
 	
 	private Transmission construct(Element element, Transmission transmission){
-		String[] tags = new String[5];
+		String[] tags = new String[4];
 		
 		tags[0] = element.getTextContent();
 		tags[1] = element.getAttribute("id");
-		tags[2] = element.getAttribute("type");
-		tags[3] = element.getAttribute("from");
-		tags[4] = element.getAttribute("to");
+		tags[2] = element.getAttribute("from");
+		tags[3] = element.getAttribute("to");
 		
-		transmission.addAttributes(tags[1], tags[2], tags[3], tags[4]);
+		transmission.addAttributes(tags[1], tags[2], tags[3]);
 		transmission.addOpcode(tags[0]);
 		transmission.addParticles(particles);
 		
