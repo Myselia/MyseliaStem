@@ -11,6 +11,13 @@ import cms.databank.OverLord;
 import cms.display.GraphicsConstants;
 import cms.display.buttons.NodeButton;
 
+/**
+ * The <code>AddressPanel</code> class is a JPanel comprised of the buttons for each node.
+ * Static block initializes the singleton.
+ * @author Eduard Parachivescu
+ * @version 1
+ * -tag @refactor Philippe Hebert
+ */
 public class AddressPanel extends JPanel implements GraphicsConstants {
 	private static final long serialVersionUID = 1L;
 	private static AddressPanel singleton;
@@ -24,6 +31,10 @@ public class AddressPanel extends JPanel implements GraphicsConstants {
 		singleton = new AddressPanel();
 	}
 	
+	/**
+	 * AddressPanel default constructor
+	 * Creates the AddressPanel singleton with all of its NodeButtons
+	 */
 	private AddressPanel() {
 		this.setBackground(BACK);
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, 0, ADDRESS_GAP, 0));
@@ -44,10 +55,18 @@ public class AddressPanel extends JPanel implements GraphicsConstants {
 		}
 	}
 	
+	/**
+	 * Accessor to the singleton
+	 * @return Returns the singleton
+	 */
 	public static AddressPanel getPanel(){
 		return singleton;
 	}
 
+	/**
+	 * Change NodeButton current selection
+	 * @param nextLast Next button to be selected
+	 */
 	public static void unselectLast(NodeButton nextLast) {
 		if(singleton.lastButtonClicked != null) {
 			singleton.lastButtonClicked.select(false);
@@ -55,10 +74,19 @@ public class AddressPanel extends JPanel implements GraphicsConstants {
 		singleton.lastButtonClicked = nextLast;
 	}
 	
+	/**
+	 * Accessor of a specific NodeButton of id ID
+	 * @param ID The ID of the Node accessed
+	 * @return Returns the Node of id ID
+	 */
 	public static NodeButton nodeButton(int ID){
 		return singleton.button[ID];
 	}
 	
+	/**
+	 * Updates the NodeButtons in the AddressPanel.
+	 * Removes all of them, then resizes to accept the new buttons.
+	 */
 	public static void updateButtonList() {
 		singleton.removeAll();
 		singleton.rows = (int) Math.ceil((double) OverLord.nodeCore.size()/ ADDRESS_COLUMNS);
@@ -76,8 +104,4 @@ public class AddressPanel extends JPanel implements GraphicsConstants {
 		singleton.repaint();
 	}
 	
-	public int getRows(){
-		return rows;
-	}
-
 }
