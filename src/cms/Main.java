@@ -2,6 +2,7 @@ package cms;
 
 import cms.communication.Broadcast;
 import cms.communication.Server;
+import cms.communication.database.QueryBuilder;
 import cms.control.CommandSystem;
 import cms.databank.OverLord;
 import cms.databank.structures.Database;
@@ -56,8 +57,9 @@ public class Main {
 		
 		Database db = new Database("jdbc:mysql://132.205.84.209:3306/", "mycelia", "root", "mycelia");
 		db.startConnection();
+		QueryBuilder bob = new QueryBuilder();
+		bob.sendNew(db.getConnection());
 		db.closeConnection();
-		
 	}
 	
 	private static void loadCommands(){
