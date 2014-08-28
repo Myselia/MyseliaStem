@@ -57,7 +57,6 @@ public class Main {
 			//e.printStackTrace();
 		}
 		
-<<<<<<< HEAD
 		//Add all user defined DBs into the OverLord's database list
 		for (int i = 0; i < ConfigHandler.DBCount; i++) {
 			Database db = new Database(ConfigHandler.configProperties.get("DB_" + i + "_" + "name"), 
@@ -69,18 +68,8 @@ public class Main {
 			db.startConnection();
 			db.closeConnection();
 		}
-	
+		}
 		
-=======
-		Database db = new Database("jdbc:mysql://132.205.84.209:3306/", "mycelia", "root", "mycelia");
-		db.startConnection();
-		QueryBuilder bob = new QueryBuilder();
-		bob.sendNewConnectionIP(db.getConnection());
-		bob.printLastFiveConnections(db.getConnection());
-		db.closeConnection();
->>>>>>> 54b37060e82e4de5596d67dc13248af6ff0eb41d
-	}
-	
 	private static void loadCommands(){
 		try{
 			CommandSystem.setClasses("cms.control.user");
