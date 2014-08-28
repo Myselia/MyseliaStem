@@ -50,7 +50,7 @@ public class Server extends ThreadHelper {
 			}
 
 			// Create a thread for a client if accepted containing an SClientSession
-			this.threadPool.execute(new Thread(new SClientSession(clientConnectionSocket)));
+			this.threadPool.execute(new Thread(new ClientSession(clientConnectionSocket)));
 
 		}
 

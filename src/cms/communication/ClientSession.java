@@ -16,7 +16,7 @@ import cms.display.info.AddressPanel;
 import cms.helpers.ThreadHelper;
 import cms.monitoring.LogSystem;
 
-public class SClientSession extends ThreadHelper {
+public class ClientSession extends ThreadHelper {
 
 	//Socket object to handle client transmission on transport layer
 	protected Socket clientConnectionSocket = null;
@@ -38,7 +38,7 @@ public class SClientSession extends ThreadHelper {
 	//The string currently being processed by the server (\r\n terminated from client)
 	protected String inputS;
 	
-	public SClientSession(Socket clientConnectionSocket) {
+	public ClientSession(Socket clientConnectionSocket) {
 		this.clientConnectionSocket = clientConnectionSocket;
 		this.ipAddress = clientConnectionSocket.getInetAddress().getHostAddress();
 	}
