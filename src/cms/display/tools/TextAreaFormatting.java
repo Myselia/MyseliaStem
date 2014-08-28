@@ -7,19 +7,24 @@ import javax.swing.text.StyleConstants;
 import cms.display.GraphicsConstants;
 import cms.display.communication.LogDisplay;
 
-public class TextAreaFormatting implements GraphicsConstants{
+/**
+ * The <code>TextAreaFormatting</code> class is a datastructure for the various output formatting
+ * Static block initializes the various SimpleAttributeSets.
+ * @author Eduard Parachivescu
+ * @author Philippe Hebert
+ * @version 1
+ * -tag @refactor Philippe Hebert
+ * @see TextAreaOutputStream
+ */
+public final class TextAreaFormatting implements GraphicsConstants{
 
-	private SimpleAttributeSet gooduserinput = new SimpleAttributeSet();
-	private SimpleAttributeSet baduserinput = new SimpleAttributeSet();
-	private SimpleAttributeSet programoutput = new SimpleAttributeSet();
-	private SimpleAttributeSet programerror = new SimpleAttributeSet();
-	private SimpleAttributeSet log = new SimpleAttributeSet();
+	private static SimpleAttributeSet gooduserinput = new SimpleAttributeSet();
+	private static SimpleAttributeSet baduserinput = new SimpleAttributeSet();
+	private static SimpleAttributeSet programoutput = new SimpleAttributeSet();
+	private static SimpleAttributeSet programerror = new SimpleAttributeSet();
+	private static SimpleAttributeSet log = new SimpleAttributeSet();
 
-	public TextAreaFormatting() {
-		define();
-	}
-
-	public void define() {
+	static{
 		StyleConstants.setFontFamily(gooduserinput, "Verdana");
 		StyleConstants.setForeground(gooduserinput, RUN);
 		StyleConstants.setFontSize(gooduserinput, 11);
@@ -40,8 +45,16 @@ public class TextAreaFormatting implements GraphicsConstants{
 		StyleConstants.setFontSize(log, 9);
 		StyleConstants.setForeground(log, ABS);
 	}
+	
+	private TextAreaFormatting(){}
 
-	public void append(JTextPane textpane, int highlightType, String str) {
+	/**
+	 * Appends to the specified textpane using the specified highlight type and the input tag.
+	 * @param textpane JTextPane to output to.
+	 * @param highlightType Distinguishes between Console and Log output
+	 * @param str String to be output
+	 */
+	public static void append(JTextPane textpane, int highlightType, String str) {
 		if (highlightType == 0) {
 			String type = str.substring(0, 2);
 			String command = str.substring(2, str.length());

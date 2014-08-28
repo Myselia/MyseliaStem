@@ -9,11 +9,13 @@ import javax.swing.*;
 
 import cms.monitoring.LogSystem;
 
+/**
+ * The <code>TextAreaOutputStream</code> class is the CMS OutputStream to its JTextPanes
+ * @author Eduard Parachivescu
+ * @version 1
+ * -tag @refactor Philippe Hebert
+ */
 public class TextAreaOutputStream extends OutputStream {
-
-	// *************************************************************************************************
-	// INSTANCE MEMBERS
-	// *************************************************************************************************
 
 	private byte[] oneByte; // array for write(int val);
 	private Appender appender; // most recent action
@@ -73,7 +75,7 @@ public class TextAreaOutputStream extends OutputStream {
 	// STATIC MEMBERS
 	// *************************************************************************************************
 
-	 class Appender implements Runnable {
+	 private static class Appender implements Runnable {
 		private final JTextPane txtpane;
 		private final int maxLines; // maximum lines allowed in text area
 		private final LinkedList<Integer> lengths; // length of lines within
@@ -133,8 +135,7 @@ public class TextAreaOutputStream extends OutputStream {
 				}
 				
 				// -------------------------------------------------------------------------------------FLAG
-				TextAreaFormatting taf = new TextAreaFormatting();
-				taf.append(txtpane, highlighttype, val);
+				TextAreaFormatting.append(txtpane, highlighttype, val);
 				
 			}
 			values.clear();

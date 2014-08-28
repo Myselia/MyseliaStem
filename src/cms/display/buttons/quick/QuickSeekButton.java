@@ -12,7 +12,7 @@ import cms.display.GraphicsConstants;
 import cms.display.buttons.IconBuilder;
 
 /**
- * The <code>QuickSeekButton</code> class is a JComponent button.
+ * The <code>QuickSeekButton</code> class is a JComponent button integrating the seek() call.
  * @author Eduard Parachivescu
  * @version 1
  * -tag @refactor Philippe Hebert
