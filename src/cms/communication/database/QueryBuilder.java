@@ -1,10 +1,13 @@
 package cms.communication.database;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Random;
+import java.util.Date;
+import java.util.Enumeration;
 
 public class QueryBuilder {
 	
@@ -29,20 +32,28 @@ public class QueryBuilder {
 		
 	}
 
-	public void dostuff(){
-		Random rand = new Random();
+	public void sendNew(Connection connection){
 		try {			
-			preparedStatement = connection.prepareStatement("INSERT INTO nodestatus"
-			        		  + "(node_id, temp, cpu, ram, part)"
+
+			Enumeration e = NetworkInterface.getNetworkInterfaces();
+			e.nextElement();
+			e.nextElement();
+			NetworkInterface n = (NetworkInterface) e.nextElement();
+			Enumeration ee = n.getInetAddresses();
+			InetAddress i = (InetAddress) ee.nextElement();
+	        String ip = i.getHostAddress(); //---------------------THIS
+	        
+	        Date dateobj = new Date();
+	        String date = dateobj.toString();//--------------------------THIS
+			
+			preparedStatement = connection.prepareStatement("INSERT INTO connectiontracker"
+			        		  + "(ip, ts)"
 			        		  + "VALUES"
-			        		  + "(?, ?, ?, ?, ?);");
-			preparedStatement.setInt(1, Math.abs(rand.nextInt())%10);
-			preparedStatement.setDouble(2, Math.abs(rand.nextDouble())%5 * 10 +10);
-			preparedStatement.setDouble(3, Math.abs(rand.nextDouble())%10 * 5);
-			preparedStatement.setDouble(4, 430.0);
-			preparedStatement.setInt(5, 2150);
+			        		  + "(?, ?);");
+			preparedStatement.setString(1, ip);
+			preparedStatement.setString(2, date);
 			preparedStatement.executeUpdate();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
