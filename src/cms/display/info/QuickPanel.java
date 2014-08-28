@@ -8,9 +8,15 @@ import javax.swing.JPanel;
 import cms.display.GraphicsConstants;
 import cms.display.buttons.quick.QuickSeekButton;
 
-@SuppressWarnings("serial")
+/**
+ * The <code>QuickPanel</code> class is a JPanel comprised of quick action buttons.
+ * Static block initializes the singleton.
+ * @author Eduard Parachivescu
+ * @version 1
+ * -tag @refactor Philippe Hebert
+ */
 public class QuickPanel extends JPanel implements GraphicsConstants {
-	
+	private static final long serialVersionUID = 1L;
 	
 	private static QuickPanel singleton;
 	private QuickSeekButton seekbutton = new QuickSeekButton();
@@ -19,6 +25,10 @@ public class QuickPanel extends JPanel implements GraphicsConstants {
 		singleton = new QuickPanel();
 	}
 	
+	/**
+	 * QuickPanel default constructor.
+	 * Creates a QuickPanel comprised of its buttons.
+	 */
 	private QuickPanel(){
 		this.setBackground(GraphicsConstants.BACK);
 		this.setPreferredSize(new Dimension(800,24));
@@ -29,13 +39,20 @@ public class QuickPanel extends JPanel implements GraphicsConstants {
 		this.setLayout(layout);
 		
 		this.add("Button", seekbutton);
-		
 	}
 	
+	/**
+	 * Accessor of the singleton.
+	 * @return Returns the QuickPanel singleton.
+	 */
 	public static QuickPanel getPanel(){
 		return singleton;
 	}
 	
+	/**
+	 * Calls the setSelect() method of the seekbutton.
+	 * @see #seekbutton
+	 */
 	public static void setSeekSelect(){
 		singleton.seekbutton.setSelect();
 	}

@@ -13,24 +13,31 @@ import cms.databank.structures.NodeState;
 import cms.display.GraphicsConstants;
 import cms.display.info.AddressPanel;
 
+/**
+ * The <code>NodeButton</code> class is a JComponent displaying a Node.
+ * @author Eduard Parachivescu
+ * @author Philippe Hebert
+ * @version 1
+ * -tag @refactor Philippe Hebert
+ */
 public class NodeButton extends JComponent implements MouseListener, GraphicsConstants {
 	private static final long serialVersionUID = 1L;
 
 	private Node core;
 	private boolean select = false; 
-	
 	private Color background, foreground;
+	
 
 	public NodeButton(Dimension size, Node core) {
 		super();
-		enableInputMethods(true);
-		setFocusable(true);
+		this.enableInputMethods(true);
+		this.setFocusable(true);
 		
 		this.core = core;
 		
-		addMouseListener(this);
-		setPreferredSize(size);
-		setVisible(true);
+		this.addMouseListener(this);
+		this.setPreferredSize(size);
+		this.setVisible(true);
 	}
 
 	public void select(boolean select) {
@@ -66,7 +73,7 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 		case ERROR: foreground = ERR; break;
 		default: foreground = ABS; break;
 		}
-		ButtonIconFactory.icon(g, foreground, background, getWidth(), getHeight(), core.getType(), core);
+		IconBuilder.icon(g, foreground, background, getWidth(), getHeight(), core.getType(), core);
 	}
 
 	@Override

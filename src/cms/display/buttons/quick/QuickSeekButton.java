@@ -9,7 +9,7 @@ import javax.swing.JComponent;
 
 import cms.Main;
 import cms.display.GraphicsConstants;
-import cms.display.buttons.ButtonIconFactory;
+import cms.display.buttons.IconBuilder;
 
 public class QuickSeekButton extends JComponent implements MouseListener, GraphicsConstants {
 	private static final long serialVersionUID = 1L;
@@ -50,7 +50,7 @@ public class QuickSeekButton extends JComponent implements MouseListener, Graphi
 		g.setColor(BACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		ButtonIconFactory.icon(g, foreground, BACK, getWidth(), getHeight(), type, null);
+		IconBuilder.icon(g, foreground, BACK, getWidth(), getHeight(), type, null);
 	}
 
 	@Override
