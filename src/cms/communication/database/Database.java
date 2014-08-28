@@ -5,12 +5,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.Random;
  
 public class Database{ 
 	
 	private Connection conn;
-	private Statement statement;
+	
+	private ResultSet resultSet;
 	private PreparedStatement preparedStatement;
 	
 	public Database(){ 
@@ -23,15 +24,13 @@ public class Database{
 		try { 
 			Class.forName(driver).newInstance(); 
 			conn = DriverManager.getConnection(url+dbName,userName,password);
-			dostuff();
-			closeconn();
 		}catch (Exception e){ 
 			System.out.println("e>Database connection error");
 			e.printStackTrace(); 
 		} 
 	}
 	
-	private void closeconn() {
+	public void closeconn() {
 		try {
 			conn.close();
 		} catch (SQLException e) {
@@ -39,31 +38,32 @@ public class Database{
 			e.printStackTrace();
 		}
 	}
-
-	private void dostuff(){
+	
+	public void printlastfive(){
 		try {
-			statement = conn.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM nodestatus");
+			preparedStatement = conn.prepareStatement("SELECT * FROM nodestatus ORDER BY id DESC LIMIT 5");
+			resultSet = preparedStatement.executeQuery();
 			writeResultSet(resultSet);
-			
-			
-			/*preparedStatement = conn.prepareStatement("INSERT INTO nodestatus values"
+		} catch (SQLException e) {
+			System.out.println("e>Error accessing last five");
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void dostuff(){
+		Random rand = new Random();
+		try {			
+			preparedStatement = conn.prepareStatement("INSERT INTO nodestatus"
 			        		  + "(node_id, temp, cpu, ram, part)"
 			        		  + "VALUES"
-			        		  + "(?, ?, ?, ?, ?)");
-
-			      preparedStatement.setString(1, "1");
-			      preparedStatement.setString(2, "35.4");
-			      preparedStatement.setString(3, "9.3");
-			      preparedStatement.setString(4, "430.0");
-			      preparedStatement.setString(5, "2150");
-			      preparedStatement.executeUpdate();
-			*/
-			
-			
-			statement = conn.createStatement();
-			ResultSet resultSetTwo = statement.executeQuery("SELECT * FROM nodestatus");
-			writeResultSet(resultSetTwo);
+			        		  + "(?, ?, ?, ?, ?);");
+			preparedStatement.setInt(1, Math.abs(rand.nextInt())%10);
+			preparedStatement.setDouble(2, Math.abs(rand.nextDouble())%5 * 10 +10);
+			preparedStatement.setDouble(3, Math.abs(rand.nextDouble())%10 * 5);
+			preparedStatement.setDouble(4, 430.0);
+			preparedStatement.setInt(5, 2150);
+			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -54,9 +54,21 @@ public class Main {
 			//e.printStackTrace();
 		}
 		
-		@SuppressWarnings("unused")
 		Database db = new Database();
-		
+		db.printlastfive();
+		db.dostuff();
+		db.printlastfive();
+		db.dostuff();
+		db.printlastfive();
+		db.dostuff();
+		db.printlastfive();
+		db.dostuff();
+		db.printlastfive();
+		db.dostuff();
+		db.printlastfive();
+		db.dostuff();
+		db.printlastfive();
+		db.closeconn();
 		
 	}
 	
