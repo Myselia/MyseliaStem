@@ -28,4 +28,8 @@ public class QuickPanel extends JPanel implements GraphicsConstants {
 	}
 	
 	public void updateTime(){}
+	
+	/*public static setSeekSelect(){
+		seekbutton.
+	}*/
 }
