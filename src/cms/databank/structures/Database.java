@@ -3,6 +3,8 @@ package cms.databank.structures;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import cms.monitoring.LogSystem;
  
 public class Database{ 
 	
@@ -26,6 +28,7 @@ public class Database{
 		try { 
 			Class.forName(driver).newInstance(); 
 			connection = DriverManager.getConnection(url+dbName,userName,password);
+			LogSystem.log(true, false, "DATABASE CONNECTION STARTED");
 		}catch (Exception e){ 
 			System.out.println("e>Database connection error");
 			e.printStackTrace(); 
@@ -35,6 +38,7 @@ public class Database{
 	public void closeConnection(){
 		try {
 			connection.close();
+			LogSystem.log(true, false, "DATABASE CONNECTION CLOSED");
 		} catch (SQLException e) {
 			System.out.println("e>Error closing connection");
 			e.printStackTrace();
