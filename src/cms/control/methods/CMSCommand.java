@@ -56,13 +56,13 @@ public class CMSCommand {
 	public static void seekOn() {
 		Main.startBCastThread(Main.getBcastRunnable(), Main.getbCastCommunicator());
 		System.out.println("Seek mode activated");
-		InfoBar.quickbar.seekbutton.setSelect();
+		InfoBar.getInfoBar().getQuickPanel().seekbutton.setSelect();
 	}
 
 	public static void seekOff(){
 		Main.getbCastCommunicator().interrupt();
 		System.out.println("Seek mode deactivated");
-		InfoBar.quickbar.seekbutton.setSelect();
+		InfoBar.getInfoBar().getQuickPanel().seekbutton.setSelect();
 	}
 	
 	/*

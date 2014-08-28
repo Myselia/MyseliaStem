@@ -2,8 +2,6 @@ package cms.display.communication;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -13,76 +11,70 @@ import javax.swing.JTextPane;
 
 import cms.display.GraphicsConstants;
 
-public class ScrollingDisplayParent extends JPanel implements GraphicsConstants, MouseListener{
+/**
+ * The <code>ScrollingDisplayParent</code> class is a JPanel with a JTextPane.
+ * Sets look and feel to match the CMS L&F.
+ * @author Philippe Hebert
+ * @version 1
+ * -tag @refactor Philippe Hebert
+ */
+public abstract class ScrollingDisplayParent extends JPanel implements GraphicsConstants{
 	
 	private static final long serialVersionUID = 1L;
 	protected JTextPane textpane;
 	protected JScrollPane sp;
 	protected JScrollBar sb;
 	
-	public ScrollingDisplayParent(){
+	/**
+	 * ScrollingDisplayParent default constructor
+	 * Sets the look & feel of the JScrollPane/JTextPane.
+	 */
+	protected ScrollingDisplayParent(){
 		this.setBackground(BACK);
 		this.setLayout(new BorderLayout());
 		this.setBorder(BorderFactory.createEmptyBorder(14, 14, 14, 14));
 		
-		textpane = new JTextPane();
-		JScrollPane sp = new JScrollPane(textpane);
-		sp.setBorder(BorderFactory.createEmptyBorder());
-		sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		sb = sp.getVerticalScrollBar();
-		sb.setBackground(BACK);
-		sb.setLayout(null);
-		sb.setPreferredSize(null);
-		sp.setBackground(BACK);
-		sp.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
-		sp.getViewport().setBorder(null);
-		sp.setViewportBorder(null);
-		sp.setBorder(null);
+		this.textpane = new JTextPane();
+		this.textpane.setBackground(BACK);
+		this.sp = new JScrollPane(textpane);
+		this.sp.setBorder(BorderFactory.createEmptyBorder());
+		this.sp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		this.sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		this.sb = sp.getVerticalScrollBar();
+		this.sb.setBackground(BACK);
+		this.sb.setLayout(null);
+		this.sb.setPreferredSize(null);
+		this.sp.setBackground(BACK);
+		this.sp.getVerticalScrollBar().setPreferredSize(new Dimension(0, 0));
+		this.sp.getViewport().setBorder(null);
+		this.sp.setViewportBorder(null);
+		this.sp.setBorder(null);
 		
 		this.add(sp, BorderLayout.CENTER);
 	}
 	
-	public JTextPane getJText(){
+	/**
+	 * Accessor of textpane
+	 * @return Returns instance variable textpane
+	 */
+	protected JTextPane getJText(){
 		return this.textpane;
 	}
 	
-	public JScrollPane getJScroll(){
+	/**
+	 * Accessor of scrollpane
+	 * @return Returns instance variable sp
+	 */
+	protected JScrollPane getJScroll(){
 		return this.sp;
 	}
 	
-	public JScrollBar getJBar(){
+	/**
+	 * Accessor of scrollbar
+	 * @return Returns instance variable sb
+	 */
+	protected JScrollBar getJBar(){
 		return this.sb;
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }

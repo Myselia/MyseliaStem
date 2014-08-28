@@ -35,7 +35,7 @@ public class Main {
 		//View
 		display = new Thread(new Runnable(){
 			public void run() {
-				ProgramWindow.init();
+				ProgramWindow.initEnvironment();
 				LogSystem.log(true, false, "Log System Started");
 				System.out.println("Welcome to the CMS v0.5 alpha");
 				System.out.println("Enter 'help' for a list of commands");

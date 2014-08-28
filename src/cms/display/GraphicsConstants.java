@@ -20,6 +20,7 @@ public interface GraphicsConstants {
 	Color ERR = new Color(0xCE0034); // RED
 	
 	Color BACK = new Color(0x012438); // DARK BLUE
+	Color BEVEL = new Color(0x01131E); // DARK DARK BLUE
 	
 	Color SELECTED = new Color(0x369BD7); //LIGHT BLUE
 	Color UNSELECTED = BACK;

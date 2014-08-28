@@ -15,46 +15,83 @@ import cms.control.CommandSystem;
 import cms.display.GraphicsConstants;
 import cms.display.tools.TextAreaOutputStream;
 
-@SuppressWarnings("serial")
-public class ConsoleDisplay extends ScrollingDisplayParent implements KeyListener,
-		GraphicsConstants {
+/**
+ * The <code>ConsoleDisplay</code> class is a console-like JPanel inheriting from ScrollingDisplayParent.
+ * Static block initializes the ConsoleDisplay singleton
+ * @author Philippe Hebert
+ * @author Eduard Parachivescu
+ * @version 1
+ * -tag @refactor Philippe Hebert
+ */
+public class ConsoleDisplay extends ScrollingDisplayParent implements KeyListener, 
+																GraphicsConstants {
 
+	private static final long serialVersionUID = 1L;
+	private static ConsoleDisplay console;
 	private JTextField field;
 
-	public ConsoleDisplay() {
+	static{
+		console = new ConsoleDisplay();
+	}
+	
+	/**
+	 * Default ConsoleDisplay constructor.
+	 * Creates a ConsoleDisplay comprised of a JScrollPane and a JTextField.
+	 */
+	private ConsoleDisplay() {
 		super();
-		areaSetup();
-		fieldSetup();
+		this.areaSetup();
+		this.fieldSetup();
 		this.add(field, BorderLayout.SOUTH);
-		setVisible(true);
+		this.setVisible(true);
+	}
+	
+	/**
+	 * Accessor of the Singleton.
+	 * Creates a singleton if not already created.
+	 * @return Returns the ConsoleDisplay console
+	 */
+	public static ConsoleDisplay getConsole(){
+		return console;
 	}
 
+	/**
+	 * Sets up the System streams to the console & sets the specifics of the JTextPane.
+	 * @see cms.display.tools.TextAreaOutputStream
+	 */
 	private void areaSetup() {
 		TextAreaOutputStream taos = new TextAreaOutputStream(textpane, 0, 4000);
 		PrintStream ps = new PrintStream(taos);
-
 		System.setOut(ps);
 		if (Main.REROUTE_ERR)
 			System.setErr(ps);
-		textpane.setBackground(BACK);
-		textpane.setFont(new Font("Verdana", Font.PLAIN, 11));
-		textpane.setEditable(false);
+		
+		this.textpane.setFont(new Font("Verdana", Font.PLAIN, 11));
+		this.textpane.setEditable(false);
 	}
 
+	/**
+	 * Sets up the JTextField instance variable and its characteristics.
+	 */
 	private void fieldSetup() {
-		field = new JTextField();
-		field.setBackground(Color.BLACK);
-		field.setForeground(Color.LIGHT_GRAY);
-		field.setFont(new Font("Verdana", Font.LAYOUT_LEFT_TO_RIGHT, 12));
-		field.addKeyListener(this);
-		field.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		this.field = new JTextField();
+		this.field.setBackground(BEVEL);
+		this.field.setForeground(Color.LIGHT_GRAY);
+		this.field.setFont(new Font("Verdana", Font.LAYOUT_LEFT_TO_RIGHT, 12));
+		this.field.addKeyListener(this);
+		this.field.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	}
 
+	/**
+	 * Handles the KeyEvents sent to console.field
+	 * ENTER: Parses for command.
+	 * UP/DOWN: Navigates previous commands.
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			CommandSystem.index_reset();
-			String make = field.getText();
+			String make = this.field.getText();
 			if (!make.equals("")) {
 				CommandSystem.command(make);
 				field.setText("");
@@ -70,6 +107,7 @@ public class ConsoleDisplay extends ScrollingDisplayParent implements KeyListene
 	}
 
 	/**
+	 * Grabs the focus on the field.
 	 * Loops until focus is given to field. Average of 9 loops so far. (as of merge of ISS7)
 	 */
 	public void setFocus(){

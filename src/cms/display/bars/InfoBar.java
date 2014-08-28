@@ -9,51 +9,85 @@ import cms.display.GraphicsConstants;
 import cms.display.info.AddressPanel;
 import cms.display.info.QuickPanel;
 
-public class InfoBar extends JPanel implements GraphicsConstants {
+/**
+ * The <code>InfoBar</code> class is a JPanel comprised of the QuickPanel and AddressPanel.
+ * Static block initializes the singleton.
+ * @author Eduard Parachivescu
+ * @version 1
+ * -tag @refactor Philippe Hebert
+ * @see cms.display.info.*
+ */
+public class InfoBar extends JPanel implements GraphicsConstants, Runnable {
 
 	private static final long serialVersionUID = 1L;
-
-	public static QuickPanel quickbar;
-	public static AddressPanel addressbar;
+	private static InfoBar infobar;
 	
-	public InfoBar() {
-
+	private QuickPanel quickpanel;
+	private AddressPanel addresspanel;
+	private Thread refresh;
+	
+	static{
+		infobar = new InfoBar();
+	}
+	
+	/**
+	 * InfoBar default constructor.
+	 * Creates an InfoBar comprised of a quickpanel and an addresspanel.
+	 * @see cms.display.info.*
+	 */
+	private InfoBar() {	
 		this.setBackground(BACK);
 		this.setPreferredSize(new Dimension(800, 130));
 		this.setMinimumSize(new Dimension(800, 130));
 		this.setLayout(new BorderLayout());
 		
-		quickbar = new QuickPanel();
-		this.add(quickbar, BorderLayout.NORTH);
-		addressbar = new AddressPanel();
-		//this.setPreferredSize(new Dimension(800, 24 + addressbar.getRows() * 100));
-		this.add(addressbar, BorderLayout.SOUTH);
-
-		Thread refresh = new Thread(new Runnable() {
-			public void run() {
-				while (true) {
-					try {
-						Thread.sleep(200);
-						addressbar.repaint();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-
-				}
-			}
-		});
-
+		this.quickpanel = new QuickPanel();
+		this.add(quickpanel, BorderLayout.NORTH);
+		this.addresspanel = new AddressPanel();
+		this.add(addresspanel, BorderLayout.SOUTH);
+		this.refresh = new Thread(this);
 		refresh.start();
 	}
-	
-	/*public static void setDisplayType(DisplayType dt){
-		displaytype = dt;
-		graphingpanel.setDisplayType(displaytype);
+
+	/**
+	 * Runnable behavior.
+	 * Repaints the graph every 0.2 seconds.
+	 */
+	@Override
+	public void run() {
+		while(true){
+			try{
+				Thread.sleep(200);
+				addresspanel.repaint();
+			}catch(InterruptedException e){
+				e.printStackTrace();
+			}
+		}
 	}
 	
-	public static DisplayType getDisplayType(){
-		return displaytype;
+	/**
+	 * Accessor of infobar singleton.
+	 * Runs after the static block, so infobar is always initialized.
+	 * @return Returns the InfoBar
+	 */
+	public static InfoBar getInfoBar(){
+		return InfoBar.infobar;
 	}
-*/
+	
+	/**
+	 * Accessor of infobar's quickpanel.
+	 * @return Returns the QuickPanel of the InfoBar
+	 */
+	public QuickPanel getQuickPanel(){
+		return this.quickpanel;
+	}
+	
+	/**
+	 * Accessor of infobar's addresspanel.
+	 * @return Returns the QuickPanel of the InfoBar
+	 */
+	public AddressPanel getAddressPanel(){
+		return this.addresspanel;
+	}
 	
 }
