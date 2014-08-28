@@ -62,7 +62,7 @@ public class OverLord {
 		nodeCore.remove(id);
 		nodeCount--;
 		coreIDTracker--;
-		AddressPanel.updateButtonList();
+		AddressPanel.getPanel().updateButtonList();
 		GraphingHistogram.updateBarCount();
 	}
 	
