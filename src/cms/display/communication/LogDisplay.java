@@ -10,7 +10,7 @@ import cms.display.tools.TextAreaOutputStream;
 
 /**
  * The <code>LogDisplay</code> class is a log-like JPanel inheriting from ScrollingDisplayParent.
- * Static block initializes the ConsoleDisplay singleton
+ * Static block initializes the LogDisplay singleton
  * @author Philippe Hebert
  * @author Eduard Parachivescu
  * @version 1
@@ -25,6 +25,10 @@ public class LogDisplay extends ScrollingDisplayParent implements GraphicsConsta
 		logger = new LogDisplay();
 	}
 	
+	/**
+	 * Default LogDisplay constructor.
+	 * Creates a LogDisplay comprised of a JScrollPane.
+	 */
 	private LogDisplay() {
 		super();
 		TextAreaOutputStream taos = new TextAreaOutputStream(textpane, 1, 4000);
@@ -39,10 +43,18 @@ public class LogDisplay extends ScrollingDisplayParent implements GraphicsConsta
 		this.setVisible(true);
 	}
 	
+	/**
+	 * Accessor of the Singleton.
+	 * @return Returns the logger static variable.
+	 */
 	public static LogDisplay getLogger(){
 		return logger;
 	}
 	
+	/**
+	 * Println to the stream associated with the LogDisplay.
+	 * @param str The String to be output to logger.
+	 */
 	public static void display(String str){
 		logger.log.println(str);
 	}

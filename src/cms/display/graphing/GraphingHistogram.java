@@ -12,6 +12,13 @@ import cms.databank.OverLord;
 import cms.databank.structures.DisplayMemoryStorage;
 import cms.display.bars.GraphBar;
 
+/**
+* The <code>GraphingHistogram</code> class is a Graphing JPanel used to display a histogram.
+* Static block initializes the ConsoleDisplay singleton
+* @author Philippe Hebert
+* @version 1
+* -tag @refactor Philippe Hebert
+*/
 public class GraphingHistogram extends GraphingParent {
 	private static final long serialVersionUID = 1L;
 	public static int number_offset = 50;
@@ -21,6 +28,10 @@ public class GraphingHistogram extends GraphingParent {
 		super(displaytype);
 	}
 	
+	/**
+	 * Inner class Vector
+	 * @deprecated
+	 */
 	/*private class Vector{
 		private final double[] x_values;
 		private final double[] y_values;
