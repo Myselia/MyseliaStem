@@ -19,7 +19,7 @@ public class QueryBuilder {
 	}
 	
 	
-	public void printLastFive(Connection connection){
+	public void printLastFiveConnections(Connection connection){
 		try {
 			preparedStatement = connection.prepareStatement("SELECT * FROM connectiontracker ORDER BY id DESC LIMIT 5");
 			resultSet = preparedStatement.executeQuery();
@@ -31,7 +31,7 @@ public class QueryBuilder {
 		
 	}
 
-	public void sendNew(Connection connection){
+	public void sendNewConnectionIP(Connection connection){
 		try {						
 			InetAddress inetaddr = InetAddress.getLocalHost();
             String ip = (inetaddr.getHostAddress()).trim();//------------THIS

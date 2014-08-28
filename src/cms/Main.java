@@ -58,8 +58,8 @@ public class Main {
 		Database db = new Database("jdbc:mysql://132.205.84.209:3306/", "mycelia", "root", "mycelia");
 		db.startConnection();
 		QueryBuilder bob = new QueryBuilder();
-		bob.sendNew(db.getConnection());
-		bob.printLastFive(db.getConnection());
+		bob.sendNewConnectionIP(db.getConnection());
+		bob.printLastFiveConnections(db.getConnection());
 		db.closeConnection();
 	}
 	
