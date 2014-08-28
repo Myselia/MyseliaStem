@@ -15,7 +15,7 @@ public class CommandCall extends AbstractCommand{
 				try{
 					CMSCommand.call(parameters[1]);
 				}catch(NumberFormatException e){
-					AddressPanel.unselectLast(null);
+					AddressPanel.getPanel().unselectLast(null);
 					System.out.println("e>" + "Wrong Parameters");
 				}catch(Exception e){
 					System.out.println("e>" + "No such node ID");

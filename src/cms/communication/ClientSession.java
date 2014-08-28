@@ -86,7 +86,7 @@ public class ClientSession extends ThreadHelper {
 			System.err.println("SID " + sessionID);
 			
 			//UPDATE THE GRAPHICS TO MATCH THE ADDITION OF A NEW NODE
-			AddressPanel.updateButtonList();
+			AddressPanel.getPanel().updateButtonList();
 			GraphingHistogram.updateBarCount();
 			//
 			

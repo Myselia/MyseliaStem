@@ -46,15 +46,11 @@ public class GraphingMenu extends JPanel implements GraphicsConstants{
 			button[i] = new GraphingMenuButton(2*i+50);
 			this.add("Button", button[i]);
 		}
+		
 		DisplayType[] displaytypes = DisplayType.values();
 		for(int i = 0; i < button.length; i++){
 			button[i].setDisplayType(displaytypes[i % (displaytypes.length - 1)]);
-		}/*
-		button[0].setDisplayType(DisplayType.TEMPERATURE);
-		button[1].setDisplayType(DisplayType.CPU);
-		button[2].setDisplayType(DisplayType.RAM);
-		button[3].setDisplayType(DisplayType.PARTICLES);*/
-		
+		}
 	}
 	
 	/**
