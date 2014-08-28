@@ -2,9 +2,9 @@ package cms;
 
 import cms.communication.Broadcast;
 import cms.communication.Server;
-import cms.communication.database.Database;
 import cms.control.CommandSystem;
 import cms.databank.OverLord;
+import cms.databank.structures.Database;
 import cms.display.ProgramWindow;
 import cms.monitoring.LogSystem;
 
@@ -54,21 +54,9 @@ public class Main {
 			//e.printStackTrace();
 		}
 		
-		Database db = new Database();
-		db.printlastfive();
-		db.dostuff();
-		db.printlastfive();
-		db.dostuff();
-		db.printlastfive();
-		db.dostuff();
-		db.printlastfive();
-		db.dostuff();
-		db.printlastfive();
-		db.dostuff();
-		db.printlastfive();
-		db.dostuff();
-		db.printlastfive();
-		db.closeconn();
+		Database db = new Database("jdbc:mysql://132.205.84.209:3306/", "mycelia", "root", "mycelia");
+		db.startConnection();
+		db.closeConnection();
 		
 	}
 	

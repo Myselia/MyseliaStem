@@ -1,47 +1,25 @@
 package cms.communication.database;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Random;
- 
-public class Database{ 
+
+public class QueryBuilder {
 	
-	private Connection conn;
-	
-	private ResultSet resultSet;
 	private PreparedStatement preparedStatement;
+	private ResultSet resultSet;
+	private Connection connection;
 	
-	public Database(){ 
-		String url = "jdbc:mysql://132.205.84.209:3306/"; 
-		String dbName = "mycelia";
-		String userName = "root"; 
-		String password = "mycelia"; 
+	public QueryBuilder(){
 		
-		String driver = "com.mysql.jdbc.Driver";
-		try { 
-			Class.forName(driver).newInstance(); 
-			conn = DriverManager.getConnection(url+dbName,userName,password);
-		}catch (Exception e){ 
-			System.out.println("e>Database connection error");
-			e.printStackTrace(); 
-		} 
 	}
 	
-	public void closeconn() {
-		try {
-			conn.close();
-		} catch (SQLException e) {
-			System.out.println("e>Error closing connection");
-			e.printStackTrace();
-		}
-	}
 	
 	public void printlastfive(){
 		try {
-			preparedStatement = conn.prepareStatement("SELECT * FROM nodestatus ORDER BY id DESC LIMIT 5");
+			preparedStatement = connection.prepareStatement("SELECT * FROM nodestatus ORDER BY id DESC LIMIT 5");
 			resultSet = preparedStatement.executeQuery();
 			writeResultSet(resultSet);
 		} catch (SQLException e) {
@@ -54,7 +32,7 @@ public class Database{
 	public void dostuff(){
 		Random rand = new Random();
 		try {			
-			preparedStatement = conn.prepareStatement("INSERT INTO nodestatus"
+			preparedStatement = connection.prepareStatement("INSERT INTO nodestatus"
 			        		  + "(node_id, temp, cpu, ram, part)"
 			        		  + "VALUES"
 			        		  + "(?, ?, ?, ?, ?);");
