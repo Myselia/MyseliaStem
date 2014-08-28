@@ -57,7 +57,7 @@ public class GraphingMenuButton extends JComponent implements MouseListener, Gra
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		GraphingMenu.unselectLast(this);
+		GraphingMenu.getGraphMenu().unselectLast(this);
 		select(true);
 		if(select){
 			System.out.println("g>Display: " + dt);

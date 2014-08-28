@@ -39,7 +39,7 @@ public class GraphBar extends JPanel implements GraphicsConstants, Runnable {
 		graphinglevels = new GraphingLevels(displaytype);
 		graphinghistogram = new GraphingHistogram(displaytype);
 		graph = graphinglevels;
-		graphingmenu = new GraphingMenu();
+		graphingmenu = GraphingMenu.getGraphMenu();
 		singleton = new GraphBar();
 	}
 	
