@@ -17,10 +17,9 @@ import cms.monitoring.LogSystem;
 
 public class Broadcast extends ThreadHelper {
 
-	protected int port;
-	protected long SLEEP_TIME = 2000;
-	//This is the port the broadcast server will create a socket on
-	private final int DEFAULT_PORT = 8888;
+	private int port;
+	private final int SLEEP_TIME = 2000;
+	private final int DEFAULT_PORT = 8888; //Broadcast Server Port
 	private boolean RUNNING = false;
 
 	protected DatagramSocket discoverSocket;

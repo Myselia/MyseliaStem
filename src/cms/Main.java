@@ -2,6 +2,7 @@ package cms;
 
 import cms.communication.Broadcast;
 import cms.communication.Server;
+import cms.communication.database.Database;
 import cms.control.CommandSystem;
 import cms.databank.OverLord;
 import cms.display.ProgramWindow;
@@ -12,18 +13,16 @@ public class Main {
 	public static final int DEFAULT_PORT = 6969; //*wink* *wink* *nudge* *nudge*
 	public static boolean REROUTE_ERR = false;	//Error Re-Routing to CMS Console
 	
-	private static Broadcast bcastRunnable;
-	private static Server serverRunnable;
+	private static Broadcast bcastRunnable = new Broadcast();
+	private static Server serverRunnable = new Server(DEFAULT_PORT, 100);
 	
-	public static Thread bCastCommunicator;
+	private static Thread bCastCommunicator;
 	private static Thread communicator;
 	private static Thread data;
 	private static Thread display;
 	
-	public static void main(String[] args) {
-		bcastRunnable = new Broadcast();
-		serverRunnable = new Server(DEFAULT_PORT, 100);
-		loadCommands();
+	public static void main(String[] args) {		
+		loadCommands(); //loads the user commands
 		
 		//Model
 		data = new Thread(new Runnable(){
@@ -43,7 +42,6 @@ public class Main {
 		});
 
 		communicator = new Thread(serverRunnable);
-		//bCastCommunicator = new Thread(bcastRunnable);
 
 		try {
 			data.start();
@@ -52,8 +50,13 @@ public class Main {
 			Thread.sleep(2000);
 			communicator.start();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			System.out.println("e>Error starting main threads. Please restart.");
+			//e.printStackTrace();
 		}
+		
+		@SuppressWarnings("unused")
+		Database db = new Database();
+		
 		
 	}
 	
@@ -61,11 +64,11 @@ public class Main {
 		try{
 			CommandSystem.setClasses("cms.control.user");
 		}catch(Exception e){
-			System.out.println("b>" + "&>" + "cms.controller.CommandSystem.setClasses(String) called in");
-			System.out.println("b>" + "&>" + "cms.view.panel.ConsoleDisplay.ConsoleDisplay() threw an exception.");
-			System.out.println("b>" + "!> " + "Exception thrown by:" + e.getClass().getCanonicalName());
+			System.out.println("e>" + "cms.control.CommandSystem.setClasses(String) called in");
+			System.out.println("e>" + "cms.display.communication.ConsoleDisplay.ConsoleDisplay() threw an exception");
+			System.out.println("e>" + "Exception thrown by:" + e.getClass().getCanonicalName());
 			System.out.println("Please force kill the application and investigate.");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 
