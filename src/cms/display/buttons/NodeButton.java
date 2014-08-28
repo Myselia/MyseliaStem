@@ -22,60 +22,88 @@ import cms.display.info.AddressPanel;
  */
 public class NodeButton extends JComponent implements MouseListener, GraphicsConstants {
 	private static final long serialVersionUID = 1L;
-
 	private Node core;
 	private boolean select = false; 
 	private Color background, foreground;
 	
-
+	/**
+	 * NodeButton default constructor.
+	 * @param size Dimension of the NodeButton
+	 * @param core Node associated with the NodeButton
+	 */
 	public NodeButton(Dimension size, Node core) {
 		super();
 		this.enableInputMethods(true);
 		this.setFocusable(true);
-		
 		this.core = core;
-		
 		this.addMouseListener(this);
 		this.setPreferredSize(size);
 		this.setVisible(true);
 	}
 
+	/**
+	 * Manages if NodeButton is selected or not.
+	 * @param select Boolean. True if selected, false otherwise.
+	 */
 	public void select(boolean select) {
-		core.setSelected(select);
+		this.core.setSelected(select);
 		this.select = select;
-		repaint();
+		this.repaint();
 	}
 	
+	/**
+	 * Accessor of the Node associated with object NodeButton
+	 * @return Node associated with object NodeButton.
+	 */
 	public Node getCore(){
 		return this.core;
 	}
 	
+	/**
+	 * Calls the delegate paint method for the UI.
+	 * Paint the NodeButton according to if selected or not.
+	 */
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		
 		//Background
-		if(select){
+		if(select)
 			background = SELECTED;
-		} else {
+		else
 			background = UNSELECTED;
-		}
 		g.setColor(background);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
 		//Icon
 		NodeState state = core.getState();
-		switch(state){
-		case ABSENT: foreground = ABS; break;
-		case PRESENT: foreground = PRE; break;
-		case AVAILABLE: foreground = AVA; break;
-		case RUNNING: foreground = RUN; break;
-		case ERROR: foreground = ERR; break;
-		default: foreground = ABS; break;
+		switch (state) {
+		case ABSENT:
+			foreground = ABS;
+			break;
+		case PRESENT:
+			foreground = PRE;
+			break;
+		case AVAILABLE:
+			foreground = AVA;
+			break;
+		case RUNNING:
+			foreground = RUN;
+			break;
+		case ERROR:
+			foreground = ERR;
+			break;
+		default:
+			foreground = ABS;
+			break;
 		}
 		IconBuilder.icon(g, foreground, background, getWidth(), getHeight(), core.getType(), core);
 	}
 
+	/**
+	 * MouseClicked Listener.
+	 * On click, selects this node as the currently selected one.
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		AddressPanel.unselectLast(this);
