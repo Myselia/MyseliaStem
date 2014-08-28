@@ -2,8 +2,8 @@ package cms.control.methods;
 
 import cms.Main;
 import cms.databank.OverLord;
-import cms.display.bars.InfoBar;
 import cms.display.info.AddressPanel;
+import cms.display.info.QuickPanel;
 
 public class CMSCommand {
 	
@@ -55,13 +55,13 @@ public class CMSCommand {
 	public static void seekOn() {
 		Main.startBCastThread(Main.getBcastRunnable(), Main.getbCastCommunicator());
 		System.out.println("Seek mode activated");
-		InfoBar.getInfoBar().getQuickPanel().seekbutton.setSelect();
+		QuickPanel.setSeekSelect();
 	}
 
 	public static void seekOff(){
 		Main.getbCastCommunicator().interrupt();
 		System.out.println("Seek mode deactivated");
-		InfoBar.getInfoBar().getQuickPanel().seekbutton.setSelect();
+		QuickPanel.setSeekSelect();
 	}
 	
 	/*

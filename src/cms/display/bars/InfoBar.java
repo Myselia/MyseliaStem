@@ -41,7 +41,7 @@ public class InfoBar extends JPanel implements GraphicsConstants, Runnable {
 		this.setMinimumSize(new Dimension(800, 130));
 		this.setLayout(new BorderLayout());
 		
-		this.quickpanel = new QuickPanel();
+		this.quickpanel = QuickPanel.getPanel();
 		this.add(quickpanel, BorderLayout.NORTH);
 		this.addresspanel = AddressPanel.getPanel();
 		this.add(addresspanel, BorderLayout.SOUTH);
