@@ -25,15 +25,50 @@ public class ConfigHandler {
 	public static void init() {
 		configStructure = new LinkedHashMap<>();
 		configProperties = new LinkedHashMap<>();
+		
 		/*
-		 * Format: "SECTION IDENTIFIER_MODIFIER" , "attr1,attr2,attr3...etc"
+		 * Format: "SECTION IDENTIFIER_MODIFIER" , "param1,param2,param3...etc"
 		 * 
-		 * MODIFIERS 0 : Cannot have multiple instances of these (ie graphics
-		 * settings) 1 : Can have multiple instances of these (ie multiple
-		 * databases)
+		 * MODIFIERS 0 : Cannot have multiple instances of these (ie graphics settings) 
+		 * 			 1 : Can have multiple instances of these (ie multiple databases)
+		 * 
+		 * EXAMPLE
+		 * 			("BackgroundPanel_0", "width,height,color,fade");
+		 * 			-> SectionID: BackgroundPanel. Modifier: 0 (ONLY ONE BLOCK OF THIS TYPE). 
+		 * 						  Parameters: width, height, color, fade.
+		 * 			->In config:
+		 * 						  [BackgroundPanel]
+		 * 						  width = 10
+		 * 						  height = 20
+		 * 				 	      color = blue
+		 * 						  fade = false
+		 * 			->Retrieval:
+		 * 					      ConfigHandler.configProperties.get(BackgroundPanel_param);
+		 * 						  *Must be cast into appropriate type from String*
+		 * 
+		 * 			("ApplicationInstance_1", "name, port, cmsip, flags");
+		 * 			-> SectionID: ApplicationInstance. Modifier: 1 (CAN HAVE MORE THAN ONE BLOCK OF THIS TYPE). 
+		 * 						  Parameters: name, port, cmsip, flags.
+		 * 			->In config:
+		 * 						  [ApplicationInstance]
+		 * 						  name = App1
+		 * 						  port = 6969
+		 * 				 	      cmsip = 127.0.0.1
+		 * 						  flags = none
+		 * 
+		 * 						  [ApplicationInstance]
+		 * 						  name = App2
+		 * 						  port = 7979
+		 * 				 	      cmsip = 123.456.789.101
+		 * 						  flags = nogui
+		 * 
+		 * 		    ->Retrieval:
+		 * 					      ConfigHandler.configProperties.get(ApplicationInstance_index(0 based)_param);
+		 * 						  *Must be cast into appropriate type from String*
 		 */
 		configStructure.put("MainWindow_0", "width,height,fullscreen");
 		configStructure.put("DB_1", "name,url,dbname,port,user,pass");
+		//
 
 		configProperties = new LinkedHashMap<>();
 
@@ -84,8 +119,13 @@ public class ConfigHandler {
 			// Line represents the beginning of a section identifier
 			if (text.charAt(0) == '[') {
 				sectionIdentifier = text.substring(1, text.length() - 1);
+				
 				// Check if there are modifiers 
 				if (hasTag(sectionIdentifier)) {
+					
+					if (sectionIdentifier.equals("DB"))
+						DBCount++;
+					
 					for (String key : configStructure.keySet()) {
 
 						if (key.substring(0, key.length() - 2).equals(sectionIdentifier)) {

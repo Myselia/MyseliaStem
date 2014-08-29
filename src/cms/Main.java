@@ -59,17 +59,19 @@ public class Main {
 		
 		//Add all user defined DBs into the OverLord's database list
 		for (int i = 0; i < ConfigHandler.DBCount; i++) {
-			Database db = new Database(ConfigHandler.configProperties.get("DB_" + i + "_" + "name"), 
-					ConfigHandler.configProperties.get("DB_" + i + "_" + "url"), 
-					ConfigHandler.configProperties.get("DB_" + i + "_" + "dbName"), 
-					ConfigHandler.configProperties.get("DB_" + i + "_" + "userName"), 
-					ConfigHandler.configProperties.get("DB_" + i + "_" + "password"));
+			Database db = new Database(
+					ConfigHandler.configProperties.get("DB_" + i + "_name"), 
+					ConfigHandler.configProperties.get("DB_" + i + "_url"), 
+					ConfigHandler.configProperties.get("DB_" + i + "_dbName"), 
+					ConfigHandler.configProperties.get("DB_" + i + "_userName"), 
+					ConfigHandler.configProperties.get("DB_" + i + "_password")
+					);
 			OverLord.dbCore.add(db);
 			db.startConnection();
 			db.closeConnection();
 		}
-		}
-		
+	}
+
 	private static void loadCommands(){
 		try{
 			CommandSystem.setClasses("cms.control.user");
