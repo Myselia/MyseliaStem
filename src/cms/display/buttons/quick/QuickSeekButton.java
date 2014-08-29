@@ -11,32 +11,62 @@ import cms.Main;
 import cms.display.GraphicsConstants;
 import cms.display.buttons.IconBuilder;
 
+/**
+ * The <code>QuickSeekButton</code> class is a JComponent button integrating the seek() call.
+ * @author Eduard Parachivescu
+ * @version 1
+ * -tag @refactor Philippe Hebert
+ */
 public class QuickSeekButton extends JComponent implements MouseListener, GraphicsConstants {
 	private static final long serialVersionUID = 1L;
-	int type;
-	boolean select;
-	Color foreground;
+	private static QuickSeekButton singleton;
+	private static final int type = 100;
+	private boolean select;
+	private Color foreground;
 	
-	public QuickSeekButton(){
+	static{
+		singleton = new QuickSeekButton();
+	}
+	
+	/**
+	 * QuickSeekButton default constructor
+	 */
+	private QuickSeekButton(){
 		super();
-		enableInputMethods(true);
-		setFocusable(true);
-		
-		type = 100;
-		//System.out.println("BOB");
-		
-		addMouseListener(this);
-		setVisible(true);
+		this.enableInputMethods(true);
+		this.setFocusable(true);
+		this.addMouseListener(this);
+		this.setVisible(true);
 	}
 	
-	public void setSelect(boolean select){
-		this.select = select;
-		repaint();
-	}
-	public void setSelect(){
-		setSelect(!select);
+	/**
+	 * Accessor of the singleton
+	 * @return Returns the singleton
+	 */
+	public static QuickSeekButton getSeeker(){
+		return singleton;
 	}
 	
+	/**
+	 * Manages if QuickSeekButton is selected or not.
+	 * @param select Boolean. True if selected, false otherwise.
+	 */
+	public static void setSelect(boolean select){
+		singleton.select = select;
+		singleton.repaint();
+	}
+	
+	/**
+	 * Manages if QuickSeekButton is selected or not. Toggles the boolean select.
+	 */
+	public static void setSelect(){
+		setSelect(!singleton.select);
+	}
+	
+	/**
+	 * Calls the delegate paint method for the UI.
+	 * Paint the QuickSeekButton according to if selected or not. 
+	 */
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
@@ -53,10 +83,13 @@ public class QuickSeekButton extends JComponent implements MouseListener, Graphi
 		IconBuilder.icon(g, foreground, BACK, getWidth(), getHeight(), type, null);
 	}
 
+	/**
+	 * MouseClicked Listener.
+	 * On click, boots up the seeking signal if not selected. Ends it otherwise.
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		setSelect(!select);
-		
 		if(select){
 			Main.startBCastThread(Main.getBcastRunnable(), Main.getbCastCommunicator());
 			System.out.println("Seek mode activated");

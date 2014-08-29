@@ -69,7 +69,7 @@ public class GraphingMenu extends JPanel implements GraphicsConstants{
 		if(lastButtonClicked != null)
 			lastButtonClicked.select(false);
 		lastButtonClicked = nextLast;
-		GraphBar.setDisplayType(lastButtonClicked.dt);
+		GraphBar.setDisplayType(lastButtonClicked.getDisplayType());
 		
 	}
 	

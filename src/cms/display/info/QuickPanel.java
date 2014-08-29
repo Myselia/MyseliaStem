@@ -19,7 +19,6 @@ public class QuickPanel extends JPanel implements GraphicsConstants {
 	private static final long serialVersionUID = 1L;
 	
 	private static QuickPanel singleton;
-	private QuickSeekButton seekbutton = new QuickSeekButton();
 	
 	static{
 		singleton = new QuickPanel();
@@ -38,7 +37,7 @@ public class QuickPanel extends JPanel implements GraphicsConstants {
 		layout.setVgap(2);
 		this.setLayout(layout);
 		
-		this.add("Button", seekbutton);
+		this.add("Button", QuickSeekButton.getSeeker());
 	}
 	
 	/**
@@ -54,6 +53,6 @@ public class QuickPanel extends JPanel implements GraphicsConstants {
 	 * @see #seekbutton
 	 */
 	public static void setSeekSelect(){
-		singleton.seekbutton.setSelect();
+		QuickSeekButton.setSelect();
 	}
 }

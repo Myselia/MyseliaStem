@@ -11,30 +11,46 @@ import cms.display.GraphicsConstants;
 import cms.display.graphing.DisplayType;
 import cms.display.graphing.GraphingMenu;
 
-public class GraphingMenuButton extends JComponent implements MouseListener, GraphicsConstants{
+/**
+ * The <code>GraphingMenuButton</code> class is a JComponent button associated with the Graphing* GUI.
+ * @author Eduard Parachivescu
+ * @version 1
+ * -tag @refactor Philippe Hebert
+ * @see cms.display.graphing.*
+ */
+public final class GraphingMenuButton extends JComponent implements MouseListener, GraphicsConstants{
 	private static final long serialVersionUID = 1L;
 	private int type;
-	public DisplayType dt;
-	private boolean select;
-	
+	private DisplayType displaytype;
+	private boolean select = false;
 	private Color background;
 	
+	/**
+	 * GraphingMenuButton default constructor
+	 * @param type Something not used.
+	 */
 	public GraphingMenuButton(int type){
 		super();
-		enableInputMethods(true);
-		setFocusable(true);
-		
+		this.enableInputMethods(true);
+		this.setFocusable(true);
 		this.type = type;
-		
-		addMouseListener(this);
-		setVisible(true);
+		this.addMouseListener(this);
+		this.setVisible(true);
 	}
 	
+	/**
+	 * Manages if button is selected or not
+	 * @param select True if selected, false otherwise
+	 */
 	public void select(boolean select){
 		this.select = select;
-		repaint();
+		this.repaint();
 	}
 	
+	/**
+	 * Calls the delegate paint method for the UI.
+	 * Paint the NodeButton according to if selected or not.
+	 */
 	@Override
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
@@ -51,16 +67,32 @@ public class GraphingMenuButton extends JComponent implements MouseListener, Gra
 		IconBuilder.icon(g, ABS, background, getWidth(), getHeight(), type, null);
 	}
 	
-	public void setDisplayType(DisplayType dt){
-		this.dt = dt;
+	/**
+	 * Accessor of the GraphingMenuButton's displaytype
+	 * @return Return the instance's displaytype
+	 */
+	public DisplayType getDisplayType(){
+		return this.displaytype;
+	}
+	
+	/**
+	 * Mutator of the GraphingMenuButton's displaytype
+	 * @param displaytype
+	 */
+	public void setDisplayType(DisplayType displaytype){
+		this.displaytype = displaytype;
 	}
 
+	/**
+	 * MouseClicked Listener
+	 * Paint the GraphingMenuButton according to if selected or not.
+	 */
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		GraphingMenu.getGraphMenu().unselectLast(this);
 		select(true);
 		if(select){
-			System.out.println("g>Display: " + dt);
+			System.out.println("g>Display: " + displaytype);
 		}
 	}
 
