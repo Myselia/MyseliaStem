@@ -6,7 +6,7 @@ package cms.display.graphing;
  * @version 1
  */
 public enum DisplayType {
-	TEMPERATURE(0), RAM(1), CPU(2), PARTICLES(3);
+	TEMPERATURE(0), CPU(1), RAM(2), PARTICLES(3);
 	
 	private static final int size = DisplayType.values().length;
 	

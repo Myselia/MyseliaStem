@@ -49,7 +49,7 @@ public class GraphingMenu extends JPanel implements GraphicsConstants{
 		
 		DisplayType[] displaytypes = DisplayType.values();
 		for(int i = 0; i < button.length; i++){
-			button[i].setDisplayType(displaytypes[i % (displaytypes.length - 1)]);
+			button[i].setDisplayType(displaytypes[i]);
 		}
 	}
 	
