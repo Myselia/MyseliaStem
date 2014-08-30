@@ -3,6 +3,10 @@ package cms.display.buttons;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -89,6 +93,9 @@ public final class IconBuilder {
 		case 100:
 			quickSeek(obj);
 			break;
+		case 200:
+			quickTime(obj);
+			break;
 		default:
 			nodeIcon(obj);
 			break;
@@ -111,6 +118,16 @@ public final class IconBuilder {
 			}
 			obj.graphics.fillOval(obj.x_pos - i*scale, obj.y_pos - i*scale, i*scale*2, i*scale*2);
 		}
+	}
+	
+	private static void quickTime(BuilderClass obj) {
+		
+		DateFormat df = new SimpleDateFormat("HH:mm:ss");
+		Date today = Calendar.getInstance().getTime(); 
+		String time = df.format(today);
+		
+		obj.graphics.setColor(obj.foreground);
+		obj.graphics.drawString(time, obj.x_pos - 25, obj.y_pos + 6);
 	}
 
 	/**
