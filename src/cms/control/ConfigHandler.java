@@ -12,9 +12,9 @@ import java.util.Map;
 public class ConfigHandler {
 
 	public static int DBCount = 0;
-	public static boolean PRINT_DEBUG = false;
+	public static boolean PRINT_DEBUG = true;
 
-	public static LinkedHashMap<String, String> configProperties;
+	public static HashMap<String, String> configProperties;
 	private static HashMap<String, String> configStructure;
 
 	private static BufferedReader configReader;
@@ -23,8 +23,8 @@ public class ConfigHandler {
 	private static final String CONFIG_FILE_NAME = "mycelia.cfg";
 
 	public static void init() {
-		configStructure = new LinkedHashMap<>();
-		configProperties = new LinkedHashMap<>();
+		configStructure = new HashMap<>();
+		configProperties = new HashMap<>();
 		
 		/*
 		 * Format: "SECTION IDENTIFIER_MODIFIER" , "param1,param2,param3...etc"
@@ -67,7 +67,7 @@ public class ConfigHandler {
 		 * 						  *Must be cast into appropriate type from String*
 		 */
 		configStructure.put("MainWindow_0", "width,height,fullscreen");
-		configStructure.put("DB_1", "name,url,dbname,port,user,pass");
+		configStructure.put("DB_1", "name,url,dbname,user,password");
 		//
 
 		configProperties = new LinkedHashMap<>();
@@ -168,8 +168,9 @@ public class ConfigHandler {
 			// properties in the order they were defined in the configStructure map
 			if (text.substring(0, tagsNeeded[tagOffset].length()).equals(tagsNeeded[tagOffset])) {
 				String currentTag = tagsNeeded[tagOffset];
-
-				configProperties.put(sectionIdentifier + "_" + ((moreThanOne) ? dynamicCount + "_" : "") + currentTag, text.split("=")[1]);
+				String currentProperty = text.split("=")[1].trim();
+	
+				configProperties.put(sectionIdentifier + "_" + ((moreThanOne) ? dynamicCount + "_" : "") + currentTag, currentProperty);
 				tagOffset++;
 
 				// We're finished with this particular block

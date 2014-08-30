@@ -29,7 +29,7 @@ public class Database{
 	public void startConnection(){
 		try { 
 			Class.forName(driver).newInstance(); 
-			connection = DriverManager.getConnection(url+dbName,userName,password);
+			connection = DriverManager.getConnection(url + "/" + dbName ,userName,password);
 			LogSystem.log(true, false, "DATABASE CONNECTION STARTED");
 		}catch (Exception e){ 
 			System.out.println("e>Database connection error");

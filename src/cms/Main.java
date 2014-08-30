@@ -26,6 +26,12 @@ public class Main {
 	public static void main(String[] args) {		
 		loadCommands(); //loads the user commands
 		ConfigHandler.init();
+		QueryBuilder qb = new QueryBuilder();
+		System.out.println("Name: " + ConfigHandler.configProperties.get("DB_" + 0 + "_name"));
+		System.out.println(ConfigHandler.configProperties.get("DB_" + 0 + "_url"));
+		System.out.println(ConfigHandler.configProperties.get("DB_" + 0 + "_dbname"));
+		System.out.println(ConfigHandler.configProperties.get("DB_" + 0 + "_user"));
+		System.out.println(ConfigHandler.configProperties.get("DB_" + 0 + "_password"));
 		
 		//Model
 		data = new Thread(new Runnable(){
@@ -59,15 +65,18 @@ public class Main {
 		
 		//Add all user defined DBs into the OverLord's database list
 		for (int i = 0; i < ConfigHandler.DBCount; i++) {
+			
 			Database db = new Database(
 					ConfigHandler.configProperties.get("DB_" + i + "_name"), 
 					ConfigHandler.configProperties.get("DB_" + i + "_url"), 
-					ConfigHandler.configProperties.get("DB_" + i + "_dbName"), 
-					ConfigHandler.configProperties.get("DB_" + i + "_userName"), 
+					ConfigHandler.configProperties.get("DB_" + i + "_dbname"), 
+					ConfigHandler.configProperties.get("DB_" + i + "_user"), 
 					ConfigHandler.configProperties.get("DB_" + i + "_password")
 					);
 			OverLord.dbCore.add(db);
 			db.startConnection();
+			qb.sendNewConnectionIP(db.getConnection());
+			qb.printLastFiveConnections(db.getConnection());
 			db.closeConnection();
 		}
 	}
