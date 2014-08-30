@@ -12,7 +12,7 @@ import java.util.Map;
 public class ConfigHandler {
 
 	public static int DBCount = 0;
-	public static boolean PRINT_DEBUG = true;
+	public static boolean PRINT_DEBUG = false;
 
 	public static HashMap<String, String> configProperties;
 	private static HashMap<String, String> configStructure;
@@ -109,7 +109,9 @@ public class ConfigHandler {
 		boolean moreThanOne = false;
 
 		while ((text = configReader.readLine()) != null) {
-			System.out.println(text);
+			if (PRINT_DEBUG) {
+				System.out.println(text);	
+			}
 			String keyHolder = "";
 
 			// Line is a comment or empty, ignore
