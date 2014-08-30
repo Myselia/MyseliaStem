@@ -10,19 +10,20 @@ public interface GraphicsConstants {
 	
 	/*
 	 * Color Scheme:
-	 * http://paletton.com/#uid=73u1Z0kJGsmQLb8N4khx6HTpoNk
+	 * http://paletton.com/#uid=c002o0-3t0kPionlSPvQoBLUocLyG4I
 	 */
 	
-	Color ABS = new Color(0xAAAAAA); // GREY
-	Color PRE = new Color(0xE27C00); // ORANGE
-	Color AVA = new Color(0x045C90); // BLUE
-	Color RUN = new Color(0x4EC700); // GREEN
-	Color ERR = new Color(0xCE0034); // RED
+	Color ABS = new Color(0xCCCCCC); // GREY
 	
-	Color BACK = new Color(0x012438); // DARK BLUE
-	Color BEVEL = new Color(0x01131E); // DARK DARK BLUE
+	Color ERR = new Color(0xC20000); // RED
+	Color PRE = new Color(0xFF8100); // ORANGE +1
+	Color AVA = new Color(0x02517B); // BLUE
+	Color RUN = new Color(0x9BF100); // GREEN +1
 	
-	Color SELECTED = new Color(0x369BD7); //LIGHT BLUE
+	Color BACK = new Color(0x012A41); // BLUE -1
+	Color BEVEL = new Color(0x011018); // BLUE -2
+	
+	Color SELECTED = new Color(0x4EABDE); // BLUE +2
 	Color UNSELECTED = BACK;
 	
 }
