@@ -11,7 +11,7 @@ public class Node implements java.io.Serializable {
 	private volatile NodeState state = NodeState.ABSENT;			// core state as viewed by model
 	private volatile boolean selected = false; 	// core state as viewed by view
 	
-	public volatile DisplayMemoryStorage[] memstore = new DisplayMemoryStorage[4];
+	public volatile EchoedValueStorage[] memstore = new EchoedValueStorage[4];
 	private volatile double temperature = 25; 		// core temperature
 	private volatile double cpu = 50;				// core cpu usage
 	private volatile double ram = 256;				// core leftover ram
@@ -22,7 +22,7 @@ public class Node implements java.io.Serializable {
 	// Constructor
 	public Node() {
 		for(int i = 0; i < 4; i++){
-			memstore[i] = new DisplayMemoryStorage();
+			memstore[i] = new EchoedValueStorage();
 		}
 	}
 

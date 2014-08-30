@@ -1,14 +1,14 @@
 package cms.databank.structures;
 
 
-public class DisplayMemoryStorage {
+public class EchoedValueStorage {
 	private double[][] mem;
 	private int[] count;
 	private static final int level = 4;
 	private static final int size = 30;
 	private static final int echo = 8;
 	
-	public DisplayMemoryStorage(){
+	public EchoedValueStorage(){
 		mem = new double[level][size];
 		count = new int[level];
 	}

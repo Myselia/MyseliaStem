@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cms.databank.OverLord;
-import cms.databank.structures.DisplayMemoryStorage;
+import cms.databank.structures.EchoedValueStorage;
 import cms.display.bars.GraphBar;
 
 /**
@@ -94,7 +94,7 @@ public class GraphingHistogram extends GraphingParent {
 		//read parameters
 		//scale is the time scale [0,3]
 		int scale = 0;
-		int size = DisplayMemoryStorage.getSize();
+		int size = EchoedValueStorage.getSize();
 		double max = 0.0;
 		int coreid = (OverLord.getSelectedCore() == -1) ? 0 : OverLord.getSelectedCore();
 		
