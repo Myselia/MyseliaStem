@@ -17,11 +17,11 @@ public class Atom {
 		return content;
 	}
 	
-	public String getParticleType(){
+	public String getAtomType(){
 		return atom_type;
 	}
 	
-	public String getParticleClass(){
+	public String getAtomClass(){
 		return atom_class;
 	}
 

@@ -1,10 +1,6 @@
-package cms.communication.parsers;
+package cms.communication.structures;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
-
-import cms.communication.structures.Atom;
-import cms.communication.structures.Transmission;
 
 public class TransmissionBuilder {
 	private static Transmission transmission;
@@ -26,7 +22,7 @@ public class TransmissionBuilder {
 	}
 	
 	public static Transmission getTransmission(){
-		Transmission ret = transmission;
+		Transmission ret = new Transmission(transmission);
 		transmission = null;
 		count++;
 		return ret;

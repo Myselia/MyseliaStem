@@ -1,63 +1,68 @@
 package cms.communication.parsers;
 
+import java.io.StringReader;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+
+import cms.communication.structures.Atom;
 import cms.communication.structures.Transmission;
-import cms.databank.OverLord;
-import cms.databank.structures.Node;
 
 public class TransmissionParser {
-	
-	public static void parse(Transmission trans, Node[] core){
-		trans.printTransmission();
-		int coreid = Integer.parseInt(trans.from);
+	public TransmissionParser(){
 		
-		if(trans.opcode.equals("110")){
-			for(int i = 0; i < trans.atoms.length; i++){	
-				String particleClass = trans.atoms[i].getParticleClass();
-				
-				if(particleClass.equals("temp")){
-					core[coreid].setTemperature(Double.parseDouble(trans.atoms[i].getContent()));
-					
-				} else if(particleClass.equals("ram")){
-					core[coreid].setRam(Double.parseDouble(trans.atoms[i].getContent())/1000);
-					
-				} else if(particleClass.equals("cpu")){
-					core[coreid].setCpu(Double.parseDouble(trans.atoms[i].getContent()));
-					
-				} else if(particleClass.equals("part")){
-					core[coreid].setParticles(Double.parseDouble(trans.atoms[i].getContent()));
-					
-				} else if(particleClass.equals("ip")){
-					core[coreid].setIp(trans.atoms[i].getContent());
-				}
-
-			}
-		}
 	}
 	
-	public static void parseNew(Transmission trans){
-		int coreid = Integer.parseInt(trans.from);
-		
-		if(trans.opcode.equals("110")){
-			for(int i = 0; i < trans.atoms.length; i++){	
-				String particleClass = trans.atoms[i].getParticleClass();
-				
-				if(particleClass.equals("temp")){
-					System.err.println("CoreID: " + coreid);
-					OverLord.nodeCore.get(coreid).setTemperature(Double.parseDouble(trans.atoms[i].getContent()));
-					
-				} else if(particleClass.equals("ram")){
-					OverLord.nodeCore.get(coreid).setRam(Double.parseDouble(trans.atoms[i].getContent())/1000);
-					
-				} else if(particleClass.equals("cpu")){
-					OverLord.nodeCore.get(coreid).setCpu(Double.parseDouble(trans.atoms[i].getContent()));
-					
-				} else if(particleClass.equals("part")){
-					OverLord.nodeCore.get(coreid).setParticles(Double.parseDouble(trans.atoms[i].getContent()));
-					
-				}
-
-			}
+	public static String makedoc(Transmission trans){
+		String build = null;
+		build += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+		build += "<transmission>";
+		build += header(trans);
+		for(int i = 0; i < trans.atoms.length; i++){
+			build += atom(trans.atoms[i]);
 		}
+		build += "</transmission>";
+		
+		check(build);
+		
+		return build;
 	}
-
+	
+	private static String header(Transmission trans){
+		String build = null;
+		build += "<header ";
+		build += "id=\"" + trans.id + "\" ";
+		build += "from=\"" + trans.from + "\" ";
+		build += "to=\"" + trans.to + "\" ";
+		build += ">";
+		build += trans.opcode;
+		build += "</header>";
+		return build;
+	}
+	
+	private static String atom(Atom at){
+		String build = null;
+		build += "<atom";
+		build += "type=\"" + at.getAtomType() + "\" ";
+		build += "class=\"" + at.getAtomType() + "\" ";
+		build += ">";
+		build += at.getContent();
+		build += "</atom>";
+		return build;
+	}
+	
+	private static void check(String input){
+		try {
+			InputSource is = new InputSource();
+		    is.setCharacterStream(new StringReader(input));
+		    DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		    DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(is);			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
 }

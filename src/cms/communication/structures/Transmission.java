@@ -14,7 +14,13 @@ public class Transmission {
 		this.from = from;
 		this.to = to;
 	}
-	
+	public Transmission(Transmission trans){
+		this.id = trans.id;
+		this.from = trans.from;
+		this.to = trans.to;
+		this.opcode = trans.opcode;
+		this.atoms = trans.atoms;
+	}
 	public Transmission(){
 		
 	}

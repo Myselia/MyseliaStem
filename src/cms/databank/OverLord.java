@@ -3,7 +3,7 @@ package cms.databank;
 import java.util.ArrayList;
 import java.util.Random;
 
-import cms.communication.parsers.TransmissionParser;
+import cms.communication.parsers.TransmissionInterpreter;
 import cms.communication.structures.Transmission;
 import cms.databank.structures.Database;
 import cms.databank.structures.Network;
@@ -57,7 +57,7 @@ public class OverLord {
 	}
 
 	public static void insertData(Transmission trans) {
-		TransmissionParser.parseNew(trans);
+		TransmissionInterpreter.interpret(trans);
 	}
 
 	public static void removeNode(int id) {

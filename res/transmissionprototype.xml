@@ -2,7 +2,7 @@
 
 <transmission>
 
-	<header id="123456789" from="node:#" to="cms:server">
+	<header id="123456789" from="node:#" to="cms:#">
 		110
 	</header>
 
