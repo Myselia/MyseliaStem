@@ -27,11 +27,6 @@ public class Main {
 		loadCommands(); //loads the user commands
 		ConfigHandler.init();
 		QueryBuilder qb = new QueryBuilder();
-		System.out.println("Name: " + ConfigHandler.configProperties.get("DB_" + 0 + "_name"));
-		System.out.println(ConfigHandler.configProperties.get("DB_" + 0 + "_url"));
-		System.out.println(ConfigHandler.configProperties.get("DB_" + 0 + "_dbname"));
-		System.out.println(ConfigHandler.configProperties.get("DB_" + 0 + "_user"));
-		System.out.println(ConfigHandler.configProperties.get("DB_" + 0 + "_password"));
 		
 		//Model
 		data = new Thread(new Runnable(){

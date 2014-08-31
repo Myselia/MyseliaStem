@@ -7,7 +7,8 @@ public class TransmissionBuilder {
 	private static int count;
 	private static ArrayList<Atom> list;
 	
-	private TransmissionBuilder(){
+	static {
+		list = new ArrayList<Atom>();
 		count = 0;
 	}
 	
@@ -17,11 +18,13 @@ public class TransmissionBuilder {
 		list.add(atom);
 	}
 	
-	public static void newTransmission(String from, String to){
+	public static void newTransmission(String from, String to, String opcode){
 		transmission = new Transmission(Integer.toString(count), from, to);
+		transmission.addOpcode(opcode);
 	}
 	
 	public static Transmission getTransmission(){
+		transmission.addAtoms(list);
 		Transmission ret = new Transmission(transmission);
 		transmission = null;
 		count++;
