@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import cms.display.GraphicsConstants;
 import cms.display.buttons.quick.DBConnectButton;
+import cms.display.buttons.quick.EmptyButton;
 import cms.display.buttons.quick.QuickSeekButton;
 import cms.display.buttons.quick.TimeDisplayPanel;
 
@@ -34,14 +35,28 @@ public class QuickPanel extends JPanel implements GraphicsConstants {
 		this.setBackground(GraphicsConstants.BACK);
 		this.setPreferredSize(new Dimension(800,24));
 		
-		GridLayout layout = new GridLayout(0, 12);
+		GridLayout layout = new GridLayout(0, 11);
 		layout.setHgap(2);
 		layout.setVgap(2);
 		this.setLayout(layout);
 		
+		EmptyButton[] empties = new EmptyButton[8];
+		for(int i = 0; i < empties.length; i++){
+			empties[i] = new EmptyButton();
+		}
+		
+		this.add("Button", empties[0]);
+		this.add("Button", empties[1]);
+		this.add("Button", empties[2]);
+		this.add("Button", empties[3]);
+		this.add("Button", empties[4]);
 		this.add("Button", TimeDisplayPanel.getTimer());
-		this.add("Button", QuickSeekButton.getSeeker());
+		this.add("Button", empties[5]);
+		this.add("Button", empties[6]);
+		this.add("Button", empties[7]);
 		this.add("Button", DBConnectButton.getConnector());
+		this.add("Button", QuickSeekButton.getSeeker());
+		
 		
 	}
 	

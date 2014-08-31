@@ -51,7 +51,7 @@ public class OverLord {
 				nodeCore.get(i).setTemperature((int)(nodeCore.get(i).getTemperature()*1 + (rand.nextInt()%2)*1));
 				nodeCore.get(i).setCpu((int)(nodeCore.get(i).getCpu()*1 + (rand.nextInt()%2)*1));
 				nodeCore.get(i).setRam((int)(nodeCore.get(i).getRam()*1 + (rand.nextInt()%2)*1));
-				nodeCore.get(i).setParticles((int)(nodeCore.get(i).getParticles()*1 + (rand.nextInt()%2)*1));
+				nodeCore.get(i).setParticles((int)(nodeCore.get(i).getAtoms()*1 + (rand.nextInt()%2)*1));
 			}
 		}
 	}

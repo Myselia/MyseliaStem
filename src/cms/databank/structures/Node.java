@@ -67,7 +67,7 @@ public class Node implements java.io.Serializable {
 		memstore[0].add(temperature);
 	}
 
-	public int getParticles() {
+	public int getAtoms() {
 		return particles;
 	}
 

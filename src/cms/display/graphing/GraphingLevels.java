@@ -70,7 +70,7 @@ public class GraphingLevels extends GraphingParent implements GraphicsConstants{
 				values[i] = OverLord.nodeCore.get(i).getRam();
 			} else if(displaytype == DisplayType.PARTICLES){
 				max = 0.0;
-				values[i] = OverLord.nodeCore.get(i).getParticles();
+				values[i] = OverLord.nodeCore.get(i).getAtoms();
 			}	
 			average += (double)(values[i]/barcount);
 		}

@@ -157,7 +157,7 @@ public final class IconBuilder {
 		String time = df.format(today);
 		
 		obj.graphics.setColor(obj.foreground);
-		obj.graphics.drawString(time, obj.x_pos - 25, obj.y_pos + 6);
+		obj.graphics.drawString(time, obj.x_pos - 28, obj.y_pos + 6);
 	}
 
 	/**
@@ -226,34 +226,35 @@ public final class IconBuilder {
 	private static void nodeIconInfo(BuilderClass obj){
 		obj.graphics.setColor(obj.foreground);
 		
-		
 		String texttwo = "id:" + obj.node_bean.getId();
 		obj.graphics.drawString(texttwo, obj.x_pos - 30, obj.y_pos - 23);
 		
-		String textone = obj.node_bean.getIp();
+		String ipstring = obj.node_bean.getIp();
 		Pattern pattern = Pattern.compile("\\.\\d{1,3}$");
-		Matcher matcher = pattern.matcher(textone);
+		Matcher matcher = pattern.matcher(ipstring);
 		if (matcher.find()) {
-			textone = textone.substring(matcher.start(), matcher.end());
+			ipstring = ipstring.substring(matcher.start(), matcher.end());
 		} else {
-			textone = "...";
+			ipstring = "...";
 		}
-		obj.graphics.drawString(textone, obj.x_pos + 5, obj.y_pos - 23);
+		obj.graphics.drawString(ipstring, obj.x_pos + 5, obj.y_pos - 23);
+		
+		obj.graphics.setFont(new Font("Dialog", Font.BOLD, 12));
 		
 		String tempstring = obj.node_bean.getTemperature() + "°";
 		obj.graphics.drawString(tempstring, obj.x_pos - 30, obj.y_pos - 9);
 		
 		String cpustring = obj.node_bean.getCpu() + "%";
-		obj.graphics.drawString(cpustring, obj.x_pos - 30, obj.y_pos + 5);
+		obj.graphics.drawString(cpustring, obj.x_pos - 30, obj.y_pos + 2);
 		
-		String ramstring = obj.node_bean.getRam() + "";
-		obj.graphics.drawString(ramstring, obj.x_pos - 30, obj.y_pos + 19);
+		String ramstring = obj.node_bean.getRam() + "mb";
+		obj.graphics.drawString(ramstring, obj.x_pos - 30, obj.y_pos + 13);
 		
-		String partstring = obj.node_bean.getParticles() + "";
-		obj.graphics.drawString(partstring, obj.x_pos - 30, obj.y_pos + 33);
+		String partstring = obj.node_bean.getAtoms() + "::";
+		obj.graphics.drawString(partstring, obj.x_pos - 30, obj.y_pos + 24);
 		
-		//String netstring = "net:" + obj.node_bean.getTemperature();
-		//obj.graphics.drawString(netstring, obj.x_pos - 25, obj.y_pos - 23);
+		String netstring = obj.node_bean.getRam() + "kb/s";
+		obj.graphics.drawString(netstring, obj.x_pos - 30, obj.y_pos + 35);
 	}
 
 	/**

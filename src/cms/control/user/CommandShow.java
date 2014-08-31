@@ -127,8 +127,7 @@ public class CommandShow extends AbstractCommand {
 		System.out.println("hist [#][temp|cpu|ram|particles] Calls node # and show its DisplayType histogram. Default is TEMPERATURE");
 		System.out.println("hist 'void' show the currently selected node's TEMPERATURE histogram.");
 		System.out.println("level [temp|cpu|ram|particles] deselects all nodes and display the levels of DisplayType. Default is TEMPERATURE");
-		System.out.println("'info' toggles the node buttons in the address bar to info or icon display");
-		
+		System.out.println("'info' toggles the node buttons in the address bar to info or icon display");	
 	}
 	
 	@Override
