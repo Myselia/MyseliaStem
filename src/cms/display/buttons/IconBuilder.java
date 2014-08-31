@@ -66,12 +66,15 @@ public final class IconBuilder {
 			nodeIcon(obj);
 			break;
 		case 1:
+			nodeIconInfo(obj);
+			break;
+		case 10:
 			cmsIcon(obj);
 			break;
-		case 2:
+		case 11:
 			amsIcon(obj);
 			break;
-		case 3:
+		case 12:
 			dbIcon(obj);
 			break;
 		case 50:
@@ -93,6 +96,9 @@ public final class IconBuilder {
 		case 100:
 			quickSeek(obj);
 			break;
+		case 150:
+			quickDB(obj);
+			break;
 		case 200:
 			quickTime(obj);
 			break;
@@ -102,6 +108,26 @@ public final class IconBuilder {
 		}
 
 	}
+	
+	private static void quickDB(BuilderClass obj) {
+		int circ = 8;
+		int scale = 3;
+		for(int i = circ*2; i > 4; i--){
+			if(i % 2 == 0){
+				obj.graphics.setColor(obj.foreground);
+			} else {
+				obj.graphics.setColor(obj.background);
+			}
+			obj.graphics.fillOval(obj.x_pos - i*scale, obj.y_pos - i*scale, i*scale*2, i*scale*2);
+		}
+		obj.graphics.setColor(obj.foreground);
+		obj.graphics.fillRect(obj.x_pos - 7, obj.y_pos - 7, 16, 14);
+		obj.graphics.setColor(obj.background);
+		obj.graphics.fillOval(obj.x_pos - 10, obj.y_pos - 10, 20, 8);
+		obj.graphics.setColor(obj.foreground);
+		obj.graphics.fillOval(obj.x_pos - 7, obj.y_pos - 10, 14, 6);
+		obj.graphics.fillOval(obj.x_pos - 7, obj.y_pos + 3, 14, 6);
+	}
 
 	/**
 	 * Creates a QuickSeekButton icon
@@ -110,7 +136,7 @@ public final class IconBuilder {
 	private static void quickSeek(BuilderClass obj) {
 		int circ = 8;
 		int scale = 3;
-		for(int i = circ*2; i > 1; i--){
+		for(int i = circ*2; i > 4; i--){
 			if(i % 2 == 0){
 				obj.graphics.setColor(obj.foreground);
 			} else {
@@ -118,6 +144,10 @@ public final class IconBuilder {
 			}
 			obj.graphics.fillOval(obj.x_pos - i*scale, obj.y_pos - i*scale, i*scale*2, i*scale*2);
 		}
+		
+		obj.graphics.setColor(obj.foreground);
+		obj.graphics.fillOval(obj.x_pos - 2*scale, obj.y_pos - 2*scale, 2*scale*2, 2*scale*2);
+		obj.graphics.fillRect(obj.x_pos - 1, obj.y_pos - 15, 4, 30);
 	}
 	
 	private static void quickTime(BuilderClass obj) {
@@ -191,6 +221,39 @@ public final class IconBuilder {
 
 		String texttwo = "id:" + obj.node_bean.getId();
 		obj.graphics.drawString(texttwo, obj.x_pos + 5, obj.y_pos + 34);
+	}
+	
+	private static void nodeIconInfo(BuilderClass obj){
+		obj.graphics.setColor(obj.foreground);
+		
+		
+		String texttwo = "id:" + obj.node_bean.getId();
+		obj.graphics.drawString(texttwo, obj.x_pos - 30, obj.y_pos - 23);
+		
+		String textone = obj.node_bean.getIp();
+		Pattern pattern = Pattern.compile("\\.\\d{1,3}$");
+		Matcher matcher = pattern.matcher(textone);
+		if (matcher.find()) {
+			textone = textone.substring(matcher.start(), matcher.end());
+		} else {
+			textone = "...";
+		}
+		obj.graphics.drawString(textone, obj.x_pos + 5, obj.y_pos - 23);
+		
+		String tempstring = obj.node_bean.getTemperature() + "°";
+		obj.graphics.drawString(tempstring, obj.x_pos - 30, obj.y_pos - 9);
+		
+		String cpustring = obj.node_bean.getCpu() + "%";
+		obj.graphics.drawString(cpustring, obj.x_pos - 30, obj.y_pos + 5);
+		
+		String ramstring = obj.node_bean.getRam() + "";
+		obj.graphics.drawString(ramstring, obj.x_pos - 30, obj.y_pos + 19);
+		
+		String partstring = obj.node_bean.getParticles() + "";
+		obj.graphics.drawString(partstring, obj.x_pos - 30, obj.y_pos + 33);
+		
+		//String netstring = "net:" + obj.node_bean.getTemperature();
+		//obj.graphics.drawString(netstring, obj.x_pos - 25, obj.y_pos - 23);
 	}
 
 	/**

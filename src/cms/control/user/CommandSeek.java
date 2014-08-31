@@ -12,9 +12,9 @@ public class CommandSeek extends AbstractCommand {
 			if(parameters[1].equals("def")){
 				define();
 			} else if(parameters[1].equals("on") || parameters[1].equals("start")){
-				CMSCommand.seekOn();
+				CMSCommand.seek(true);
 			} else if(parameters[1].equals("off") || parameters[1].equals("stop")){
-				CMSCommand.seekOff();
+				CMSCommand.seek(false);
 			} else {
 				System.out.println("e>" + "Wrong Parameters");
 			}

@@ -105,11 +105,6 @@ public class Main {
 					);
 			//Add database to central DB repository
 			OverLord.dbCore.add(db);
-			//Start the connection
-			db.startConnection();
-			qb.sendNewConnectionIP(db.getConnection());
-			qb.printLastFiveConnections(db.getConnection());
-			db.closeConnection();
 		}
 	}
 	

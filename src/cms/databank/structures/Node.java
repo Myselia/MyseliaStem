@@ -15,7 +15,7 @@ public class Node implements java.io.Serializable {
 	private volatile double temperature = 25; 		// core temperature
 	private volatile double cpu = 50;				// core cpu usage
 	private volatile double ram = 256;				// core leftover ram
-	private volatile double particles = 1000;		// core ams particles
+	private volatile int particles = 1000;		// core ams particles
 	
 	private volatile String ip = "000.000.000.000";			// ip of core
 
@@ -67,11 +67,11 @@ public class Node implements java.io.Serializable {
 		memstore[0].add(temperature);
 	}
 
-	public double getParticles() {
+	public int getParticles() {
 		return particles;
 	}
 
-	public void setParticles(double particles) {
+	public void setParticles(int particles) {
 		this.particles = particles;
 		memstore[3].add(particles);
 	}

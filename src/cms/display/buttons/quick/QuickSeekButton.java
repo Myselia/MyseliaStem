@@ -92,10 +92,8 @@ public class QuickSeekButton extends JComponent implements MouseListener, Graphi
 		setSelect(!select);
 		if(select){
 			Main.startBCastThread(Main.getBcastRunnable(), Main.getbCastCommunicator());
-			System.out.println("Seek mode activated");
 		} else {
 			Main.getbCastCommunicator().interrupt();
-			System.out.println("Seek mode deactivated");
 		}
 	}
 

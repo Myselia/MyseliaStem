@@ -34,8 +34,6 @@ public class Broadcast extends ThreadHelper {
 
 
 	public void startDiscovering() throws IOException {
-		System.out.println("STARTING DISCOVERY SERVICE");
-
 		openServerSocket(this.port);
 		byte[] info = buildInfoPacket();
 		InetAddress broadcast = null;

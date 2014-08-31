@@ -6,16 +6,18 @@ import cms.display.info.AddressPanel;
 import cms.display.info.QuickPanel;
 
 public class CMSCommand {
-	
+
 	/*
 	 * GENERAL NODE OPERATIONS
 	 */
-	
+
 	/**
 	 * Kicks the node with id off the network if possible
-	 * @param id	sessionID of the node
+	 * 
+	 * @param id
+	 *            sessionID of the node
 	 */
-	public static void kick(int id){
+	public static void kick(int id) {
 		if (OverLord.isNodeAcive(id)) {
 			System.out.println("Kicking node " + id);
 			OverLord.removeNode(id);
@@ -23,22 +25,23 @@ public class CMSCommand {
 			System.out.println("Node " + id + " is not available for modification");
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param type
 	 */
-	public static void make(int type){
+	public static void make(int type) {
 		int coreid = OverLord.getSelectedCore();
-		if(coreid == -1){
+		if (coreid == -1) {
 			System.out.println("e>" + "No core currently selected");
-			return; /**TODO make(int): verify if the -1 case is checked appropriately**/
-		}else{
-		OverLord.nodeCore.get(coreid).setType(type);
-		AddressPanel.nodeButton(coreid).repaint();
+			return;
+			/** TODO make(int): verify if the -1 case is checked appropriately **/
+		} else {
+			OverLord.nodeCore.get(coreid).setType(type);
+			AddressPanel.nodeButton(coreid).repaint();
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param s
@@ -48,31 +51,43 @@ public class CMSCommand {
 		AddressPanel.unselectLast(AddressPanel.nodeButton(call));
 		AddressPanel.nodeButton(call).select(true);
 	}
-	
+
 	/*
 	 * BROADCAST COMMANDS
 	 */
-	public static void seekOn() {
-		Main.startBCastThread(Main.getBcastRunnable(), Main.getbCastCommunicator());
-		System.out.println("Seek mode activated");
-		QuickPanel.setSeekSelect();
+	public static void seek(boolean seek) {
+		if (seek) {
+			Main.startBCastThread(Main.getBcastRunnable(), Main.getbCastCommunicator());
+			QuickPanel.setSeekSelect();
+		} else {
+			Main.getbCastCommunicator().interrupt();
+			QuickPanel.setSeekSelect();
+		}
 	}
 
-	public static void seekOff(){
-		Main.getbCastCommunicator().interrupt();
-		System.out.println("Seek mode deactivated");
-		QuickPanel.setSeekSelect();
-	}
-	
 	/*
 	 * EXIT COMMANDS
 	 */
-	public static void cleanExit(){
+	public static void cleanExit() {
 		System.out.println("s>" + "Cleaning");
 		System.exit(0);
 	}
 
-
-
+	/*
+	 * DB COMMANDS
+	 */
+	public static void dbconnections(boolean conn) {
+		if (conn) {
+			for (int i = 0; i < OverLord.dbCore.size(); i++) {
+				OverLord.dbCore.get(i).startConnection();
+				QuickPanel.setDBConnSelect();
+			}
+		} else {
+			for (int i = 0; i < OverLord.dbCore.size(); i++) {
+				OverLord.dbCore.get(i).closeConnection();
+				QuickPanel.setDBConnSelect();
+			}
+		}
+	}
 
 }

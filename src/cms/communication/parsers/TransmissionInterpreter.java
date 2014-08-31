@@ -24,7 +24,7 @@ public class TransmissionInterpreter {
 					OverLord.nodeCore.get(coreid).setCpu(Double.parseDouble(trans.atoms[i].getContent()));
 					
 				} else if(particleClass.equals("part")){
-					OverLord.nodeCore.get(coreid).setParticles(Double.parseDouble(trans.atoms[i].getContent()));
+					OverLord.nodeCore.get(coreid).setParticles(Integer.parseInt(trans.atoms[i].getContent()));
 					
 				}
 

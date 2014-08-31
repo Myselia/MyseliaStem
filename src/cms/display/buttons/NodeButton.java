@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
 import cms.databank.structures.Node;
 import cms.databank.structures.NodeState;
@@ -24,6 +25,7 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 	private static final long serialVersionUID = 1L;
 	private Node core;
 	private boolean select = false; 
+	private boolean info = false;
 	private Color background, foreground;
 	
 	/**
@@ -97,7 +99,11 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 			foreground = ABS;
 			break;
 		}
-		IconBuilder.icon(g, foreground, background, getWidth(), getHeight(), core.getType(), core);
+		int subtype = core.getType();
+		if(info){ 
+			subtype += 1;
+		}
+		IconBuilder.icon(g, foreground, background, getWidth(), getHeight(), subtype, core);
 	}
 
 	/**
@@ -109,7 +115,10 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 		AddressPanel.unselectLast(this);
 		select(true);
 		if(select){
-			System.out.println("g>Call: " + core.getId());
+			System.out.println("g>" + "Call: " + core.getId());
+		}
+		if(SwingUtilities.isRightMouseButton(e)){
+			this.info = !this.info;
 		}
 	}
 
