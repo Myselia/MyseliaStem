@@ -16,15 +16,17 @@ public class CommandShow extends AbstractCommand {
 			System.out.println("e>" + "Command incomplete");
 			break;
 		case 2:
-			if(parameters[1].equals("hist"))
+			if(parameters[1].equals("hist")){
 				histogram(DisplayType.TEMPERATURE);
-			else if(parameters[1].equals("levels"))
+			}else if(parameters[1].equals("levels")){
 				levels(DisplayType.TEMPERATURE);
-			else if(parameters[1].equals("def"))
+			}else if(parameters[1].equals("info")){
+				infoToggle();
+			}else if(parameters[1].equals("def")){
 				define();
-			else
+			}else{
 				System.out.println("e>" + "Wrong Parameters");
-			
+			}
 			break;
 		case 3:
 			if(parameters[1].equals("hist")){
@@ -111,6 +113,12 @@ public class CommandShow extends AbstractCommand {
 			throw new IllegalArgumentException();
 		}
 	}
+	
+	private static void infoToggle(){
+		for(int i = 0; i < OverLord.nodeCore.size(); i++){
+			AddressPanel.nodeButton(i).infoToggle();
+		}
+	}
 
 	@Override
 	public void define() {
@@ -119,6 +127,7 @@ public class CommandShow extends AbstractCommand {
 		System.out.println("hist [#][temp|cpu|ram|particles] Calls node # and show its DisplayType histogram. Default is TEMPERATURE");
 		System.out.println("hist 'void' show the currently selected node's TEMPERATURE histogram.");
 		System.out.println("level [temp|cpu|ram|particles] deselects all nodes and display the levels of DisplayType. Default is TEMPERATURE");
+		System.out.println("'info' toggles the node buttons in the address bar to info or icon display");
 		
 	}
 	

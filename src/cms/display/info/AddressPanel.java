@@ -23,7 +23,7 @@ public class AddressPanel extends JPanel implements GraphicsConstants {
 	private static AddressPanel singleton;
 	private static Dimension size;
 	
-	private NodeButton[] button;
+	private static NodeButton[] button;
 	private NodeButton lastButtonClicked;
 	private int rows;
 	
@@ -102,6 +102,10 @@ public class AddressPanel extends JPanel implements GraphicsConstants {
 		singleton.repaint();
 		singleton.revalidate();
 		singleton.repaint();
+	}
+	
+	public static NodeButton[] getButtons(){
+		return button;
 	}
 	
 }

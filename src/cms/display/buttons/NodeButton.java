@@ -105,6 +105,10 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 		}
 		IconBuilder.icon(g, foreground, background, getWidth(), getHeight(), subtype, core);
 	}
+	
+	public void infoToggle(){
+		this.info = !this.info;
+	}
 
 	/**
 	 * MouseClicked Listener.
@@ -118,7 +122,7 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 			System.out.println("g>" + "Call: " + core.getId());
 		}
 		if(SwingUtilities.isRightMouseButton(e)){
-			this.info = !this.info;
+			infoToggle();
 		}
 	}
 
