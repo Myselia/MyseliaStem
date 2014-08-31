@@ -30,20 +30,20 @@ public class Database{
 		try { 
 			Class.forName(driver).newInstance(); 
 			connection = DriverManager.getConnection(url + "/" + dbName ,userName,password);
-			LogSystem.log(true, false, "DATABASE CONNECTION STARTED");
+			LogSystem.log(true, false, "DATABASE CONNECTION STARTED: " + dbName);
 		}catch (Exception e){ 
 			System.out.println("e>Database connection error");
-			e.printStackTrace(); 
+			//e.printStackTrace(); 
 		} 
 	}
 	
 	public void closeConnection(){
 		try {
 			connection.close();
-			LogSystem.log(true, false, "DATABASE CONNECTION CLOSED");
+			LogSystem.log(true, false, "DATABASE CONNECTION CLOSED: " + dbName);
 		} catch (SQLException e) {
 			System.out.println("e>Error closing connection");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	

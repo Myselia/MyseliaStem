@@ -17,6 +17,7 @@ public class Main {
 	
 	private static Broadcast bcastRunnable = new Broadcast();
 	private static Server serverRunnable = new Server(DEFAULT_PORT, 100);
+	private static QueryBuilder qb;
 	
 	private static Thread bCastCommunicator;
 	private static Thread communicator;
@@ -26,7 +27,8 @@ public class Main {
 	public static void main(String[] args) {		
 		loadCommands(); //loads the user commands
 		ConfigHandler.init();
-		QueryBuilder qb = new QueryBuilder();
+		qb = new QueryBuilder();
+
 		
 		//Model
 		data = new Thread(new Runnable(){
@@ -59,22 +61,8 @@ public class Main {
 		}
 		
 		//Add all user defined DBs into the OverLord's database list
-		
-		for (int i = 0; i < ConfigHandler.DBCount; i++) {
-			Database db = new Database(
-					ConfigHandler.configProperties.get("DB_" + i + "_name"), 
-					ConfigHandler.configProperties.get("DB_" + i + "_url"), 
-					ConfigHandler.configProperties.get("DB_" + i + "_dbname"), 
-					ConfigHandler.configProperties.get("DB_" + i + "_user"), 
-					ConfigHandler.configProperties.get("DB_" + i + "_password")
-					);
-			OverLord.dbCore.add(db);
-			db.startConnection();
-			qb.sendNewConnectionIP(db.getConnection());
-			qb.printLastFiveConnections(db.getConnection());
-			db.closeConnection();
-		}
-		
+		setupDatabases();
+
 	}
 
 	private static void loadCommands(){
@@ -104,6 +92,26 @@ public class Main {
 
 	public static void setbCastCommunicator(Thread bCastCommunicator) {
 		Main.bCastCommunicator = bCastCommunicator;
+	}
+	
+	private static void setupDatabases() {
+		for (int i = 0; i < ConfigHandler.DBCount; i++) {
+			//Create DB object with appropriate field values
+			Database db = new Database(
+					ConfigHandler.configProperties.get("DB_" + i + "_name"), 
+					ConfigHandler.configProperties.get("DB_" + i + "_url"), 
+					ConfigHandler.configProperties.get("DB_" + i + "_dbname"), 
+					ConfigHandler.configProperties.get("DB_" + i + "_user"), 
+					ConfigHandler.configProperties.get("DB_" + i + "_password")
+					);
+			//Add database to central DB repository
+			OverLord.dbCore.add(db);
+			//Start the connection
+			db.startConnection();
+			qb.sendNewConnectionIP(db.getConnection());
+			qb.printLastFiveConnections(db.getConnection());
+			db.closeConnection();
+		}
 	}
 	
 

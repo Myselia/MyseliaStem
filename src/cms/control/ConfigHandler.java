@@ -109,6 +109,11 @@ public class ConfigHandler {
 		boolean moreThanOne = false;
 
 		while ((text = configReader.readLine()) != null) {
+
+			if (PRINT_DEBUG) {
+				System.out.println(text);	
+			}
+
 			String keyHolder = "";
 
 			// Line is a comment or empty, ignore

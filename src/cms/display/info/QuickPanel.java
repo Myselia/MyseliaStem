@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import cms.display.GraphicsConstants;
 import cms.display.buttons.quick.QuickSeekButton;
+import cms.display.buttons.quick.TimeDisplayPanel;
 
 /**
  * The <code>QuickPanel</code> class is a JPanel comprised of quick action buttons.
@@ -37,7 +38,9 @@ public class QuickPanel extends JPanel implements GraphicsConstants {
 		layout.setVgap(2);
 		this.setLayout(layout);
 		
+		this.add("Button", TimeDisplayPanel.getTimer());
 		this.add("Button", QuickSeekButton.getSeeker());
+		
 	}
 	
 	/**

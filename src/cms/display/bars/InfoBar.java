@@ -58,7 +58,7 @@ public class InfoBar extends JPanel implements GraphicsConstants, Runnable {
 		while(true){
 			try{
 				Thread.sleep(200);
-				addresspanel.repaint();
+				infobar.repaint();
 			}catch(InterruptedException e){
 				e.printStackTrace();
 			}
