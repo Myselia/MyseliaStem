@@ -109,9 +109,11 @@ public class ConfigHandler {
 		boolean moreThanOne = false;
 
 		while ((text = configReader.readLine()) != null) {
+
 			if (PRINT_DEBUG) {
 				System.out.println(text);	
 			}
+
 			String keyHolder = "";
 
 			// Line is a comment or empty, ignore
@@ -181,7 +183,7 @@ public class ConfigHandler {
 					tagOffset = 0;
 				}
 			} else {
-				// ERROR id:10t. Config structure isnt proper! Thow an error and
+				// Config structure isnt proper! Throw an error and
 				// stop reading whatever filth we were given
 				System.err.println("Invalid config file structure: " + text);
 				System.err.println("System was expecting element: " + tagsNeeded[tagOffset]);

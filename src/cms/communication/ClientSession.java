@@ -6,8 +6,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import cms.communication.parsers.TransmissionParser;
 import cms.communication.parsers.XMLParser;
 import cms.communication.structures.Transmission;
+import cms.communication.structures.TransmissionBuilder;
 import cms.databank.OverLord;
 import cms.databank.structures.Node;
 import cms.databank.structures.NodeState;
@@ -47,7 +49,7 @@ public class ClientSession extends ThreadHelper {
 		try {
 			
 			System.out.println("STARTING CLIENT SESSION");
-			
+			Transmission trans;
 
 			input =  new BufferedReader(new InputStreamReader(
 					clientConnectionSocket.getInputStream()));
@@ -57,6 +59,7 @@ public class ClientSession extends ThreadHelper {
 			if (!SETUP) {
 				//Once connected perform initial setup (assign node ID, etc)
 				String infoParams;
+				
 				if (OverLord.getIPInClusterPosition(ipAddress) != -1) {
 					//This node has already connected before, give it its old position
 					sessionID = OverLord.getIPInClusterPosition(ipAddress);
@@ -64,8 +67,14 @@ public class ClientSession extends ThreadHelper {
 				} else {
 					sessionID = OverLord.nextNodeID();
 				}
+				TransmissionBuilder.newTransmission("cms:0", "node:" + Integer.toString(sessionID), "100");
+				TransmissionBuilder.addAtom("system", "id", Integer.toString(sessionID));
+				Transmission initTrans = TransmissionBuilder.getTransmission();
+				String initParams = TransmissionParser.makedoc(initTrans);
+				/*
 				infoParams = Integer.toString(sessionID);
-				output.println(infoParams);
+				*/
+				output.println(initParams);
 				SETUP = true;
 			}
 			
@@ -90,8 +99,6 @@ public class ClientSession extends ThreadHelper {
 			GraphingHistogram.updateBarCount();
 			//
 			
-			Transmission trans;
-		
 			while (SETUP && ((inputS = input.readLine() ) != null)) {
 				LogSystem.log(true, false, "Response from Client(" + ipAddress + ")");
 				XMLParser xmlp = new XMLParser();

@@ -28,6 +28,7 @@ public class Main {
 		loadCommands(); //loads the user commands
 		ConfigHandler.init();
 		qb = new QueryBuilder();
+
 		
 		//Model
 		data = new Thread(new Runnable(){

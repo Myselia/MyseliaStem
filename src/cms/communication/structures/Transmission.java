@@ -1,5 +1,7 @@
 package cms.communication.structures;
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -28,6 +30,12 @@ public class Transmission {
 		this.id = id;
 		this.from = from;
 		this.to = to;
+	}
+	public void addAtoms(ArrayList<Atom> list){
+		atoms = new Atom[list.size()];
+		for(int i = 0; i < atoms.length; i++){
+			atoms[i] = list.get(i);
+		}
 	}
 	
 	public void addParticles(NodeList list){
