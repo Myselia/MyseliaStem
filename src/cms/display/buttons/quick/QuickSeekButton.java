@@ -21,9 +21,9 @@ public class QuickSeekButton extends JComponent implements MouseListener, Graphi
 	private static final long serialVersionUID = 1L;
 	private static QuickSeekButton singleton;
 	private static final int type = 100;
-	private boolean select;
+	private static boolean select;
 	private Color foreground;
-	
+	public static int blink = 0;
 	static{
 		singleton = new QuickSeekButton();
 	}
@@ -54,6 +54,9 @@ public class QuickSeekButton extends JComponent implements MouseListener, Graphi
 	public static void setSelect(boolean select){
 		singleton.select = select;
 		singleton.repaint();
+		if(!select){
+			QuickSeekButton.blink = 0;
+		}
 	}
 	
 	/**
@@ -73,6 +76,7 @@ public class QuickSeekButton extends JComponent implements MouseListener, Graphi
 		
 		//Background
 		if(select){
+			blink = (++blink)%6;
 			foreground = RUN;
 		} else {
 			foreground = ABS;
@@ -80,7 +84,11 @@ public class QuickSeekButton extends JComponent implements MouseListener, Graphi
 		g.setColor(BACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		IconBuilder.icon(g, foreground, BACK, getWidth(), getHeight(), type, null);
+		//Blink
+		
+		
+		
+		IconBuilder.icon(g, foreground, BACK, getWidth(), getHeight(), type, singleton, null);
 	}
 
 	/**
