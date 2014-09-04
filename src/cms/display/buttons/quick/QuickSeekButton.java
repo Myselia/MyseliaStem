@@ -84,10 +84,6 @@ public class QuickSeekButton extends JComponent implements MouseListener, Graphi
 		g.setColor(BACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		//Blink
-		
-		
-		
 		IconBuilder.icon(g, foreground, BACK, getWidth(), getHeight(), type, singleton, null);
 	}
 

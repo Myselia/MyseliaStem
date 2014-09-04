@@ -98,6 +98,7 @@ public class ClientSession extends ThreadHelper {
 			
 			while (SETUP && ((inputS = input.readLine() ) != null)) {
 				LogSystem.log(true, false, "Response from Client(" + ipAddress + ")");
+				
 				XMLParser xmlp = new XMLParser();
 				trans = xmlp.makedoc(inputS);
 				if (trans.to.equals("cms:server")) {
