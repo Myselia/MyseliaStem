@@ -39,7 +39,7 @@ public class TimeDisplayPanel  extends JComponent implements GraphicsConstants {
 		g.setColor(BACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		IconBuilder.icon(g, foreground, BACK, getWidth(), getHeight(), type, null);
+		IconBuilder.icon(g, foreground, BACK, getWidth(), getHeight(), type, null, null);
 	}
 
 }

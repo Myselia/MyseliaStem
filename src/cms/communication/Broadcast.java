@@ -12,6 +12,7 @@ import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 import cms.Main;
+import cms.display.buttons.quick.QuickSeekButton;
 import cms.helpers.ThreadHelper;
 import cms.monitoring.LogSystem;
 
@@ -48,7 +49,6 @@ public class Broadcast extends ThreadHelper {
 
 				DatagramPacket infoPacket = new DatagramPacket(info, info.length, InetAddress.getByName("255.255.255.255"), 8888);
 				discoverSocket.send(infoPacket);
-				LogSystem.log(true, false, "Sent packet " + infoPacket + " to: " + infoPacket.getAddress().getHostAddress());
 				Thread.sleep(SLEEP_TIME);
 
 			} catch (InterruptedException e) {

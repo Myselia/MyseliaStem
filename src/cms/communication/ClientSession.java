@@ -81,7 +81,6 @@ public class ClientSession extends ThreadHelper {
 			Node curNode;
 			if (!HAS_CONNECTED) {
 				OverLord.nodeCore.add(new Node());
-				System.err.println("SIZE: " + OverLord.nodeCore.size());
 				curNode = OverLord.nodeCore.get(OverLord.nodeCore.size() - 1);
 			} else {
 				curNode = OverLord.nodeCore.get(sessionID);
@@ -90,9 +89,7 @@ public class ClientSession extends ThreadHelper {
 			curNode.setType(0);
 			curNode.setId(sessionID);
 			curNode.setIp(ipAddress);
-			System.err.println("NODE ID IS: " + curNode.getId());
 			curNode.setState(NodeState.AVAILABLE);
-			System.err.println("SID " + sessionID);
 			
 			//UPDATE THE GRAPHICS TO MATCH THE ADDITION OF A NEW NODE
 			AddressPanel.updateButtonList();

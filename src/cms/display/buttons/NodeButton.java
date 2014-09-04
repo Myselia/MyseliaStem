@@ -103,7 +103,7 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 		if(info){ 
 			subtype += 1;
 		}
-		IconBuilder.icon(g, foreground, background, getWidth(), getHeight(), subtype, core);
+		IconBuilder.icon(g, foreground, background, getWidth(), getHeight(), subtype, null, core);
 	}
 	
 	public void infoToggle(){

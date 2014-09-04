@@ -10,7 +10,12 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.JComponent;
+
 import cms.databank.structures.Node;
+import cms.display.GraphicsConstants;
+import cms.display.buttons.quick.QuickSeekButton;
+import cms.monitoring.LogSystem;
 
 /**
  * The <code>IconBuilder</code> class is a factory class building icons for the various buttons of the GUI.
@@ -35,14 +40,16 @@ public final class IconBuilder {
 		private Color foreground, background;
 		private int x_pos, y_pos;
 		private Node node_bean;
+		private JComponent component;
 		
-		public BuilderClass(Graphics g, Color foreground, Color background, int x, int y, int type, Node node){
+		public BuilderClass(Graphics g, Color foreground, Color background, int x, int y, int type, JComponent component, Node node_bean){
 			this.graphics = g;
 			this.foreground = foreground;
 			this.background = background;
 			this.x_pos = x / 2;
 			this.y_pos = y / 2;
-			this.node_bean = node;
+			this.node_bean = node_bean;
+			this.component = component;
 		}
 	}
 
@@ -57,8 +64,8 @@ public final class IconBuilder {
 	 * @param node Node used in nodeIcon() method. Otherwise null (and not used).
 	 * TODO Change Node node for an interface implemented commonly by Node, DB, AMS & Relay
 	 */
-	public static void icon(Graphics g, Color foreground, Color background, int x, int y, int type, Node node) {
-		BuilderClass obj = new BuilderClass(g, foreground, background, x, y, type, node);
+	public static void icon(Graphics g, Color foreground, Color background, int x, int y, int type, JComponent component, Node node_bean) {
+		BuilderClass obj = new BuilderClass(g, foreground, background, x, y, type, component, node_bean);
 		obj.graphics.setFont(new Font("Dialog", Font.BOLD, 15));
 
 		switch (type) {
@@ -94,6 +101,10 @@ public final class IconBuilder {
 			particlesIcon(obj);
 			break;
 		case 100:
+		case 101:
+		case 102:
+		case 103:
+		case 104:
 			quickSeek(obj);
 			break;
 		case 150:
@@ -110,7 +121,7 @@ public final class IconBuilder {
 	}
 	
 	private static void quickDB(BuilderClass obj) {
-		int circ = 8;
+		int circ = 7;
 		int scale = 3;
 		for(int i = circ*2; i > 4; i--){
 			if(i % 2 == 0){
@@ -134,11 +145,16 @@ public final class IconBuilder {
 	 * @param obj
 	 */
 	private static void quickSeek(BuilderClass obj) {
-		int circ = 8;
+		int circ = 7;
 		int scale = 3;
+		int blink = QuickSeekButton.blink * 2 + 6;
 		for(int i = circ*2; i > 4; i--){
 			if(i % 2 == 0){
-				obj.graphics.setColor(obj.foreground);
+				if(i < blink){
+					obj.graphics.setColor(obj.foreground);
+				} else {
+					obj.graphics.setColor(GraphicsConstants.ABS);
+				}
 			} else {
 				obj.graphics.setColor(obj.background);
 			}
