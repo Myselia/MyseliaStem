@@ -27,6 +27,7 @@ public class TransmissionBuilder {
 		transmission.addAtoms(list);
 		Transmission ret = new Transmission(transmission);
 		transmission = null;
+		list.clear();
 		count++;
 		return ret;
 	}
