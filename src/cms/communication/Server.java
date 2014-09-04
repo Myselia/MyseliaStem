@@ -34,7 +34,7 @@ public class Server extends ThreadHelper {
 	}
 
 	public void startRunning() throws ClassNotFoundException {
-		LogSystem.log(true, false, "STARTING SERVER LISTENING ON PORT " + port);
+		LogSystem.log(true, false, "Server listening on port: " + port);
 
 		openServerSocket(this.port);
 

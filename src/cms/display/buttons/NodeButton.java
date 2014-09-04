@@ -26,6 +26,7 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 	private Node core;
 	private boolean select = false; 
 	private boolean info = false;
+	public int blink = 0;
 	private Color background, foreground;
 	
 	/**
@@ -51,6 +52,12 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 		this.core.setSelected(select);
 		this.select = select;
 		this.repaint();
+	}
+	
+	public void setBlink(boolean blinkbool){
+		if(blinkbool){
+			this.blink = 2;
+		}
 	}
 	
 	/**
@@ -81,13 +88,13 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 		NodeState state = core.getState();
 		switch (state) {
 		case ABSENT:
-			foreground = ABS;
+			foreground = AVA;
 			break;
 		case PRESENT:
 			foreground = PRE;
 			break;
 		case AVAILABLE:
-			foreground = AVA;
+			foreground = ABS;
 			break;
 		case RUNNING:
 			foreground = RUN;
@@ -103,7 +110,10 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 		if(info){ 
 			subtype += 1;
 		}
-		IconBuilder.icon(g, foreground, background, getWidth(), getHeight(), subtype, null, core);
+		IconBuilder.icon(g, foreground, background, getWidth(), getHeight(), subtype, this, core);
+		if(blink > 0){
+			blink--;
+		}
 	}
 	
 	public void infoToggle(){

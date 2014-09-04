@@ -30,7 +30,7 @@ public class Database{
 		try { 
 			Class.forName(driver).newInstance(); 
 			connection = DriverManager.getConnection(url + "/" + dbName ,userName,password);
-			LogSystem.log(true, false, "DATABASE CONNECTION STARTED: " + dbName);
+			LogSystem.log(true, false, "Database connection started: " + dbName);
 		}catch (Exception e){ 
 			System.out.println("e>Database connection error");
 			//e.printStackTrace(); 
@@ -40,7 +40,7 @@ public class Database{
 	public void closeConnection(){
 		try {
 			connection.close();
-			LogSystem.log(true, false, "DATABASE CONNECTION CLOSED: " + dbName);
+			LogSystem.log(true, false, "Database connection closed: " + dbName);
 		} catch (SQLException e) {
 			System.out.println("e>Error closing connection");
 			//e.printStackTrace();

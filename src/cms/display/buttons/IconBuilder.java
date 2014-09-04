@@ -101,10 +101,6 @@ public final class IconBuilder {
 			particlesIcon(obj);
 			break;
 		case 100:
-		case 101:
-		case 102:
-		case 103:
-		case 104:
 			quickSeek(obj);
 			break;
 		case 150:
@@ -219,7 +215,12 @@ public final class IconBuilder {
 	private static void nodeIcon(BuilderClass obj) {
 		obj.graphics.setColor(obj.foreground);
 		obj.graphics.fillOval(obj.x_pos - 15, obj.y_pos - 15, 30, 30);
-		obj.graphics.setColor(obj.background);
+		NodeButton bob = (NodeButton)obj.component;
+		if(bob.blink == 0){
+			obj.graphics.setColor(obj.background);
+		} else {
+			obj.graphics.setColor(GraphicsConstants.RUN);
+		}
 		obj.graphics.fillOval(obj.x_pos - 13, obj.y_pos - 13, 26, 26);
 		obj.graphics.setColor(obj.foreground);
 		obj.graphics.fillOval(obj.x_pos - 8, obj.y_pos - 8, 16, 16);

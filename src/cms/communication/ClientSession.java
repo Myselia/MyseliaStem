@@ -47,8 +47,6 @@ public class ClientSession extends ThreadHelper {
 
 	public void run() {
 		try {
-			
-			System.out.println("STARTING CLIENT SESSION");
 			Transmission trans;
 
 			input =  new BufferedReader(new InputStreamReader(
@@ -78,6 +76,8 @@ public class ClientSession extends ThreadHelper {
 				SETUP = true;
 			}
 			
+			LogSystem.log(true, false, "Starting Client Session(" + sessionID + "):" + ipAddress);
+			
 			Node curNode;
 			if (!HAS_CONNECTED) {
 				OverLord.nodeCore.add(new Node());
@@ -97,8 +97,7 @@ public class ClientSession extends ThreadHelper {
 			//
 			
 			while (SETUP && ((inputS = input.readLine() ) != null)) {
-				LogSystem.log(true, false, "Response from Client(" + ipAddress + ")");
-				
+				AddressPanel.nodeButton(sessionID).setBlink(true);
 				XMLParser xmlp = new XMLParser();
 				trans = xmlp.makedoc(inputS);
 				if (trans.to.equals("cms:server")) {
@@ -108,7 +107,7 @@ public class ClientSession extends ThreadHelper {
 			}
 
 			// If the program gets here the connection has been lost, do some clean up stuff
-			System.out.println("Lost connection from client( " + sessionID + " ): " +  ipAddress);
+			LogSystem.log(true, false, "Lost connection from client(" + sessionID + "): " +  ipAddress);
 			curNode.setState(NodeState.ABSENT);
 			//cleanUp();
 
