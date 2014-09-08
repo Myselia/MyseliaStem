@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -83,8 +84,11 @@ public class GraphingHistogram extends GraphingParent {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
 		//font values
-		Font f = new Font("Dialog", Font.BOLD, 12);
-		g.setFont(f);
+		Graphics2D g2d = (Graphics2D)g;
+		g2d.setRenderingHint(
+		        RenderingHints.KEY_TEXT_ANTIALIASING,
+		        RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
+		g.setFont(BODY_FONT);
 		
 		this.setDisplayType(GraphBar.getDisplayType());
 	
@@ -150,7 +154,7 @@ public class GraphingHistogram extends GraphingParent {
 		} else {
 			avg = "err";
 		}
-		
+		g.setFont(BODY_FONT);
 		g.drawString(avg, 4, getHeight() - ((int)(average*displayscale) + 2)); //text
 		
 		//design values

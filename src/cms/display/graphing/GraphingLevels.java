@@ -2,10 +2,13 @@ package cms.display.graphing;
 
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
+
 
 
 
@@ -50,8 +53,11 @@ public class GraphingLevels extends GraphingParent implements GraphicsConstants{
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
 		//Setting Font
-		Font f = new Font("Dialog", Font.BOLD, 12);
-		g.setFont(f);
+		Graphics2D g2d = (Graphics2D)g;
+		g2d.setRenderingHint(
+		        RenderingHints.KEY_TEXT_ANTIALIASING,
+		        RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
+		g.setFont(BODY_FONT);
 
 		//Read-through values and average
 		double[] values = new double[barcount];

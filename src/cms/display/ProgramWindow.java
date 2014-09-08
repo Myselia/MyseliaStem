@@ -4,9 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 import cms.display.bars.CommunicationBar;
 import cms.display.bars.GraphBar;
@@ -20,13 +25,14 @@ import cms.display.bars.InfoBar;
  * @version 1
  * -tag @refactor Philippe Hebert
  */
-public class ProgramWindow extends JFrame implements GraphicsConstants {
+public class ProgramWindow extends JFrame implements MouseMotionListener, GraphicsConstants {
 	private static final long serialVersionUID = 1L;
 	
 	private static GraphicsEnvironment env;
 	private static GraphicsDevice[] devices;
 	@SuppressWarnings("unused")
 	private static JFrame frame;
+	private static int width; 
 
 	private GraphicsDevice device;
 	private boolean isFullScreen = false;
@@ -36,6 +42,7 @@ public class ProgramWindow extends JFrame implements GraphicsConstants {
 		env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		devices = env.getScreenDevices();
 		frame = new ProgramWindow(devices[0]);
+		width = Toolkit.getDefaultToolkit().getScreenSize().width;
 	}
 	
 	/**
@@ -49,6 +56,7 @@ public class ProgramWindow extends JFrame implements GraphicsConstants {
 		this.setTitle(TITLE);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.initContent();
+		this.addMouseMotionListener(this);
 	}
 
 	/**
@@ -67,6 +75,17 @@ public class ProgramWindow extends JFrame implements GraphicsConstants {
 		this.isFullScreen = device.isFullScreenSupported();
 		this.setUndecorated(isFullScreen);
 		this.setResizable(!isFullScreen);
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}catch(Exception e){}
+		/*Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();
+		Rectangle winSize = env.getMaximumWindowBounds();
+		Dimension fullscreen = new Dimension(winSize.width, winSize.height);
+		this.setUndecorated(true);
+		this.setSize(fullscreen.width, fullscreen.height);
+		this.validate();
+		this.setVisible(true);*/	
+		
 		if (isFullScreen) {
 			device.setFullScreenWindow(this);
 			this.validate();
@@ -86,6 +105,20 @@ public class ProgramWindow extends JFrame implements GraphicsConstants {
 		contentPane.add(panels[2], BorderLayout.CENTER);
 		((CommunicationBar)this.panels[0]).setFocusOnTextField();
 		this.setVisible(true);
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		Point pt = e.getPoint();
+		//TODO
+		if(pt.x == width){
+			System.err.println("Time: " + System.currentTimeMillis() + ", x = right side");
+		}else if(pt.y == 0){
+			System.err.println("Time: " + System.currentTimeMillis() + ", y = 0");
+		}
 	}
 
 }

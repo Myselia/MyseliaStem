@@ -1,8 +1,9 @@
 package cms.display.buttons;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,7 +16,6 @@ import javax.swing.JComponent;
 import cms.databank.structures.Node;
 import cms.display.GraphicsConstants;
 import cms.display.buttons.quick.QuickSeekButton;
-import cms.monitoring.LogSystem;
 
 /**
  * The <code>IconBuilder</code> class is a factory class building icons for the various buttons of the GUI.
@@ -24,8 +24,9 @@ import cms.monitoring.LogSystem;
  * @version 1
  * -tag @refactor Philippe Hebert
  */
-public final class IconBuilder {
-
+public final class IconBuilder implements GraphicsConstants{
+	
+	
 	private IconBuilder() {}
 	
 	/**
@@ -66,7 +67,11 @@ public final class IconBuilder {
 	 */
 	public static void icon(Graphics g, Color foreground, Color background, int x, int y, int type, JComponent component, Node node_bean) {
 		BuilderClass obj = new BuilderClass(g, foreground, background, x, y, type, component, node_bean);
-		obj.graphics.setFont(new Font("Dialog", Font.BOLD, 15));
+		obj.graphics.setFont(NAV_FONT);
+		Graphics2D g2d = (Graphics2D)obj.graphics;
+		g2d.setRenderingHint(
+		        RenderingHints.KEY_TEXT_ANTIALIASING,
+		        RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
 
 		switch (type) {
 		case 0:
@@ -167,8 +172,8 @@ public final class IconBuilder {
 		DateFormat df = new SimpleDateFormat("HH:mm:ss");
 		Date today = Calendar.getInstance().getTime(); 
 		String time = df.format(today);
-		
-		obj.graphics.setColor(obj.foreground);
+		float[] for_rgb = obj.foreground.getRGBColorComponents(null);
+		obj.graphics.setColor(new Color(for_rgb[0], for_rgb[1], for_rgb[2], ALPHA_1));
 		obj.graphics.drawString(time, obj.x_pos - 28, obj.y_pos + 6);
 	}
 
@@ -178,7 +183,7 @@ public final class IconBuilder {
 	 */
 	private static void tempIcon(BuilderClass obj) {
 		obj.graphics.setColor(obj.foreground);
-		obj.graphics.drawString("temperature", obj.x_pos - 42, obj.y_pos + 7);
+		obj.graphics.drawString("Temperature", 30, obj.y_pos + 7);
 	}
 
 	/**
@@ -187,7 +192,7 @@ public final class IconBuilder {
 	 */
 	private static void cpuIcon(BuilderClass obj) {
 		obj.graphics.setColor(obj.foreground);
-		obj.graphics.drawString("CPU", obj.x_pos - 15, obj.y_pos + 7);
+		obj.graphics.drawString("CPU", 30, obj.y_pos + 7);
 	}
 
 	/**
@@ -196,7 +201,7 @@ public final class IconBuilder {
 	 */
 	private static void ramIcon(BuilderClass obj) {
 		obj.graphics.setColor(obj.foreground);
-		obj.graphics.drawString("RAM", obj.x_pos - 15, obj.y_pos + 7);
+		obj.graphics.drawString("RAM", 30, obj.y_pos + 7);
 	}
 
 	/**
@@ -205,7 +210,7 @@ public final class IconBuilder {
 	 */
 	private static void particlesIcon(BuilderClass obj) {
 		obj.graphics.setColor(obj.foreground);
-		obj.graphics.drawString("particles", obj.x_pos - 30, obj.y_pos + 7);
+		obj.graphics.drawString("Atoms", 30, obj.y_pos + 7);
 	}
 
 	/**
@@ -214,6 +219,7 @@ public final class IconBuilder {
 	 */
 	private static void nodeIcon(BuilderClass obj) {
 		obj.graphics.setColor(obj.foreground);
+		obj.graphics.setFont(BODY_FONT);
 		obj.graphics.fillOval(obj.x_pos - 15, obj.y_pos - 15, 30, 30);
 		NodeButton bob = (NodeButton)obj.component;
 		if(bob.blink == 0){
@@ -256,7 +262,7 @@ public final class IconBuilder {
 		}
 		obj.graphics.drawString(ipstring, obj.x_pos + 5, obj.y_pos - 23);
 		
-		obj.graphics.setFont(new Font("Dialog", Font.BOLD, 12));
+		obj.graphics.setFont(SMALL_FONT);
 		
 		String tempstring = obj.node_bean.getTemperature() + "°";
 		obj.graphics.drawString(tempstring, obj.x_pos - 30, obj.y_pos - 9);

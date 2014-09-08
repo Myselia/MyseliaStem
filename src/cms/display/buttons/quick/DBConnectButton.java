@@ -80,10 +80,10 @@ public class DBConnectButton extends JComponent implements MouseListener, Graphi
 		} else {
 			foreground = AVA;
 		}
-		g.setColor(BACK);
+		g.setColor(BEVEL);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		IconBuilder.icon(g, foreground, BACK, getWidth(), getHeight(), type, null, null);
+		IconBuilder.icon(g, foreground, BEVEL, getWidth(), getHeight(), type, null, null);
 	}
 
 	/**

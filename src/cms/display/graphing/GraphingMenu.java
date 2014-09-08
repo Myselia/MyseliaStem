@@ -33,12 +33,13 @@ public class GraphingMenu extends JPanel implements GraphicsConstants{
 	 */
 	private GraphingMenu(){
 		this.setBackground(BACK);
-		this.setPreferredSize(new Dimension(300, 200));
+		Dimension menu_dimensions = new Dimension(300, 200);
+		this.setPreferredSize(menu_dimensions);
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP));
-		
-		GridLayout menuLayout = new GridLayout(4, 1);
-		menuLayout.setHgap(ADDRESS_GAP);
-		menuLayout.setVgap(ADDRESS_GAP);
+		GridLayout menuLayout = new GridLayout(menu_dimensions.height/25, 1);
+		//OLD SKIN
+		/*menuLayout.setHgap(ADDRESS_GAP);
+		menuLayout.setVgap(ADDRESS_GAP);*/
 		this.setLayout(menuLayout);
 		
 		this.button = new GraphingMenuButton[DisplayType.size() * menuLayout.getColumns()];

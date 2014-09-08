@@ -25,18 +25,18 @@ public final class TextAreaFormatting implements GraphicsConstants{
 	private static SimpleAttributeSet log = new SimpleAttributeSet();
 
 	static{
-		StyleConstants.setFontFamily(gooduserinput, "Verdana");
+		StyleConstants.setFontFamily(gooduserinput, SMALL_FONT.getFamily());
 		StyleConstants.setForeground(gooduserinput, RUN);
 		StyleConstants.setFontSize(gooduserinput, 11);
 
-		StyleConstants.setFontFamily(baduserinput, "Verdana");
+		StyleConstants.setFontFamily(baduserinput, SMALL_FONT.getFamily());
 		StyleConstants.setForeground(baduserinput, ERR);
 		StyleConstants.setFontSize(baduserinput, 11);
 		
-		StyleConstants.setFontFamily(programerror, "Verdana");
+		StyleConstants.setFontFamily(programerror, SMALL_FONT.getFamily());
 		StyleConstants.setForeground(programerror, ERR);
 		StyleConstants.setFontSize(programerror, 11);
-		
+
 		StyleConstants.setFontFamily(programoutput, "Verdana");
 		StyleConstants.setForeground(programoutput, AVA);
 		StyleConstants.setFontSize(programoutput, 11);
@@ -44,6 +44,7 @@ public final class TextAreaFormatting implements GraphicsConstants{
 		StyleConstants.setFontFamily(log, "Verdana");
 		StyleConstants.setFontSize(log, 9);
 		StyleConstants.setForeground(log, AVA);
+
 	}
 	
 	private TextAreaFormatting(){}
