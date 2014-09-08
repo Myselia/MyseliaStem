@@ -149,7 +149,7 @@ public final class IconBuilder {
 				if(i < blink){
 					obj.graphics.setColor(obj.foreground);
 				} else {
-					obj.graphics.setColor(GraphicsConstants.ABS);
+					obj.graphics.setColor(GraphicsConstants.AVA);
 				}
 			} else {
 				obj.graphics.setColor(obj.background);

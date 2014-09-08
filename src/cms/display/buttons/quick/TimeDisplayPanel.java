@@ -34,7 +34,7 @@ public class TimeDisplayPanel  extends JComponent implements GraphicsConstants {
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		
-		foreground = ABS;
+		foreground = AVA;
 
 		g.setColor(BACK);
 		g.fillRect(0, 0, getWidth(), getHeight());

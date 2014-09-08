@@ -79,7 +79,7 @@ public class QuickSeekButton extends JComponent implements MouseListener, Graphi
 			blink = (++blink)%6;
 			foreground = RUN;
 		} else {
-			foreground = ABS;
+			foreground = AVA;
 		}
 		g.setColor(BACK);
 		g.fillRect(0, 0, getWidth(), getHeight());

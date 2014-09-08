@@ -38,12 +38,12 @@ public final class TextAreaFormatting implements GraphicsConstants{
 		StyleConstants.setFontSize(programerror, 11);
 		
 		StyleConstants.setFontFamily(programoutput, "Verdana");
-		StyleConstants.setForeground(programoutput, ABS);
+		StyleConstants.setForeground(programoutput, AVA);
 		StyleConstants.setFontSize(programoutput, 11);
 		
 		StyleConstants.setFontFamily(log, "Verdana");
 		StyleConstants.setFontSize(log, 9);
-		StyleConstants.setForeground(log, ABS);
+		StyleConstants.setForeground(log, AVA);
 	}
 	
 	private TextAreaFormatting(){}

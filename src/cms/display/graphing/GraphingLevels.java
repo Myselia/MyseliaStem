@@ -89,7 +89,7 @@ public class GraphingLevels extends GraphingParent implements GraphicsConstants{
 		double scale = getHeight()/max;
 		
 		//Average drawing
-		g.setColor(AVA);
+		g.setColor(ABS);
 		g.fillRect(0, getHeight() - (int)(average*scale), getWidth(), 1);
 		String avg = Double.toString(average);
 		Pattern pattern = Pattern.compile("^\\d+(\\.\\d)?");
@@ -107,7 +107,7 @@ public class GraphingLevels extends GraphingParent implements GraphicsConstants{
 		
 		//Indicator drawing
 		for(int i = 0; i < barcount; i++){
-			g.setColor(ABS);
+			g.setColor(AVA);
 			double x_pos = offset*(i+1) + extra;
 			double y_pos = getHeight() - values[i]*scale;
 			g.fillRect((int)x_pos , (int)y_pos , (int)(offset - 2), (int)5); //x position, y position, width, height

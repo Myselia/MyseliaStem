@@ -64,7 +64,7 @@ public final class GraphingMenuButton extends JComponent implements MouseListene
 		g.setColor(background);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		IconBuilder.icon(g, ABS, background, getWidth(), getHeight(), type, null, null);
+		IconBuilder.icon(g, AVA, background, getWidth(), getHeight(), type, null, null);
 	}
 	
 	/**

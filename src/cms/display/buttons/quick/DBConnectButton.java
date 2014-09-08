@@ -78,7 +78,7 @@ public class DBConnectButton extends JComponent implements MouseListener, Graphi
 		if(select){
 			foreground = RUN;
 		} else {
-			foreground = ABS;
+			foreground = AVA;
 		}
 		g.setColor(BACK);
 		g.fillRect(0, 0, getWidth(), getHeight());

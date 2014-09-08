@@ -140,7 +140,7 @@ public class GraphingHistogram extends GraphingParent {
 		double displayscale = getHeight()/max;
 		
 		//average drawing
-		g.setColor(AVA);
+		g.setColor(ABS);
 		g.fillRect(0, getHeight() - (int)(average*displayscale), getWidth()/*- y_axis*/, 1);
 		String avg = Double.toString(average);
 		Pattern pattern = Pattern.compile("^\\d+(\\.\\d)?");
@@ -160,7 +160,7 @@ public class GraphingHistogram extends GraphingParent {
 		
 		//indicator drawing
 		int[] y_values = new int[2];
-		g.setColor(ABS);
+		g.setColor(AVA);
 		Graphics2D g2 = (Graphics2D)g;
 		for(int i = 0; i < size-1; i++){
 			y_values[0] = getHeight()- (int)(displayscale*values[i]);
