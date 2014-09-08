@@ -23,6 +23,7 @@ public final class GraphingMenuButton extends JComponent implements MouseListene
 	private int type;
 	private DisplayType displaytype;
 	private boolean select = false;
+	private boolean hover = false;
 	private Color background;
 	
 	/**
@@ -58,13 +59,15 @@ public final class GraphingMenuButton extends JComponent implements MouseListene
 		//Background
 		if(select){
 			background = SELECTED;
-		} else {
+		}else if(hover){
+			background = HOVER;
+		}else{
 			background = UNSELECTED;
 		}
 		g.setColor(background);
-		g.fillRect(0, 0, getWidth(), getHeight());
+		g.fillRect(0, 0, getWidth(), 50);
 		
-		IconBuilder.icon(g, ABS, background, getWidth(), getHeight(), type, null, null);
+		IconBuilder.icon(g, ABS, background, getWidth(), 50, type, null, null);
 	}
 	
 	/**
@@ -97,10 +100,19 @@ public final class GraphingMenuButton extends JComponent implements MouseListene
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {}
+	public void mouseEntered(MouseEvent arg0) {
+		if(!select){
+			this.hover = true;
+			this.repaint();
+		}
+	}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {}
+	public void mouseExited(MouseEvent arg0) {
+		this.hover = false;
+		if(!select)
+			this.repaint();
+	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {}
