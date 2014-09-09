@@ -1,7 +1,6 @@
 package cms.display;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
@@ -10,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
@@ -93,16 +93,16 @@ public class ProgramWindow extends JFrame implements MouseMotionListener, Graphi
 			this.pack();
 		}
 
-		Container contentPane = this.getContentPane();
-		contentPane.setLayout(new BorderLayout());
+		JLayeredPane layeredPane = this.getLayeredPane();
+		layeredPane.setLayout(new BorderLayout());
 
 		this.panels = new JPanel[3];
 		this.panels[0] = new CommunicationBar();
-		contentPane.add(panels[0], BorderLayout.SOUTH);
+		layeredPane.add(panels[0], BorderLayout.SOUTH, JLayeredPane.DEFAULT_LAYER);
 		this.panels[1] = InfoBar.getInfoBar();
-		contentPane.add(panels[1], BorderLayout.NORTH);
+		layeredPane.add(panels[1], BorderLayout.NORTH, JLayeredPane.DEFAULT_LAYER);
 		this.panels[2] = GraphBar.getGraphBar();
-		contentPane.add(panels[2], BorderLayout.CENTER);
+		layeredPane.add(panels[2], BorderLayout.CENTER, JLayeredPane.DEFAULT_LAYER);
 		((CommunicationBar)this.panels[0]).setFocusOnTextField();
 		this.setVisible(true);
 	}
@@ -114,7 +114,7 @@ public class ProgramWindow extends JFrame implements MouseMotionListener, Graphi
 	public void mouseMoved(MouseEvent e) {
 		Point pt = e.getPoint();
 		//TODO
-		if(pt.x == width){
+		if(pt.x == width-1){
 			System.err.println("Time: " + System.currentTimeMillis() + ", x = right side");
 		}else if(pt.y == 0){
 			System.err.println("Time: " + System.currentTimeMillis() + ", y = 0");
