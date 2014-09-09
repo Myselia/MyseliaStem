@@ -13,11 +13,12 @@ public interface GraphicsConstants {
 	/*
 	 * Color Scheme:
 	 * http://paletton.com/#uid=c002o0-3t0kPionlSPvQoBLUocLyG4I
-	 */	
-	Color ABS = new Color(0xCCCCCC); // GREY
+	 */
+	
+	Color AVA = new Color(0xCCCCCC); // GREY
 	Color ERR = new Color(0xC20000); // RED
 	Color PRE = new Color(0xFF8100); // ORANGE +1
-	Color AVA = new Color(0x02517B); // BLUE
+	Color ABS = new Color(0x02517B); // BLUE
 	Color RUN = new Color(0x9BF100); // GREEN +1
 	Color BACK = new Color(0x012A41); // BLUE -1
 	Color BEVEL = new Color(0x011018); // BLUE -2

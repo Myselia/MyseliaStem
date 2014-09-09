@@ -88,13 +88,13 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 		NodeState state = core.getState();
 		switch (state) {
 		case ABSENT:
-			foreground = AVA;
+			foreground = ABS;
 			break;
 		case PRESENT:
 			foreground = PRE;
 			break;
 		case AVAILABLE:
-			foreground = ABS;
+			foreground = AVA;
 			break;
 		case RUNNING:
 			foreground = RUN;
@@ -103,7 +103,7 @@ public class NodeButton extends JComponent implements MouseListener, GraphicsCon
 			foreground = ERR;
 			break;
 		default:
-			foreground = ABS;
+			foreground = AVA;
 			break;
 		}
 		int subtype = core.getType();
