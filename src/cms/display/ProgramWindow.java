@@ -3,8 +3,12 @@ package cms.display;
 import java.awt.BorderLayout;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
@@ -25,7 +29,7 @@ import cms.display.bars.InfoBar;
  * @version 1
  * -tag @refactor Philippe Hebert
  */
-public class ProgramWindow extends JFrame implements MouseMotionListener, GraphicsConstants {
+public class ProgramWindow extends JFrame implements MouseMotionListener, KeyEventDispatcher, GraphicsConstants {
 	private static final long serialVersionUID = 1L;
 	
 	private static GraphicsEnvironment env;
@@ -57,6 +61,8 @@ public class ProgramWindow extends JFrame implements MouseMotionListener, Graphi
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.initContent();
 		this.addMouseMotionListener(this);
+		this.setFocusable(true);
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 	}
 
 	/**
@@ -103,7 +109,7 @@ public class ProgramWindow extends JFrame implements MouseMotionListener, Graphi
 		layeredPane.add(panels[1], BorderLayout.NORTH, JLayeredPane.DEFAULT_LAYER);
 		this.panels[2] = GraphBar.getGraphBar();
 		layeredPane.add(panels[2], BorderLayout.CENTER, JLayeredPane.DEFAULT_LAYER);
-		((CommunicationBar)this.panels[0]).setFocusOnTextField();
+		//((CommunicationBar)this.panels[0]).setFocusOnTextField();
 		this.setVisible(true);
 	}
 
@@ -119,6 +125,17 @@ public class ProgramWindow extends JFrame implements MouseMotionListener, Graphi
 		}else if(pt.y == 0){
 			System.err.println("Time: " + System.currentTimeMillis() + ", y = 0");
 		}
+	}
+	//http://docs.oracle.com/javase/tutorial/uiswing/misc/keybinding.html
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_F1){
+			System.err.println("Open menu");
+		}else if(e.getID() == KeyEvent.KEY_PRESSED){
+			System.err.println(e.getKeyChar());
+			((CommunicationBar)this.panels[0]).keyListener(e);
+		}
+		return true;
 	}
 
 }

@@ -2,6 +2,7 @@ package cms.display.bars;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JPanel;
 
@@ -42,6 +43,14 @@ public class CommunicationBar extends JPanel implements GraphicsConstants {
 	 */
 	public void setFocusOnTextField(){
 		console.setFocus();
+	}
+	
+	/**
+	 * Forwards the intercepted event to the console's keylistener.
+	 * @param e
+	 */
+	public void keyListener(KeyEvent e){
+		console.keyPressed(e);
 	}
 
 }
