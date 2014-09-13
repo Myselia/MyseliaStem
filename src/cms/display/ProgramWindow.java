@@ -3,19 +3,21 @@ package cms.display;
 import java.awt.BorderLayout;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
+import javax.swing.KeyStroke;
 
 import cms.display.bars.CommunicationBar;
 import cms.display.bars.GraphBar;
@@ -60,6 +62,7 @@ public class ProgramWindow extends JFrame implements MouseMotionListener, Graphi
 		this.setTitle(TITLE);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.initContent();
+		this.setActions();
 		this.addMouseMotionListener(this);
 		this.setFocusable(true);
 	}
@@ -80,9 +83,6 @@ public class ProgramWindow extends JFrame implements MouseMotionListener, Graphi
 		this.isFullScreen = device.isFullScreenSupported();
 		this.setUndecorated(isFullScreen);
 		this.setResizable(!isFullScreen);
-		try{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}catch(Exception e){}
 		/*Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Rectangle winSize = env.getMaximumWindowBounds();
 		Dimension fullscreen = new Dimension(winSize.width, winSize.height);
@@ -110,6 +110,17 @@ public class ProgramWindow extends JFrame implements MouseMotionListener, Graphi
 		layeredPane.add(panels[2], BorderLayout.CENTER, JLayeredPane.DEFAULT_LAYER);
 		((CommunicationBar)this.panels[0]).setFocusOnTextField();
 		this.setVisible(true);
+	}
+	
+	private void setActions(){
+		final Action OPEN_SIDE_PANE = new AbstractAction("OPEN_SIDE_PANE") {
+			public void actionPerformed(ActionEvent e) {
+				System.err.println("OPEN THAT MOFO");
+			}	
+		};
+		KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_F1, InputEvent.ALT_DOWN_MASK);
+		this.getLayeredPane().getActionMap().put("OPEN_SIDE_PANE", OPEN_SIDE_PANE);
+		this.getLayeredPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, "OPEN_SIDE_PANE");
 	}
 
 	@Override
