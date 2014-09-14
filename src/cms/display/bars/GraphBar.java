@@ -28,7 +28,7 @@ public class GraphBar extends JPanel implements GraphicsConstants, Runnable {
 	private static GraphBar singleton;
 	private static GraphingLevels graphinglevels;
 	private static GraphingHistogram graphinghistogram;
-	private static GraphingMenu graphingmenu;
+	//private static GraphingMenu graphingmenu;
 	private volatile static GraphingParent graph;
 	private static DisplayType displaytype = DisplayType.TEMPERATURE;
 	private static boolean isHistogram = false;
@@ -39,7 +39,7 @@ public class GraphBar extends JPanel implements GraphicsConstants, Runnable {
 		graphinglevels = new GraphingLevels(displaytype);
 		graphinghistogram = new GraphingHistogram(displaytype);
 		graph = graphinglevels;
-		graphingmenu = GraphingMenu.getGraphMenu();
+		//graphingmenu = GraphingMenu.getGraphMenu();
 		singleton = new GraphBar();
 	}
 	
@@ -54,7 +54,7 @@ public class GraphBar extends JPanel implements GraphicsConstants, Runnable {
 		this.setPreferredSize(new Dimension(100, 390));
 		this.setLayout(new BorderLayout());
 		this.add(graph, BorderLayout.CENTER);
-		this.add(graphingmenu, BorderLayout.EAST);
+		//this.add(graphingmenu, BorderLayout.EAST);
 		this.refresh = new Thread(this);
 		this.refresh.start();
 	}

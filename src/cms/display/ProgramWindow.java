@@ -22,6 +22,7 @@ import javax.swing.KeyStroke;
 import cms.display.bars.CommunicationBar;
 import cms.display.bars.GraphBar;
 import cms.display.bars.InfoBar;
+import cms.display.layers.SideMenu;
 
 /**
  * The <code>ProgramWindow</code> class is the application main JFrame.
@@ -39,6 +40,7 @@ public class ProgramWindow extends JFrame implements MouseMotionListener, Graphi
 	@SuppressWarnings("unused")
 	private static JFrame frame;
 	private static int width; 
+	private static int height;
 
 	private GraphicsDevice device;
 	private boolean isFullScreen = false;
@@ -49,6 +51,7 @@ public class ProgramWindow extends JFrame implements MouseMotionListener, Graphi
 		devices = env.getScreenDevices();
 		frame = new ProgramWindow(devices[0]);
 		width = Toolkit.getDefaultToolkit().getScreenSize().width;
+		height = Toolkit.getDefaultToolkit().getScreenSize().height;
 	}
 	
 	/**
@@ -72,7 +75,7 @@ public class ProgramWindow extends JFrame implements MouseMotionListener, Graphi
 	 * @see #static
 	 */
 	public final static void initEnvironment() {}
-
+	
 	/**
 	 * Initializes the content of the panels
 	 * @see cms.display.bars.CommunicationBar
@@ -108,13 +111,23 @@ public class ProgramWindow extends JFrame implements MouseMotionListener, Graphi
 		layeredPane.add(panels[1], BorderLayout.NORTH, JLayeredPane.DEFAULT_LAYER);
 		this.panels[2] = GraphBar.getGraphBar();
 		layeredPane.add(panels[2], BorderLayout.CENTER, JLayeredPane.DEFAULT_LAYER);
+		layeredPane.add(SideMenu.getSideMenu(), BorderLayout.EAST, JLayeredPane.PALETTE_LAYER);
 		((CommunicationBar)this.panels[0]).setFocusOnTextField();
 		this.setVisible(true);
+	}
+	
+	public static int getDeviceWidth(){
+		return width;
+	}
+	
+	public static int getDeviceHeight(){
+		return height;
 	}
 	
 	private void setActions(){
 		final Action OPEN_SIDE_PANE = new AbstractAction("OPEN_SIDE_PANE") {
 			public void actionPerformed(ActionEvent e) {
+				SideMenu.toggle(true);
 				System.err.println("OPEN THAT MOFO");
 			}	
 		};
@@ -129,9 +142,9 @@ public class ProgramWindow extends JFrame implements MouseMotionListener, Graphi
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		Point pt = e.getPoint();
-		//TODO
 		if(pt.x == width-1){
 			System.err.println("Time: " + System.currentTimeMillis() + ", x = right side");
+			SideMenu.toggle(true);
 		}else if(pt.y == 0){
 			System.err.println("Time: " + System.currentTimeMillis() + ", y = 0");
 		}
