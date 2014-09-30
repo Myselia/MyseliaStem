@@ -1,6 +1,7 @@
 package cms.display;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
@@ -100,20 +101,28 @@ public class ProgramWindow extends JFrame implements MouseMotionListener, Graphi
 		} else {
 			this.pack();
 		}
-
-		JLayeredPane layeredPane = this.getLayeredPane();
-		layeredPane.setLayout(new BorderLayout());
-
+		
+		JPanel pane = new JPanel();
+		pane.setLayout(new BorderLayout());
+		pane.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
+		pane.setMinimumSize(new Dimension(this.getWidth(), this.getHeight()));
 		this.panels = new JPanel[3];
 		this.panels[0] = new CommunicationBar();
-		layeredPane.add(panels[0], BorderLayout.SOUTH, JLayeredPane.DEFAULT_LAYER);
+		pane.add(panels[0], BorderLayout.SOUTH);
 		this.panels[1] = InfoBar.getInfoBar();
-		layeredPane.add(panels[1], BorderLayout.NORTH, JLayeredPane.DEFAULT_LAYER);
+		pane.add(panels[1], BorderLayout.NORTH);
 		this.panels[2] = GraphBar.getGraphBar();
-		layeredPane.add(panels[2], BorderLayout.CENTER, JLayeredPane.DEFAULT_LAYER);
-		layeredPane.add(SideMenu.getSideMenu(), BorderLayout.EAST, JLayeredPane.PALETTE_LAYER);
+		pane.add(panels[2], BorderLayout.CENTER);
+		
+		this.add(pane);
+		
+		//layeredPane.add(SideMenu.getSideMenu(), BorderLayout.EAST, JLayeredPane.PALETTE_LAYER);
 		((CommunicationBar)this.panels[0]).setFocusOnTextField();
 		this.setVisible(true);
+		
+		for(int i = 0; i < 3; i++){
+			System.err.println("PANEL"+i+" : " + panels[i].getWidth() + "--" + panels[i].getHeight());
+		}
 	}
 	
 	public static int getDeviceWidth(){

@@ -35,6 +35,7 @@ public class GraphingMenu extends JPanel implements GraphicsConstants{
 		this.setBackground(BACK);
 		Dimension menu_dimensions = new Dimension(300, 200);
 		this.setPreferredSize(menu_dimensions);
+		this.setMinimumSize(menu_dimensions);
 		this.setBorder(BorderFactory.createEmptyBorder(ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP, ADDRESS_GAP));
 		GridLayout menuLayout = new GridLayout(menu_dimensions.height/25, 1);
 		//OLD SKIN
