@@ -1,4 +1,4 @@
-ClusterManagementSystem
+MyceliaStem
 =======================
 
-a management system for a multi-purpose cluster
+The grid-management server for a loosely coupled grid. 
