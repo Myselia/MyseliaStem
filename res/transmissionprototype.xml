@@ -2,19 +2,19 @@
 
 <transmission>
 
-	<header id="123456789" from="node:#" to="cms:#">
+	<header id="123456789" from="node:#" to="cms:#" type="system">
 		110
 	</header>
 
-	<atom type="system" class="temp">
+	<atom  class="temp" group="0">
 		54.1
 	</atom>
 
-	<atom type="system" class="ram">
+	<atom  class="ram" group="0">
 		198.1
 	</atom>
 
-	<atom type="system" class="cpu">
+	<atom class="cpu" group="0">
 		198.1
 	</atom>
 
