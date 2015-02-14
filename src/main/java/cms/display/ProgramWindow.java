@@ -127,14 +127,6 @@ public class ProgramWindow extends JFrame implements MouseMotionListener, Graphi
 	public void mouseDragged(MouseEvent e) {}
 
 	@Override
-	public void mouseMoved(MouseEvent e) {
-		Point pt = e.getPoint();
-		//TODO
-		if(pt.x == width-1){
-			System.err.println("Time: " + System.currentTimeMillis() + ", x = right side");
-		}else if(pt.y == 0){
-			System.err.println("Time: " + System.currentTimeMillis() + ", y = 0");
-		}
-	}
+	public void mouseMoved(MouseEvent e) {}
 
 }

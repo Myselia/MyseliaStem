@@ -40,7 +40,7 @@ public class QuickPanel extends JPanel implements GraphicsConstants {
 		layout.setVgap(2);
 		this.setLayout(layout);
 		
-		EmptyButton[] empties = new EmptyButton[8];
+		EmptyButton[] empties = new EmptyButton[9];
 		for(int i = 0; i < empties.length; i++){
 			empties[i] = new EmptyButton();
 		}
@@ -54,7 +54,7 @@ public class QuickPanel extends JPanel implements GraphicsConstants {
 		this.add("Button", empties[5]);
 		this.add("Button", empties[6]);
 		this.add("Button", empties[7]);
-		this.add("Button", DBConnectButton.getConnector());
+		this.add("Button", empties[8]);
 		this.add("Button", QuickSeekButton.getSeeker());
 		
 		
