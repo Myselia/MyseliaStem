@@ -1,0 +1,45 @@
+//-------------------------------Plugins-------------------------------
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+//------------------------General Configuration------------------------
+
+defaultTasks 'tasks'
+
+group='com.mycelia'
+version = "1.0"
+archivesBaseName = project.name
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+dependencies {
+	compile project(':MyceliaCommon')
+}
+
+buildscript {
+    repositories {
+		mavenCentral()
+    }
+}
+
+repositories {
+	mavenCentral()
+}
+
+//--------------------------------Tasks--------------------------------
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.7'
+}
+
+task "create-dirs" << {
+   sourceSets*.java.srcDirs*.each { it.mkdirs() }
+   sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+}
+
+//------------------------Plugins Configuration------------------------
+
+jar { manifest.attributes provider: group }
+
