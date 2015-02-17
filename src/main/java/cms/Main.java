@@ -12,7 +12,7 @@ import cms.monitoring.LogSystem;
 
 public class Main {
 	
-	public static final int DEFAULT_PORT = 6969; //*wink* *wink* *nudge* *nudge*
+	public static final int DEFAULT_PORT = 6969; //TODO: change
 	public static boolean REROUTE_ERR = false;	//Error Re-Routing to CMS Console
 	
 	private static Broadcast bcastRunnable = new Broadcast();
