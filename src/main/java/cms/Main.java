@@ -2,7 +2,6 @@ package cms;
 
 import cms.communication.Broadcast;
 import cms.communication.Server;
-import cms.communication.database.QueryBuilder;
 import cms.control.CommandSystem;
 import cms.control.ConfigHandler;
 import cms.databank.OverLord;
@@ -17,7 +16,6 @@ public class Main {
 	
 	private static Broadcast bcastRunnable = new Broadcast();
 	private static Server serverRunnable = new Server(DEFAULT_PORT, 100);
-	private static QueryBuilder qb;
 	
 	private static Thread bCastCommunicator;
 	private static Thread communicator;
@@ -27,9 +25,7 @@ public class Main {
 	public static void main(String[] args) {		
 		loadCommands(); //loads the user commands
 		ConfigHandler.init();
-		qb = new QueryBuilder();
 
-		
 		//Model
 		data = new Thread(new Runnable(){
 			public void run() {
