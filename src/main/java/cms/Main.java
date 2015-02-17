@@ -100,8 +100,6 @@ public class Main {
 					ConfigHandler.configProperties.get("DB_" + i + "_user"), 
 					ConfigHandler.configProperties.get("DB_" + i + "_password")
 					);
-			//Add database to central DB repository
-			OverLord.dbCore.add(db);
 		}
 	}
 	

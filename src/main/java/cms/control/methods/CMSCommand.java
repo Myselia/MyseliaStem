@@ -73,21 +73,4 @@ public class CMSCommand {
 		System.exit(0);
 	}
 
-	/*
-	 * DB COMMANDS
-	 */
-	public static void dbconnections(boolean conn) {
-		if (conn) {
-			for (int i = 0; i < OverLord.dbCore.size(); i++) {
-				OverLord.dbCore.get(i).startConnection();
-				QuickPanel.setDBConnSelect();
-			}
-		} else {
-			for (int i = 0; i < OverLord.dbCore.size(); i++) {
-				OverLord.dbCore.get(i).closeConnection();
-				QuickPanel.setDBConnSelect();
-			}
-		}
-	}
-
 }
