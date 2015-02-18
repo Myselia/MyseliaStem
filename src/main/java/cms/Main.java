@@ -5,7 +5,6 @@ import cms.communication.Server;
 import cms.control.CommandSystem;
 import cms.control.ConfigHandler;
 import cms.databank.OverLord;
-import cms.databank.structures.Database;
 import cms.display.ProgramWindow;
 import cms.monitoring.LogSystem;
 
@@ -55,9 +54,6 @@ public class Main {
 			System.out.println("e>Error starting main threads. Please restart.");
 			//e.printStackTrace();
 		}
-		
-		//Add all user defined DBs into the OverLord's database list
-		setupDatabases();
 
 	}
 
@@ -89,19 +85,5 @@ public class Main {
 	public static void setbCastCommunicator(Thread bCastCommunicator) {
 		Main.bCastCommunicator = bCastCommunicator;
 	}
-	
-	private static void setupDatabases() {
-		for (int i = 0; i < ConfigHandler.DBCount; i++) {
-			//Create DB object with appropriate field values
-			Database db = new Database(
-					ConfigHandler.configProperties.get("DB_" + i + "_name"), 
-					ConfigHandler.configProperties.get("DB_" + i + "_url"), 
-					ConfigHandler.configProperties.get("DB_" + i + "_dbname"), 
-					ConfigHandler.configProperties.get("DB_" + i + "_user"), 
-					ConfigHandler.configProperties.get("DB_" + i + "_password")
-					);
-		}
-	}
-	
 
 }

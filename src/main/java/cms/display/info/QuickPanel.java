@@ -6,7 +6,6 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 
 import cms.display.GraphicsConstants;
-import cms.display.buttons.quick.DBConnectButton;
 import cms.display.buttons.quick.EmptyButton;
 import cms.display.buttons.quick.QuickSeekButton;
 import cms.display.buttons.quick.TimeDisplayPanel;
@@ -74,9 +73,5 @@ public class QuickPanel extends JPanel implements GraphicsConstants {
 	 */
 	public static void setSeekSelect(){
 		QuickSeekButton.setSelect();
-	}
-	
-	public static void setDBConnSelect(){
-		DBConnectButton.setSelect();
 	}
 }
