@@ -6,10 +6,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import cms.communication.parsers.TransmissionParser;
-import cms.communication.parsers.XMLParser;
-import cms.communication.structures.Transmission;
-import cms.communication.structures.TransmissionBuilder;
+import com.google.gson.Gson;
+import com.mycelia.common.communication.structures.Transmission;
+import com.mycelia.common.communication.structures.TransmissionBuilder;
+
 import cms.databank.OverLord;
 import cms.databank.structures.Node;
 import cms.databank.structures.NodeState;
@@ -38,6 +38,7 @@ public class ClientSession extends ThreadHelper {
 	private PrintWriter output;
 	
 	//The string currently being processed by the server (\r\n terminated from client)
+	protected Gson gson = new Gson();
 	protected String inputS;
 	
 	public ClientSession(Socket clientConnectionSocket) {
@@ -47,7 +48,7 @@ public class ClientSession extends ThreadHelper {
 
 	public void run() {
 		try {
-			Transmission trans;
+			TransmissionBuilder tb = new TransmissionBuilder();
 
 			input =  new BufferedReader(new InputStreamReader(
 					clientConnectionSocket.getInputStream()));
@@ -65,10 +66,11 @@ public class ClientSession extends ThreadHelper {
 				} else {
 					sessionID = OverLord.nextNodeID();
 				}
-				TransmissionBuilder.newTransmission("cms:0", "node:" + Integer.toString(sessionID), "100");
-				TransmissionBuilder.addAtom("system", "id", Integer.toString(sessionID));
-				Transmission initTrans = TransmissionBuilder.getTransmission();
-				String initParams = TransmissionParser.makedoc(initTrans);
+				
+				tb.newTransmission(100, "cms:0", "node:" + Integer.toString(sessionID));
+				tb.newAtom("id", "int", Integer.toString(sessionID));
+				Transmission initTrans = tb.getTransmission();
+				String initParams = gson.toJson(initTrans);
 				/*
 				infoParams = Integer.toString(sessionID);
 				*/
@@ -96,11 +98,11 @@ public class ClientSession extends ThreadHelper {
 			GraphingHistogram.updateBarCount();
 			//
 			
+			Transmission trans = new Transmission();
 			while (SETUP && ((inputS = input.readLine() ) != null)) {
 				AddressPanel.nodeButton(sessionID).setBlink(true);
-				XMLParser xmlp = new XMLParser();
-				trans = xmlp.makedoc(inputS);
-				if (trans.to.equals("cms:server")) {
+				trans = gson.fromJson(inputS, Transmission.class);
+				if (trans.get_header().get_to().equals("cms:server")) {
 					OverLord.insertData(trans);
 				}
 
