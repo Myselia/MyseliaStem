@@ -71,7 +71,9 @@ public class ProgramWindow extends JFrame implements MouseMotionListener, Graphi
 	 * Forces class initialization
 	 * @see #static
 	 */
-	public final static void initEnvironment() {}
+	public final static JFrame initEnvironment() {
+		return frame;
+	}
 
 	/**
 	 * Initializes the content of the panels
