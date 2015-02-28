@@ -1,5 +1,12 @@
 package cms;
 
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.util.Scanner;
+
+import javax.swing.JFrame;
+
 import cms.communication.Broadcast;
 import cms.communication.Server;
 import cms.control.CommandSystem;
@@ -20,6 +27,9 @@ public class Main {
 	private static Thread communicator;
 	private static Thread data;
 	private static Thread display;
+	private static Thread console;
+	private static volatile JFrame frame;
+	private static volatile boolean hasLocalGUI = false;
 	
 	public static void main(String[] args) {		
 		loadCommands(); //loads the user commands
@@ -31,30 +41,23 @@ public class Main {
 				OverLord.build();	
 			}
 		});
-		
-		//View
-		display = new Thread(new Runnable(){
-			public void run() {
-				ProgramWindow.initEnvironment();
-				LogSystem.log(true, false, "Log System Started");
-				System.out.println("Welcome to the CMS v0.6 alpha");
-				System.out.println("Enter 'help' for a list of commands");
-			}
-		});
-
 		communicator = new Thread(serverRunnable);
 
 		try {
 			data.start();
-			Thread.sleep(2000);
-			display.start();
 			Thread.sleep(2000);
 			communicator.start();
 		} catch (InterruptedException e) {
 			System.out.println("e>Error starting main threads. Please restart.");
 			//e.printStackTrace();
 		}
-
+		
+		//View
+		System.out.println("Welcome to the CMS v0.6 alpha");
+		System.out.println("Enter 'help' for a list of commands");
+		System.out.print("$> ");
+		console = consoleThread();
+		console.start();
 	}
 
 	private static void loadCommands(){
@@ -84,6 +87,58 @@ public class Main {
 
 	public static void setbCastCommunicator(Thread bCastCommunicator) {
 		Main.bCastCommunicator = bCastCommunicator;
+	}
+	
+	public static boolean hasGUI(){
+		return Main.hasLocalGUI;
+	}
+	
+	public static void toggleGUI(){
+		if(hasLocalGUI){
+			frame.dispose();
+			frame = null;
+			System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
+			hasLocalGUI = false;
+			console = consoleThread();
+			console.start();
+		}else{
+			display = displayThread();
+			display.start();
+			hasLocalGUI = true;
+		}
+	}
+	
+	private static Thread consoleThread(){
+		return new Thread(new Runnable(){
+			public void run() {
+				Scanner userIn = new Scanner(System.in);
+				while(!hasLocalGUI){
+					//TODO: Find why on kill of gui the scanner behaves differently from prior gui
+					//System.out.println("listening");
+					if(userIn.hasNextLine()){
+						CommandSystem.index_reset();
+						String make = userIn.nextLine();
+						if (!make.equals("")) {
+							CommandSystem.command(make);
+							System.out.print("$> ");
+						}
+					}
+				}
+				userIn.close();
+				userIn = null;
+			}
+		});
+	}
+	
+	private static Thread displayThread(){
+		return new Thread(new Runnable(){
+			public void run() {
+				frame = ProgramWindow.initEnvironment();
+				LogSystem.log(true, false, "Log System Started");
+				System.out.println("Welcome to the CMS v0.6 alpha");
+				System.out.println("Enter 'help' for a list of commands");
+			}
+		});
 	}
 
 }
