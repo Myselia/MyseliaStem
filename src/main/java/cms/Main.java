@@ -3,16 +3,21 @@ package cms;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
 
 import cms.communication.Broadcast;
-import cms.communication.Server;
 import cms.control.CommandSystem;
 import cms.control.ConfigHandler;
 import cms.databank.OverLord;
 import cms.display.ProgramWindow;
+
+import com.mycelia.stem.communication.ComDock;
+import com.mycelia.stem.communication.seekers.ISeek;
+import com.mycelia.stem.communication.seekers.SeekImpl_echo;
+import com.mycelia.stem.communication.seekers.SeekImpl_localNetwork;
 
 public class Main {
 	
@@ -20,10 +25,13 @@ public class Main {
 	public static boolean REROUTE_ERR = false;	//Error Re-Routing to CMS Console
 	
 	private static Broadcast bcastRunnable = new Broadcast();
-	private static Server serverRunnable = new Server(DEFAULT_PORT, 100);
+	//private static Server serverRunnable = new Server(DEFAULT_PORT, 100);
 	
+	//RENAME
+	private static ComDock comDock;
+	//~RENAME~
 	private static Thread bCastCommunicator;
-	private static Thread communicator;
+	//private static Thread communicator;
 	private static Thread data;
 	private static Thread display;
 	private static Thread console;
@@ -40,12 +48,27 @@ public class Main {
 				OverLord.build();	
 			}
 		});
-		communicator = new Thread(serverRunnable);
+		//communicator = new Thread(serverRunnable);
+		comDock = new ComDock();
+		
+		/**
+		 * 
+		 */
+		ArrayList<ISeek> seekerListDaemon = new ArrayList<ISeek>();
+		seekerListDaemon.add(SeekImpl_localNetwork.getInstance());
+		seekerListDaemon.add(SeekImpl_echo.getInstance());
+		comDock.seekDaemons(seekerListDaemon);
+		
+		ArrayList<ISeek> seekerListLens = new ArrayList<ISeek>();
+		//seekerListLens.add(SeekImpl_localNetwork.getInstance());
+		seekerListLens.add(SeekImpl_echo.getInstance());
+		comDock.seekLenses(seekerListLens);
+		
 
 		try {
 			data.start();
 			Thread.sleep(2000);
-			communicator.start();
+			//communicator.start();
 		} catch (InterruptedException e) {
 			System.out.println("e>Error starting main threads. Please restart.");
 			//e.printStackTrace();

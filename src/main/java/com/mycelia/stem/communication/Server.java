@@ -1,4 +1,4 @@
-package cms.communication;
+package com.mycelia.stem.communication;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import cms.communication.ClientSession;
 import cms.helpers.ThreadHelper;
 
 public class Server extends ThreadHelper {
