@@ -16,18 +16,18 @@ public class CommandSeek extends AbstractCommand {
 			} else if(parameters[1].equals("off") || parameters[1].equals("stop")){
 				CMSCommand.seek(false);
 			} else {
-				System.out.println("e>" + "Wrong Parameters");
+				System.out.println("wrong parameters");
 			}
 		} else {
-			System.out.println("e>" + "Command Incomplete");
+			System.out.println("command incomplete");
 		}
 	}
 
 
 	@Override
 	public void define() {
-		System.out.println("Turns on seek mode: broadcasts IP address and port number.");
-		System.out.println("Thread starts upon 'on' command, ends upon 'off' command.");
+		System.out.println("on / start : turns on seek mode: broadcasts IP address and port number");
+		System.out.println("off / stop : turn seek mode off");
 	}
 	
 	@Override

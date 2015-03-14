@@ -178,9 +178,9 @@ public class CommandSystem {
 
 	private static void print(boolean good) {
 		if (good) {
-			System.out.println(command);
+			//System.out.println(command);
 		} else {
-			System.err.println(command);
+			System.err.println("no such command \"" + command + "\"");
 		}
 	}
 

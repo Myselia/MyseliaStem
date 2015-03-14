@@ -1,5 +1,6 @@
 package com.mycelia.stem;
 
+import com.mycelia.stem.control.ConfigHandler;
 import com.mycelia.stem.control.ConsoleUnit;
 import com.mycelia.stem.databank.Databank;
 
@@ -22,6 +23,8 @@ public class Main {
 	public static void main(String[] args) {
 
 		System.out.print("MyceliaStem setup... ");
+		
+		ConfigHandler.init();
 
 		console_thread = new Thread(console);
 		console_thread.start();

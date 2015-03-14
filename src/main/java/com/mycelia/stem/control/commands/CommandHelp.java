@@ -14,7 +14,7 @@ public class CommandHelp extends AbstractCommand {
 			if(parameters[1].equals("def")){
 				define();
 			} else {
-				System.out.println("e>" + "Wrong Parameters");
+				System.out.println("wrong parameters");
 			}
 		} else {
 			//TODO: replace with proper loaded commands list
@@ -36,7 +36,7 @@ public class CommandHelp extends AbstractCommand {
 
 	@Override
 	public void define() {
-		System.out.println("Prints a list of all commands that have been recognised.");
+		System.out.println("prints a list of all commands that have been recognised");
 	}
 	
 	@Override

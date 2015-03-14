@@ -22,14 +22,12 @@ public class ConsoleUnit implements Runnable{
 
 	@Override
 	public void run() {
-		System.out.print("$>");
 		while(true){
 			if(userIn.hasNextLine()){
 				CommandSystem.index_reset();
 				String make = userIn.nextLine();
 				if (!make.equals("")) {
 					CommandSystem.command(make);
-					System.out.print("$>");
 				}
 			}
 		}

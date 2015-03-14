@@ -15,18 +15,19 @@ public class CommandExit extends AbstractCommand {
 			} else if(parameters[1].equals("clean")){
 				CMSCommand.cleanExit();
 			} else {
-				System.out.println("e>" + "Wrong Parameters");
+				System.out.println("wrong parameters");
 			}
 		} else {
-			System.out.println("e>" + "Command Incomplete");
+			System.out.println("command incomplete");
 		}
 
 	}
 	
 	@Override
 	public void define() {
-		System.out.println("Parameter 'now' : exits without warning or secondary check.");
-		System.out.println("Parameter: 'clean' : rries to exit cleanly (announces it to grid).");
+		System.out.println("kills the application");
+		System.out.println("now : exits without warning or secondary check");
+		System.out.println("clean : tries to exit cleanly (announces it to grid)");
 	}
 	
 	@Override
