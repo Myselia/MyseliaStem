@@ -9,7 +9,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import cms.helpers.ThreadHelper;
-import cms.monitoring.LogSystem;
 
 public class Server extends ThreadHelper {
 
@@ -34,8 +33,6 @@ public class Server extends ThreadHelper {
 	}
 
 	public void startRunning() throws ClassNotFoundException {
-		LogSystem.log(true, false, "Server listening on port: " + port);
-
 		openServerSocket(this.port);
 
 		while (SERVER_RUNNING) {
@@ -53,8 +50,6 @@ public class Server extends ThreadHelper {
 			this.threadPool.execute(new Thread(new ClientSession(clientConnectionSocket)));
 
 		}
-
-		LogSystem.log(true, false, "Server has stopped running");
 		System.out.println("Server no longer listening on port: " + port);
 	}
 

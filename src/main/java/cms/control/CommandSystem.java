@@ -26,7 +26,7 @@ public class CommandSystem {
 	private static String command;
 	private static ReflectionCommand[] commandClasses = null;
 
-	private static boolean debug = false;
+	private static boolean debug = true;
 
 	/**
 	 * Scans all classes accessible from the context class loader which belong

@@ -14,7 +14,6 @@ import java.util.Enumeration;
 import cms.Main;
 import cms.display.buttons.quick.QuickSeekButton;
 import cms.helpers.ThreadHelper;
-import cms.monitoring.LogSystem;
 
 public class Broadcast extends ThreadHelper {
 

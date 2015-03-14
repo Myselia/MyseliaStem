@@ -13,7 +13,6 @@ import cms.control.CommandSystem;
 import cms.control.ConfigHandler;
 import cms.databank.OverLord;
 import cms.display.ProgramWindow;
-import cms.monitoring.LogSystem;
 
 public class Main {
 	
@@ -132,7 +131,6 @@ public class Main {
 		return new Thread(new Runnable(){
 			public void run() {
 				frame = ProgramWindow.initEnvironment();
-				LogSystem.log(true, false, "Log System Started");
 				System.out.println("Welcome to the CMS v0.6 alpha");
 				System.out.println("Enter 'help' for a list of commands");
 			}

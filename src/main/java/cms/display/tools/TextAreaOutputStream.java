@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.swing.*;
 
-import cms.monitoring.LogSystem;
+//import cms.monitoring.LogSystem;
 
 /**
  * The <code>TextAreaOutputStream</code> class is the CMS OutputStream to its JTextPanes
@@ -105,7 +105,7 @@ public class TextAreaOutputStream extends OutputStream {
 				this.current_length += str.length();
 				if(str.endsWith(this.EOL1) || str.endsWith(this.EOL2)){
 					if (lengths.size() >= maxLines) {
-						LogSystem.log(true, false, "Console Output Exceeding Limit");
+						//LogSystem.log(true, false, "Console Output Exceeding Limit");
 						this.clear();
 					}
 					this.lengths.addLast(current_length);

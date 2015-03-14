@@ -3,7 +3,6 @@ package cms.control.user;
 import cms.databank.OverLord;
 import cms.display.graphing.GraphingHistogram;
 import cms.helpers.TestThread;
-import cms.monitoring.LogSystem;
 
 public class CommandTest extends AbstractCommand {
 	
@@ -23,9 +22,6 @@ public class CommandTest extends AbstractCommand {
 				break;
 			case "console":
 				testconsole();
-				break;
-			case "log":
-				testlog();
 				break;
 			case "num":
 				testnum(parameters);
@@ -62,7 +58,6 @@ public class CommandTest extends AbstractCommand {
 	}
 	
 	public static void testdata(){
-		LogSystem.log(true, false, "Testing new data");
 		OverLord.newData();
 	}
 	
@@ -70,13 +65,6 @@ public class CommandTest extends AbstractCommand {
 		System.out.println("Testing scroll and caret");
 		for(int i = 0 ; i < 40 ; i++){
 			System.out.println("Line test for caret: " + (i+1));
-		}
-	}
-	
-	private void testlog(){
-		LogSystem.log(true, false, "Testing scroll and caret");
-		for(int i = 0 ; i < 40 ; i++){
-			LogSystem.log(true, false, "Line test for caret: " + (i+1));
 		}
 	}
 	

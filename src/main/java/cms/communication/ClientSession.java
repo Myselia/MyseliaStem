@@ -16,7 +16,6 @@ import cms.databank.structures.NodeState;
 import cms.display.graphing.GraphingHistogram;
 import cms.display.info.AddressPanel;
 import cms.helpers.ThreadHelper;
-import cms.monitoring.LogSystem;
 
 public class ClientSession extends ThreadHelper {
 
@@ -78,8 +77,6 @@ public class ClientSession extends ThreadHelper {
 				SETUP = true;
 			}
 			
-			LogSystem.log(true, false, "Starting Client Session(" + sessionID + "):" + ipAddress);
-			
 			Node curNode;
 			if (!HAS_CONNECTED) {
 				OverLord.nodeCore.add(new Node());
@@ -109,7 +106,6 @@ public class ClientSession extends ThreadHelper {
 			}
 
 			// If the program gets here the connection has been lost, do some clean up stuff
-			LogSystem.log(true, false, "Lost connection from client(" + sessionID + "): " +  ipAddress);
 			curNode.setState(NodeState.ABSENT);
 			//cleanUp();
 
