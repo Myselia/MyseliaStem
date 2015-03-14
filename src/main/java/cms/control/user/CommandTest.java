@@ -2,7 +2,6 @@ package cms.control.user;
 
 import cms.databank.OverLord;
 import cms.display.graphing.GraphingHistogram;
-import cms.helpers.TestThread;
 
 public class CommandTest extends AbstractCommand {
 	
@@ -28,9 +27,6 @@ public class CommandTest extends AbstractCommand {
 				break;
 			case "start":
 				teststart(parameters);
-				break;
-			case "stop":
-				testloop(new TestThread(), -1, false);
 				break;
 			default:
 				System.out.println("e>" + "Wrong Parameters");
@@ -84,9 +80,6 @@ public class CommandTest extends AbstractCommand {
 	
 	public static void teststart(String[] args){
 		switch(args.length){
-		case 2:
-			testloop(new TestThread(), -1, true);
-			break;
 		case 3:
 			int loops = 0;
 			try{
@@ -94,25 +87,8 @@ public class CommandTest extends AbstractCommand {
 			}catch(Exception e){
 				return;
 			}
-			testloop(new TestThread(), loops, true);
 		default:
 			System.out.println("e>" + "Wrong Parameters");
-		}
-	}
-	
-	public static void testloop(TestThread instance, int loops, boolean start) {
-		if(start){
-			instance.setLoops(loops);
-			thread = new Thread(instance);
-			thread.start();
-		}else if(thread != null){
-			try{
-				thread.interrupt();
-			}catch(Exception e){	
-				e.printStackTrace();
-			}
-		}else{
-			System.out.println("e>" + "Test thread is not running");
 		}
 	}
 
