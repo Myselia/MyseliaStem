@@ -1,6 +1,10 @@
 package com.mycelia.stem.databank;
 
-public class Databank implements Runnable{
+import java.util.ArrayList;
+
+public class Databank implements Runnable {
+	
+	ArrayList<DataStore> datastore = new ArrayList<DataStore>();
 	
 	public Databank(){
 		
@@ -10,5 +14,7 @@ public class Databank implements Runnable{
 	public void run() {
 		
 	}
+	
+	
 
 }
