@@ -1,5 +1,11 @@
 package com.mycelia.stem;
 
+import java.util.ArrayList;
+
+import com.mycelia.stem.communication.ComDock;
+import com.mycelia.stem.communication.seekers.ISeek;
+import com.mycelia.stem.communication.seekers.SeekImpl_echo;
+import com.mycelia.stem.communication.seekers.SeekImpl_localNetwork;
 import com.mycelia.stem.control.ConfigHandler;
 import com.mycelia.stem.control.ConsoleUnit;
 import com.mycelia.stem.databank.Databank;
@@ -19,6 +25,7 @@ public class Main {
 	// private static CommunicationDock comdock = new CommunicationDock();
 	private static Databank databank = new Databank();
 	private static ConsoleUnit console = new ConsoleUnit();
+	private static ComDock comDock;
 
 	public static void main(String[] args) {
 
@@ -31,6 +38,18 @@ public class Main {
 
 		databank_thread = new Thread(databank);
 		databank_thread.start();
+		
+		comDock = new ComDock();
+		
+		ArrayList<ISeek> seekerListDaemon = new ArrayList<ISeek>();
+		seekerListDaemon.add(SeekImpl_localNetwork.getInstance());
+		seekerListDaemon.add(SeekImpl_echo.getInstance());
+		comDock.seekDaemons(seekerListDaemon);
+		
+		ArrayList<ISeek> seekerListLens = new ArrayList<ISeek>();
+		//seekerListLens.add(SeekImpl_localNetwork.getInstance());
+		seekerListLens.add(SeekImpl_echo.getInstance());
+		comDock.seekLenses(seekerListLens);
 
 		/*
 		 * comdock_thread = new Thread (comdock); 

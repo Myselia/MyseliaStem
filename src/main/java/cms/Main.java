@@ -51,9 +51,7 @@ public class Main {
 		//communicator = new Thread(serverRunnable);
 		comDock = new ComDock();
 		
-		/**
-		 * 
-		 */
+	
 		ArrayList<ISeek> seekerListDaemon = new ArrayList<ISeek>();
 		seekerListDaemon.add(SeekImpl_localNetwork.getInstance());
 		seekerListDaemon.add(SeekImpl_echo.getInstance());
