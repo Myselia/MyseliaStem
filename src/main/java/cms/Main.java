@@ -64,9 +64,7 @@ public class Main {
 		try{
 			CommandSystem.setClasses("cms.control.user");
 		}catch(Exception e){
-			System.out.println("e>" + "cms.control.CommandSystem.setClasses(String) called in");
-			System.out.println("e>" + "cms.display.communication.ConsoleDisplay.ConsoleDisplay() threw an exception");
-			System.out.println("e>" + "Exception thrown by:" + e.getClass().getCanonicalName());
+			System.out.println("Exception thrown by:" + e.getClass().getCanonicalName());
 			System.out.println("Please force kill the application and investigate.");
 		}
 	}
