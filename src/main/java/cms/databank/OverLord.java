@@ -10,8 +10,6 @@ import com.mycelia.common.communication.structures.Transmission;
 import cms.databank.structures.Network;
 import cms.databank.structures.Node;
 import cms.databank.structures.NodeState;
-import cms.display.graphing.GraphingHistogram;
-import cms.display.info.AddressPanel;
 
 public class OverLord {
 	// The minimum number of cores to initialize
@@ -80,8 +78,6 @@ public class OverLord {
 		nodeCore.remove(id);
 		nodeCount--;
 		coreIDTracker--;
-		AddressPanel.updateButtonList();
-		GraphingHistogram.updateBarCount();
 	}
 
 	public static boolean isNodeAcive(int id) {

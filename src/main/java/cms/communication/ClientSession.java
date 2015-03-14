@@ -13,8 +13,6 @@ import com.mycelia.common.communication.structures.TransmissionBuilder;
 import cms.databank.OverLord;
 import cms.databank.structures.Node;
 import cms.databank.structures.NodeState;
-import cms.display.graphing.GraphingHistogram;
-import cms.display.info.AddressPanel;
 import cms.helpers.ThreadHelper;
 
 public class ClientSession extends ThreadHelper {
@@ -90,14 +88,8 @@ public class ClientSession extends ThreadHelper {
 			curNode.setIp(ipAddress);
 			curNode.setState(NodeState.AVAILABLE);
 			
-			//UPDATE THE GRAPHICS TO MATCH THE ADDITION OF A NEW NODE
-			AddressPanel.updateButtonList();
-			GraphingHistogram.updateBarCount();
-			//
-			
 			Transmission trans = new Transmission();
 			while (SETUP && ((inputS = input.readLine() ) != null)) {
-				AddressPanel.nodeButton(sessionID).setBlink(true);
 				trans = gson.fromJson(inputS, Transmission.class);
 				if (trans.get_header().get_to().equals("cms:server")) {
 					OverLord.insertData(trans);

@@ -2,8 +2,6 @@ package cms.control.methods;
 
 import cms.Main;
 import cms.databank.OverLord;
-import cms.display.info.AddressPanel;
-import cms.display.info.QuickPanel;
 
 public class CMSCommand {
 
@@ -38,7 +36,6 @@ public class CMSCommand {
 			/** TODO make(int): verify if the -1 case is checked appropriately **/
 		} else {
 			OverLord.nodeCore.get(coreid).setType(type);
-			AddressPanel.nodeButton(coreid).repaint();
 		}
 	}
 
@@ -48,8 +45,6 @@ public class CMSCommand {
 	 */
 	public static void call(String s) {
 		int call = Integer.parseInt(s);
-		AddressPanel.unselectLast(AddressPanel.nodeButton(call));
-		AddressPanel.nodeButton(call).select(true);
 	}
 
 	/*
@@ -58,10 +53,8 @@ public class CMSCommand {
 	public static void seek(boolean seek) {
 		if (seek) {
 			Main.startBCastThread(Main.getBcastRunnable(), Main.getbCastCommunicator());
-			QuickPanel.setSeekSelect();
 		} else {
 			Main.getbCastCommunicator().interrupt();
-			QuickPanel.setSeekSelect();
 		}
 	}
 

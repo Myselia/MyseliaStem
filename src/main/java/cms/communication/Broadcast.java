@@ -12,7 +12,6 @@ import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 import cms.Main;
-import cms.display.buttons.quick.QuickSeekButton;
 import cms.helpers.ThreadHelper;
 
 public class Broadcast extends ThreadHelper {

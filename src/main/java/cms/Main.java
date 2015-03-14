@@ -12,7 +12,6 @@ import cms.communication.Broadcast;
 import cms.control.CommandSystem;
 import cms.control.ConfigHandler;
 import cms.databank.OverLord;
-import cms.display.ProgramWindow;
 
 import com.mycelia.stem.communication.ComDock;
 import com.mycelia.stem.communication.seekers.ISeek;
@@ -151,7 +150,6 @@ public class Main {
 	private static Thread displayThread(){
 		return new Thread(new Runnable(){
 			public void run() {
-				frame = ProgramWindow.initEnvironment();
 				System.out.println("Welcome to the CMS v0.6 alpha");
 				System.out.println("Enter 'help' for a list of commands");
 			}
