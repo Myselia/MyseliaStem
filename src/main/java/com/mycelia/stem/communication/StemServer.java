@@ -29,6 +29,7 @@ public class StemServer implements Runnable {
 		threadPool = Executors.newFixedThreadPool(MAX_SERVER_THREAD_POOLS);
 	}
 
+	//Ticks as long as the server is running. Used to accept connections. Blocks until one is received.
 	public void serverTick() throws ClassNotFoundException {
 		if (serverSocket == null){
 			openServerSocket(port);
