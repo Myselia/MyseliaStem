@@ -11,6 +11,7 @@ import com.mycelia.stem.control.ConsoleUnit;
 import com.mycelia.stem.databank.Databank;
 
 public class Main {
+	long id = 2L;
 
 	public static final int DEFAULT_PORT = 42069;
 	public static final int BROADCAST_PORT = 42071;
