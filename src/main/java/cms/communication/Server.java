@@ -9,9 +9,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import cms.communication.ClientSession;
-import cms.helpers.ThreadHelper;
 
-public class Server extends ThreadHelper {
+public class Server implements Runnable{
 
 	public boolean SERVER_RUNNING = false;
 	public int MAX_SERVER_THREAD_POOLS = 10;

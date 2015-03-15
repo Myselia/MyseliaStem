@@ -1,7 +1,5 @@
 package com.mycelia.stem.control.commands;
 
-import cms.control.methods.CMSCommand;
-
 public class CommandSeek extends AbstractCommand {
 	private final static String command_signature = "seek";
 
@@ -12,9 +10,9 @@ public class CommandSeek extends AbstractCommand {
 			if(parameters[1].equals("def")){
 				define();
 			} else if(parameters[1].equals("on") || parameters[1].equals("start")){
-				CMSCommand.seek(true);
+				//TODO: seek on
 			} else if(parameters[1].equals("off") || parameters[1].equals("stop")){
-				CMSCommand.seek(false);
+				//TODO: seek off
 			} else {
 				System.out.println("wrong parameters");
 			}

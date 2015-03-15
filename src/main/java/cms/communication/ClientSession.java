@@ -15,7 +15,7 @@ import cms.databank.structures.Node;
 import cms.databank.structures.NodeState;
 import cms.helpers.ThreadHelper;
 
-public class ClientSession extends ThreadHelper {
+public class ClientSession implements Runnable{
 
 	//Socket object to handle client transmission on transport layer
 	protected Socket clientConnectionSocket = null;

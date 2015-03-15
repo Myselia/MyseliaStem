@@ -9,7 +9,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import cms.communication.ClientSession;
-import cms.helpers.ThreadHelper;
 
 public class StemServer implements Runnable {
 

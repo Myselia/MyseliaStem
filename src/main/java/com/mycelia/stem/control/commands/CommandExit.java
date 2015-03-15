@@ -1,6 +1,5 @@
 package com.mycelia.stem.control.commands;
 
-import cms.control.methods.CMSCommand;
 
 public class CommandExit extends AbstractCommand {
 	private final static String command_signature = "exit";
@@ -12,8 +11,6 @@ public class CommandExit extends AbstractCommand {
 				define();
 			} else if(parameters[1].equals("now")){
 				System.exit(0);
-			} else if(parameters[1].equals("clean")){
-				CMSCommand.cleanExit();
 			} else {
 				System.out.println("wrong parameters");
 			}

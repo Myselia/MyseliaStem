@@ -11,10 +11,9 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 
-import cms.Main;
-import cms.helpers.ThreadHelper;
+import com.mycelia.stem.Main;
 
-public class Broadcast extends ThreadHelper {
+public class Broadcast{
 
 	private int port;
 	private final int SLEEP_TIME = 2000;
