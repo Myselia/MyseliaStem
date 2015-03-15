@@ -2,7 +2,6 @@ package com.mycelia.stem.communication;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import com.mycelia.stem.communication.ComDock.componentType;
 import com.mycelia.stem.communication.seekers.ISeek;

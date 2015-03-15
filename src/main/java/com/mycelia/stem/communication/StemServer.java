@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import cms.communication.ClientSession;
 import cms.helpers.ThreadHelper;
 
-public class Server extends ThreadHelper {
+public class StemServer implements Runnable {
 
 	public boolean SERVER_RUNNING = false;
 	public int MAX_SERVER_THREAD_POOLS = 10;
@@ -19,12 +19,12 @@ public class Server extends ThreadHelper {
 
 	protected PrintWriter output;
 	protected BufferedReader input;
-	protected ServerSocket serverSocket;
 
+	protected ServerSocket serverSocket;
 	protected Socket clientConnectionSocket;
 	protected ExecutorService threadPool;
 
-	public Server(int port, int backlog) {
+	public StemServer(int port, int backlog) {
 		this.serverSocket = null;
 		this.clientConnectionSocket = null;
 		this.port = port;
@@ -33,34 +33,38 @@ public class Server extends ThreadHelper {
 		threadPool = Executors.newFixedThreadPool(MAX_SERVER_THREAD_POOLS);
 	}
 
-	public void startRunning() throws ClassNotFoundException {
-		openServerSocket(this.port);
+	public void serverTick() throws ClassNotFoundException {
+		if (serverSocket == null){
+			openServerSocket(port);
+		}
 
 		while (SERVER_RUNNING) {
 			clientConnectionSocket = null;
-
 			try {
+				System.out.println("COCK!");
 				clientConnectionSocket = this.serverSocket.accept();
-			} catch (NullPointerException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
-			// Create a thread for a client if accepted containing an SClientSession
-			this.threadPool.execute(new Thread(new ClientSession(clientConnectionSocket)));
+			// Create a thread for a client if accepted containing an
+			// StemClientSession
+			this.threadPool.execute(new Thread(new StemClientSession(
+					clientConnectionSocket,
+					assignInternalID(clientConnectionSocket))));
 
 		}
-		System.out.println("Server no longer listening on port: " + port);
+		System.out.println("server no longer listening on port: " + port);
 	}
 
+	private int assignInternalID(Socket clientConnectionSocket) {
+		return 0;
+	}
 
 	private void openServerSocket(int port) {
 		try {
 			serverSocket = new ServerSocket(port);
 		} catch (Exception e) {
-			System.err.println("Cant open port on " + port);
-			e.printStackTrace();
+			System.err.println("cannot open port on " + port);
 		}
 	}
 
@@ -68,10 +72,10 @@ public class Server extends ThreadHelper {
 	public void run() {
 		try {
 			while (!Thread.currentThread().isInterrupted()) {
-				startRunning();
+				serverTick();
 			}
-		} catch (ClassNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 	}
 }

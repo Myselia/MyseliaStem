@@ -47,7 +47,7 @@ public class Main {
 		comDock.seekDaemons(seekerListDaemon);
 		
 		ArrayList<ISeek> seekerListLens = new ArrayList<ISeek>();
-		//seekerListLens.add(SeekImpl_localNetwork.getInstance());
+		seekerListLens.add(SeekImpl_localNetwork.getInstance());
 		seekerListLens.add(SeekImpl_echo.getInstance());
 		comDock.seekLenses(seekerListLens);
 

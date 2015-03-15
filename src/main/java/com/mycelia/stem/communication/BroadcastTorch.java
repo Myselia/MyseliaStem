@@ -91,26 +91,26 @@ public class BroadcastTorch {
 
 		switch (type) {
 		case DAEMON:
-			seekPacketString = seekPacket("0");
+			seekPacketString = seekPacket(componentType.DAEMON.toString());
 			break;
 		case LENS:
-			seekPacketString = seekPacket("1");
+			seekPacketString = seekPacket(componentType.LENS.toString());
 			break;
 		case SANDBOX:
-			seekPacketString = seekPacket("2");
+			seekPacketString = seekPacket(componentType.SANDBOX.toString());
 			break;
 		}
 
 		seekPacketString += TERMINATOR;
 		return seekPacketString.getBytes();
 	}
-
+	
 	private String seekPacket(String type) {
 		TransmissionBuilder tb = new TransmissionBuilder();
 		Gson g = new Gson();
 
 		tb.newTransmission(1000, "stem", "all");
-		tb.newAtom("ip", "String", Integer.toString(ComDock.Stem_IP));
+		tb.newAtom("ip", "String", ComDock.Stem_IP);
 		tb.newAtom("port", "int", Integer.toString(ComDock.Stem_Listen_Port));
 		tb.newAtom("type", "String", type);
 		Transmission t = tb.getTransmission();

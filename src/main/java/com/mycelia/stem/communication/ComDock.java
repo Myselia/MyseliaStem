@@ -1,20 +1,23 @@
 package com.mycelia.stem.communication;
 
+import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import com.mycelia.stem.communication.seekers.ISeek;
-import com.mycelia.stem.communication.seekers.SeekImpl_localNetwork;
 
 public class ComDock {
 
 	public static int Component_Listen_Port = 42071;
 	public static int Stem_Listen_Port = 42069;
-	public static int Stem_IP;
-	//private int lensPort, daemonPort, defaultPort;
+	//FIX THIS TO BE MORE DYNAMIC!
+	public static String Stem_IP = "10.110.160.226";
 	private BroadCaster seeker;
-	
-	private static Server serverRunnable = new Server(Stem_Listen_Port, 100);
-	private static Thread serverThread;
+
+	private Thread serverThread;
 	
 	public enum componentType {
 		DAEMON,
@@ -27,7 +30,8 @@ public class ComDock {
 		seeker = new BroadCaster();
 		
 		//Initialize main server thread
-		serverThread = new Thread(serverRunnable);
+		serverThread = new Thread(new StemServer(Stem_Listen_Port, 100));
+		serverThread.start();
 	}
 	
 	/*
@@ -64,8 +68,34 @@ public class ComDock {
 	 * ##############################|         |##############################
 	 */
 	
+	/*private InetAddress getServerNetworkBroadcast() throws SocketException {
+		Enumeration<NetworkInterface> interfaces = null;
+		InetAddress broadcast = null;
 
+		try {
+			interfaces = NetworkInterface.getNetworkInterfaces();
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+		while (interfaces.hasMoreElements()) {
+			NetworkInterface networkInterface = interfaces.nextElement();
+
+			if (networkInterface.isLoopback())
+				continue;
+
+			for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
+				broadcast = interfaceAddress.getBroadcast();
+				//System.out.println("BCAST FIND: " + broadcast);
+
+				if (broadcast == null)
+					continue;
+			}
+		}
+
+		return broadcast;
+	}*/
 	
 	
 }
