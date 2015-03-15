@@ -41,13 +41,12 @@ public class StemServer implements Runnable {
 		while (SERVER_RUNNING) {
 			clientConnectionSocket = null;
 			try {
-				System.out.println("COCK!");
+				System.out.println("ACCEPTING CONNECTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				clientConnectionSocket = this.serverSocket.accept();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			// Create a thread for a client if accepted containing an
-			// StemClientSession
+			// Create a thread for a client if accepted containing an StemClientSession
 			this.threadPool.execute(new Thread(new StemClientSession(
 					clientConnectionSocket,
 					assignInternalID(clientConnectionSocket))));
@@ -64,7 +63,7 @@ public class StemServer implements Runnable {
 		try {
 			serverSocket = new ServerSocket(port);
 		} catch (Exception e) {
-			System.err.println("cannot open port on " + port);
+			System.err.println("FATAL: Cannot open Stem Server port on " + port);
 		}
 	}
 

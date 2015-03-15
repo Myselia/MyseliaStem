@@ -3,7 +3,7 @@ package com.mycelia.stem.communication;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.mycelia.stem.communication.ComDock.componentType;
+import com.mycelia.common.constants.Constants.componentType;
 import com.mycelia.stem.communication.seekers.ISeek;
 
 public class BroadCaster {

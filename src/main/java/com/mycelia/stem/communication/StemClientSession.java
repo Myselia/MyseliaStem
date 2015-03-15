@@ -5,8 +5,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.Iterator;
 
 import com.google.gson.Gson;
+import com.mycelia.common.communication.structures.Atom;
+import com.mycelia.common.communication.structures.Transmission;
+import com.mycelia.stem.communication.handlers.Handler;
 
 public class StemClientSession implements Runnable {
 
@@ -14,18 +19,17 @@ public class StemClientSession implements Runnable {
 		protected Socket clientConnectionSocket = null;
 		//Socket object to handle server transmission on transport layer
 		protected String serverTransmission = null;
+		private Handler componentHandler;
 		//The client's IP address
 		private String ipAddress;
-		//This flag is true once the setup phase of the session is complete 
-		private boolean SETUP = false;
-		//This flag is true if the node is already known to the CMS by IP
-		private boolean HAS_CONNECTED = false;
-		//This is the id of the session which is the same as the node id in datastore
-		private int sessionID = -1;
 		//Input stream buffer
 		private BufferedReader input;
 		//Output stream buffer
 		private PrintWriter output;
+		private Gson jsonParser;
+		
+		//-----!FLAGS!-----
+		private boolean setupComplete = false;
 		
 		//The string currently being processed by the server (\r\n terminated from client)
 		protected Gson gson = new Gson();
@@ -34,6 +38,7 @@ public class StemClientSession implements Runnable {
 		public StemClientSession(Socket clientConnectionSocket, int componentID) {
 			this.clientConnectionSocket = clientConnectionSocket;
 			this.ipAddress = clientConnectionSocket.getInetAddress().getHostAddress();
+			jsonParser = new Gson();
 		}
 
 		@Override
@@ -49,14 +54,34 @@ public class StemClientSession implements Runnable {
 				e1.printStackTrace();
 			}
 		
-			// TODO Auto-generated method stub
+			// !HANDLING HAPPENS HERE!
 			try {
+				System.out.println("WAITING FOR A TRANSMISSION FROM CLIENT!!!!!!!!!!!!!!!!!!!!!!!!!");
 				while (((inputS = input.readLine() ) != null)) {
-					System.out.println("GOT RESPONSE FROM FAGGOT MACHINE: " + inputS);
+					//Wait for the setup packet from the newly connected component, once received handle it!
+					if (!setupComplete) {
+						//SETUP PHASE
+						System.out.println("RECV: " + inputS);
+						//handleSetupPacket(inputS);
+					} else {
+						//REGULAR HANDLE TICK
+						
+					}
+					
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} 
+		}
+		
+		private void handleSetupPacket(String s) {
+			Transmission trans = jsonParser.fromJson(s, Transmission.class);
+			Iterator<Atom> it = trans.get_atoms().iterator();
+			while (it.hasNext()) {
+				Atom a = it.next();
+				if (a.get_field().equals("componentType")) {
+					//switch ()
+				}
 			}
 		}
 		
