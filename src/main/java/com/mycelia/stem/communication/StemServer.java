@@ -1,14 +1,11 @@
 package com.mycelia.stem.communication;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import cms.communication.ClientSession;
 
 public class StemServer implements Runnable {
 

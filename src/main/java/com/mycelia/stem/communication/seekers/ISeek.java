@@ -1,7 +1,6 @@
 package com.mycelia.stem.communication.seekers;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 
 public interface ISeek {
 

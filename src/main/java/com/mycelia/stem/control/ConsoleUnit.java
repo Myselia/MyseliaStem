@@ -1,10 +1,6 @@
 package com.mycelia.stem.control;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
-
-import com.mycelia.stem.control.CommandSystem;
 
 public class ConsoleUnit implements Runnable{
 	
