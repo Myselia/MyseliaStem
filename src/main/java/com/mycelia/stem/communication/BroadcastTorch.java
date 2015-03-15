@@ -9,21 +9,18 @@ import java.util.Iterator;
 import com.google.gson.Gson;
 import com.mycelia.common.communication.structures.Transmission;
 import com.mycelia.common.communication.structures.TransmissionBuilder;
-import com.mycelia.stem.communication.ComDock.componentType;
+import com.mycelia.common.constants.Constants.componentType;
 import com.mycelia.stem.communication.seekers.ISeek;
 
 public class BroadcastTorch {
 
-	private final int SLEEP_TIME = 2000;
+	private int BROADCAST_SLEEP = 1500;
 	private final String TERMINATOR = "\r\n";
 
 	private ArrayList<ISeek> seekInterfaces;
 
-	
 	private byte[] seekProbeText; /* THIS IS IN JSON */
 	public componentType type;
-
-	private Socket passOnSocket;
 
 	public BroadcastTorch(	componentType type,
 							ArrayList<ISeek> seekers) 
@@ -39,21 +36,16 @@ public class BroadcastTorch {
 	 */
 
 	public void seek() throws InterruptedException, IOException {
-		try {
 
-			Iterator<ISeek> iterator = seekInterfaces.iterator();
-			while (iterator.hasNext()) {
-				ISeek seeker = iterator.next();
-				System.out.println(type + " - Current Seeker is: " + seeker.getClass() + " on port: " + seeker.getPort());
-				seeker.discoverComponents(seekProbeText);
-			}
-			Thread.sleep(SLEEP_TIME);
-
-		} catch (InterruptedException e) {
-			/*
-			 * TODO PUT CODE HERE THAT HANDLES A KILL SIGNAL TO THE THREAD
-			 */
+		Iterator<ISeek> iterator = seekInterfaces.iterator();
+		while (iterator.hasNext()) {
+			ISeek seeker = iterator.next();
+			System.out.println(type + " - Current Seeker is: "
+					+ seeker.getClass() + " on port: " + seeker.getPort());
+			seeker.discoverComponents(seekProbeText);
 		}
+		Thread.sleep(BROADCAST_SLEEP);
+
 	}
 
 	// Called to setup the broadcast torch JUST before the actual broadcasting
@@ -121,7 +113,7 @@ public class BroadcastTorch {
 	static class BroadcastPortHandler {
 		private static int portAssignable = 42080;
 
-		static synchronized int nextPort() {
+		synchronized static int nextPort() {
 			portAssignable++;
 			return portAssignable;
 		}

@@ -1,29 +1,18 @@
 package com.mycelia.stem.communication;
 
-import java.net.InetAddress;
-import java.net.InterfaceAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 
 import com.mycelia.stem.communication.seekers.ISeek;
 
 public class ComDock {
 
-	public static int Component_Listen_Port = 42071;
+	public static int Component_Listen_Port = 42068;
 	public static int Stem_Listen_Port = 42069;
 	//FIX THIS TO BE MORE DYNAMIC!
 	public static String Stem_IP = "10.110.160.226";
 	private BroadCaster seeker;
 
 	private Thread serverThread;
-	
-	public enum componentType {
-		DAEMON,
-		LENS,
-		SANDBOX
-	};
 	
 	public ComDock() {
 		System.out.println("Initializing ComDock");

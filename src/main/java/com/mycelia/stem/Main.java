@@ -18,11 +18,9 @@ public class Main {
 
 	public static final boolean DEBUG = true;
 
-	private static Thread comdock_thread;
 	private static Thread databank_thread;
 	private static Thread console_thread;
 
-	// private static CommunicationDock comdock = new CommunicationDock();
 	private static Databank databank = new Databank();
 	private static ConsoleUnit console = new ConsoleUnit();
 	private static ComDock comDock;
@@ -41,6 +39,7 @@ public class Main {
 		
 		comDock = new ComDock();
 		
+				
 		ArrayList<ISeek> seekerListDaemon = new ArrayList<ISeek>();
 		seekerListDaemon.add(SeekImpl_localNetwork.getInstance());
 		seekerListDaemon.add(SeekImpl_echo.getInstance());
