@@ -38,12 +38,12 @@ public class StemServer implements Runnable {
 		while (SERVER_RUNNING) {
 			clientConnectionSocket = null;
 			try {
-				System.out.println("ACCEPTING CONNECTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				clientConnectionSocket = this.serverSocket.accept();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			// Create a thread for a client if accepted containing an StemClientSession
+			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ACCEPTING CONNECTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			this.threadPool.execute(new Thread(new StemClientSession(
 					clientConnectionSocket,
 					assignInternalID(clientConnectionSocket))));

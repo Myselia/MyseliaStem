@@ -15,24 +15,13 @@ public class SeekImpl_localNetwork implements ISeek {
 	private SeekImpl_localNetwork() {
 	}
 
-	public static SeekImpl_localNetwork getInstance() {
-		if (uniqueInstance == null) {
-			synchronized (SeekImpl_localNetwork.class) {
-				if (uniqueInstance == null) {
-					uniqueInstance = new SeekImpl_localNetwork();
-				}
-			}
-		}
-		return uniqueInstance;
-	}
-
 	public synchronized void discoverComponents(byte[] infoPacket) throws IOException {
 		DatagramPacket networkPacket = new DatagramPacket(infoPacket, infoPacket.length,
 				InetAddress.getByName("255.255.255.255"), ComDock.Component_Listen_Port);
 		discoverSocket.send(networkPacket);
 	}
 
-	public void openInternalSocket() {
+	public synchronized void openInternalSocket() {
 		System.out.println("LOCAL NETWORK SEEKER: OPENED ON PORT" + port);
 		try {
 			discoverSocket = new DatagramSocket(port);
@@ -51,5 +40,16 @@ public class SeekImpl_localNetwork implements ISeek {
 	@Override
 	public void setPort(int port) {
 		this.port = port;
+	}
+	
+	public static SeekImpl_localNetwork getInstance() {
+		if (uniqueInstance == null) {
+			synchronized (SeekImpl_localNetwork.class) {
+				if (uniqueInstance == null) {
+					uniqueInstance = new SeekImpl_localNetwork();
+				}
+			}
+		}
+		return uniqueInstance;
 	}
 }

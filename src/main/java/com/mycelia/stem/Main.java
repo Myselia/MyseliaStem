@@ -27,7 +27,6 @@ public class Main {
 	private static ComDock comDock;
 
 	public static void main(String[] args) {
-
 		System.out.print("MyceliaStem setup... ");
 		
 		ConfigHandler.init();
@@ -39,7 +38,6 @@ public class Main {
 		databank_thread.start();
 		
 		comDock = new ComDock();
-		
 				
 		ArrayList<ISeek> seekerListDaemon = new ArrayList<ISeek>();
 		seekerListDaemon.add(SeekImpl_localNetwork.getInstance());
