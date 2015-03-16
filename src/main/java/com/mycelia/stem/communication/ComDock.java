@@ -12,7 +12,7 @@ public class ComDock {
 	public static int Component_Listen_Port = 42068;
 	public static int Stem_Listen_Port = 42069;
 	//FIX THIS TO BE MORE DYNAMIC!
-	public static String Stem_IP = "10.110.160.226";
+	public static String Stem_IP;
 	private BroadCaster seeker;
 
 	private Thread serverThread;
