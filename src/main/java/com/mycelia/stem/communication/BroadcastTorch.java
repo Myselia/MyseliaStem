@@ -7,7 +7,7 @@ import java.util.Iterator;
 import com.google.gson.Gson;
 import com.mycelia.common.communication.structures.Transmission;
 import com.mycelia.common.communication.structures.TransmissionBuilder;
-import com.mycelia.common.constants.Constants.componentType;
+import com.mycelia.common.constants.ComponentType;
 import com.mycelia.stem.communication.seekers.ISeek;
 
 public class BroadcastTorch {
@@ -18,9 +18,9 @@ public class BroadcastTorch {
 	private ArrayList<ISeek> seekInterfaces;
 
 	private byte[] seekProbeText; /* THIS IS IN JSON */
-	public componentType type;
+	public ComponentType type;
 
-	public BroadcastTorch(	componentType type,
+	public BroadcastTorch(	ComponentType type,
 							ArrayList<ISeek> seekers) 
 	{
 		this.seekInterfaces = seekers;
@@ -81,13 +81,13 @@ public class BroadcastTorch {
 
 		switch (type) {
 		case DAEMON:
-			seekPacketString = seekPacket(componentType.DAEMON.toString());
+			seekPacketString = seekPacket(ComponentType.DAEMON.toString());
 			break;
 		case LENS:
-			seekPacketString = seekPacket(componentType.LENS.toString());
+			seekPacketString = seekPacket(ComponentType.LENS.toString());
 			break;
-		case SANDBOX:
-			seekPacketString = seekPacket(componentType.SANDBOX.toString());
+		case SANDBOXMASTER:
+			seekPacketString = seekPacket(ComponentType.SANDBOXMASTER.toString());
 			break;
 		}
 
