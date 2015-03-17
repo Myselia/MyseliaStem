@@ -15,7 +15,7 @@ public class BroadcastTorch {
 	private int BROADCAST_SLEEP = 1500;
 	private final String TERMINATOR = "\r\n";
 
-	private ArrayList<ISeek> seekInterfaces;
+	private volatile ArrayList<ISeek> seekInterfaces;
 
 	private byte[] seekProbeText; /* THIS IS IN JSON */
 	public ComponentType type;
@@ -38,12 +38,11 @@ public class BroadcastTorch {
 		Iterator<ISeek> iterator = seekInterfaces.iterator();
 		while (iterator.hasNext()) {
 			ISeek seeker = iterator.next();
-			System.out.println(type + " - Current Seeker is: "
-					+ seeker.getClass() + " on port: " + seeker.getPort());
+			System.out.println(seeker.printStatus(type.name(), new String(seekProbeText)));
 			seeker.discoverComponents(seekProbeText);
 		}
 		Thread.sleep(BROADCAST_SLEEP);
-
+		//Thread.yield(); //MUCH BETTER!
 	}
 
 	// Called to setup the broadcast torch JUST before the actual broadcasting
@@ -95,6 +94,9 @@ public class BroadcastTorch {
 		return seekPacketString.getBytes();
 	}
 	
+	/*
+	 * TODO, ABSTRACT THIS 
+	 */
 	private String seekPacket(String type) {
 		TransmissionBuilder tb = new TransmissionBuilder();
 		Gson g = new Gson();

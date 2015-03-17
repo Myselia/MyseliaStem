@@ -116,6 +116,7 @@ public class StemClientSession implements Runnable {
 	public void die() {
 		isRunning = false;
 		try {
+			System.err.println("Killing old StemClientSession Thread!");
 			Thread.currentThread().join();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

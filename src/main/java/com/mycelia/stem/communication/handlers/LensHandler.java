@@ -23,13 +23,11 @@ public class LensHandler extends NetworkComponentHandlerBase {
 	
 	@Override
 	public void handleComponent() throws IOException {
-		// TODO Auto-generated method stub
-		String z = null;
 		if (!output.checkError()) {
 			String s = buildTestPacket();
 			System.out.println("SENDING TO CLIENT: " + s);
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(20);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

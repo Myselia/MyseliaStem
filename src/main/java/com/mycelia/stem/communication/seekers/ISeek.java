@@ -10,5 +10,6 @@ public interface ISeek {
 	public void openInternalSocket();
 	public int getPort();
 	public void setPort(int port);
+	public String printStatus(String componentType, String packet);
 
 }
