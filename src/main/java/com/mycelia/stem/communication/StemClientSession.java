@@ -134,35 +134,3 @@ public class StemClientSession implements Runnable {
 	}
 
 }
-
-/*if (clientConnectionState == connectionStatus.PENDING_HANDSHAKE) {
-if ((inputS = input.readLine()) != null) {
-	System.out.println("RECV: " + inputS);
-	handleSetupPacket(inputS);
-}
-
-} else if (clientConnectionState == connectionStatus.LOST_CONNECTION) {
-componentHandler.handleComponent();
-try {
-	Thread.sleep(1);
-} catch (InterruptedException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-}
-} else if (clientConnectionState == connectionStatus.CONNECTED) {
-componentHandler.handleComponent();
-try {
-	Thread.sleep(1);
-} catch (InterruptedException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-}
-} else if (clientConnectionState == connectionStatus.CONNECTED) {
-componentHandler.handleComponent();
-try {
-	Thread.sleep(1);
-} catch (InterruptedException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-}
-}*/
