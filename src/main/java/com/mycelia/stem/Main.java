@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.mycelia.stem.communication.ComDock;
 import com.mycelia.stem.communication.seekers.ISeek;
 import com.mycelia.stem.communication.seekers.SeekImpl_echo;
+import com.mycelia.stem.communication.seekers.SeekImpl_localHost;
 import com.mycelia.stem.communication.seekers.SeekImpl_localNetwork;
 import com.mycelia.stem.control.ConfigHandler;
 import com.mycelia.stem.control.ConsoleUnit;
@@ -39,23 +40,17 @@ public class Main {
 		
 		comDock = new ComDock();
 				
-		ArrayList<ISeek> seekerListDaemon = new ArrayList<ISeek>();
+		/*ArrayList<ISeek> seekerListDaemon = new ArrayList<ISeek>();
 		seekerListDaemon.add(SeekImpl_localNetwork.getInstance());
 		seekerListDaemon.add(SeekImpl_echo.getInstance());
-		comDock.seekDaemons(seekerListDaemon);
+		comDock.seekDaemons(seekerListDaemon);*/
 		
 		ArrayList<ISeek> seekerListLens = new ArrayList<ISeek>();
-		seekerListLens.add(SeekImpl_localNetwork.getInstance());
-		seekerListLens.add(SeekImpl_echo.getInstance());
+		//seekerListLens.add(SeekImpl_localNetwork.getInstance());
+		//seekerListLens.add(SeekImpl_localNetwork.getInstance());
+		//seekerListLens.add(SeekImpl_echo.getInstance());
+		seekerListLens.add(SeekImpl_localHost.getInstance());
 		comDock.seekLenses(seekerListLens);
-
-		/*
-		 * comdock_thread = new Thread (comdock); 
-		 * comdock_thread.start();
-		 */
-
-		System.out.println(" done");
-
+		
 	}
-
 }

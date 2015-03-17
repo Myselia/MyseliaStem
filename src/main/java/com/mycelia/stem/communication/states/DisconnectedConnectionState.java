@@ -21,7 +21,6 @@ public class DisconnectedConnectionState implements IConnectionState {
 		else 
 			System.out.println("Waiting for re-connect");
 		
-		
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
