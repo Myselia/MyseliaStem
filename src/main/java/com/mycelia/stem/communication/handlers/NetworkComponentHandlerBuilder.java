@@ -1,38 +1,27 @@
 package com.mycelia.stem.communication.handlers;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 import com.mycelia.common.communication.structures.Atom;
 import com.mycelia.common.communication.structures.Transmission;
+import com.mycelia.stem.communication.ComDock;
 import com.mycelia.stem.communication.StemClientSession;
 
 public class NetworkComponentHandlerBuilder {
 	
-	private static Set<String> reqSet;
 	private static Map<String, String> setupMapPrototype;
 	private static Map<String, String> setupMap;
 	
 	public static int createdCount = 0;
 	
 	static {
-		setRequirements();
-		prepareSetupMap(reqSet);
+		//setRequirements();
+		prepareSetupMap(ComDock.reqSet);
 	}
-	
-	private static void setRequirements() {
-		reqSet = new HashSet<String>();
-		/*
-		 * Add fields absolutely required in the setup packet here
-		 */
-		reqSet.add("ip");
-		reqSet.add("type");
-		reqSet.add("mac");
-	}
-	
+
 	private static void prepareSetupMap(Set<String> s) {
 		setupMapPrototype = new HashMap<String, String>();
 		Iterator<String> it = s.iterator();
@@ -50,7 +39,7 @@ public class NetworkComponentHandlerBuilder {
 
 	public static synchronized NetworkComponentHandlerBase createHandler(Transmission setupPacket, StemClientSession clientSession) {
 		NetworkComponentHandlerBase newComponent = null;
-		int reqCount = reqSet.size();
+		int reqCount = ComDock.reqSet.size();
 		
 		Iterator<Atom> it = setupPacket.get_atoms().iterator();
 		while (it.hasNext()) {
@@ -58,7 +47,7 @@ public class NetworkComponentHandlerBuilder {
 				break;
 			Atom a = it.next();
 			String atomField = a.get_field();
-			if (reqSet.contains(atomField)) {
+			if (ComDock.reqSet.contains(atomField)) {
 				setupMap.put(atomField, a.get_value());
 				reqCount--;
 			}

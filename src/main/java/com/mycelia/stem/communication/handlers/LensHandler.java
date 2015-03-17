@@ -1,6 +1,6 @@
 package com.mycelia.stem.communication.handlers;
 
-import java.net.SocketException;
+import java.io.IOException;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -18,19 +18,30 @@ public class LensHandler extends NetworkComponentHandlerBase {
 	public void primeHandler(Map<String, String> setupMap) {
 		this.ip = setupMap.get("ip");
 		this.mac = setupMap.get("mac");
-		this.ready = true;
+		this.hashID = setupMap.get("hashID");
 	}
 	
 	@Override
-	public void handleComponent() throws SocketException{
+	public void handleComponent() throws IOException {
 		// TODO Auto-generated method stub
-		String s = buildTestPacket();
-		System.out.println("SENDING TO CLIENT: " + s);
-		output.println(s);
+		String z = null;
+		if (!output.checkError()) {
+			String s = buildTestPacket();
+			System.out.println("SENDING TO CLIENT: " + s);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			output.println(s);
+		} else {
+			throw new IOException();
+		}
 	}
-	
+
 	public String toString() {
-		return "TYPE: LENS, " + "IP: " + this.ip + ", MAC: " + this.mac;
+		return "TYPE: LENS, " + "IP: " + this.ip + ", MAC: " + this.mac + ", HASHID: " + hashID;
 	}
 	
 	private static String buildTestPacket() {

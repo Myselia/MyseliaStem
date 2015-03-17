@@ -1,6 +1,6 @@
 package com.mycelia.stem.communication.handlers;
 
-import java.net.SocketException;
+import java.io.IOException;
 import java.util.Map;
 
 
@@ -13,7 +13,7 @@ public interface IHandler {
 	 * ##############################|        |##############################
 	 */
 	public void primeHandler(Map<String, String> setupMap);
-	public void handleComponent() throws SocketException;
+	public void handleComponent() throws IOException;
 	public boolean ready();
 	
 	/*

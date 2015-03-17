@@ -1,32 +1,37 @@
 package com.mycelia.stem.communication.states;
 
+import java.io.IOException;
+
 import com.mycelia.stem.communication.StemClientSession;
 import com.mycelia.stem.communication.handlers.NetworkComponentHandlerBase;
 
 public class KickedConnectionState implements IConnectionState{
 
+	private NetworkComponentHandlerBase handler;
+	private StemClientSession session;
+	
 	@Override
 	public void primeConnectionState(StemClientSession session) {
-		// TODO Auto-generated method stub
-		
+		this.session = session;
 	}
-
+	
 	@Override
-	public void process() {
-		// TODO Auto-generated method stub
-		
+	public void process() throws IOException {
+		handler.handleComponent();
 	}
 
 	@Override
 	public NetworkComponentHandlerBase getHandler() {
-		// TODO Auto-generated method stub
-		return null;
+		return handler;
 	}
 
 	@Override
 	public void setHandler(NetworkComponentHandlerBase handler) {
-		// TODO Auto-generated method stub
-		
+		this.handler = handler;
+	}
+	
+	public String toString() {
+		return "DISCONNECTED STATE!!";
 	}
 
 }

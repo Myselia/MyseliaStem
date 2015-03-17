@@ -30,6 +30,7 @@ public class HandshakeConnectionState implements IConnectionState {
 				System.out.println("RECV: " + inputS);
 				handleSetupPacket(inputS);
 				break;
+				
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -52,6 +53,7 @@ public class HandshakeConnectionState implements IConnectionState {
 		try {
 			Transmission setupTransmission = jsonParser.fromJson(s, Transmission.class);
 			handler = NetworkComponentHandlerBuilder.createHandler(setupTransmission, session);
+			
 			System.out.println("VALUE OF READY IS: " + handler.ready() );
 			if (handler.ready()) {
 				this.setHandler(handler);
@@ -59,6 +61,9 @@ public class HandshakeConnectionState implements IConnectionState {
 				session.getStateContainer().getConnectedState().setHandler(handler);
 				session.setConnectionState(session.getStateContainer()
 						.getConnectedState());
+			} else {
+				//Tell the session thread to die
+				session.die();
 			}
 		} catch (Exception e) {
 			System.out.println("Setup packet from component is malformed!");

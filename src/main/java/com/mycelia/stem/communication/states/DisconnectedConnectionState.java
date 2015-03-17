@@ -5,28 +5,43 @@ import com.mycelia.stem.communication.handlers.NetworkComponentHandlerBase;
 
 public class DisconnectedConnectionState implements IConnectionState {
 
+	private NetworkComponentHandlerBase handler;
+	private StemClientSession session;
+	
 	@Override
 	public void primeConnectionState(StemClientSession session) {
-		// TODO Auto-generated method stub
-		
+		this.session = session;
 	}
-
+	
 	@Override
 	public void process() {
-		// TODO Auto-generated method stub
 		
+		if (session.componentAttached)
+			session.setConnectionState(session.getStateContainer().getConnectedState());
+		else 
+			System.out.println("Waiting for re-connect");
+		
+		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public NetworkComponentHandlerBase getHandler() {
-		// TODO Auto-generated method stub
-		return null;
+		return handler;
 	}
 
 	@Override
 	public void setHandler(NetworkComponentHandlerBase handler) {
-		// TODO Auto-generated method stub
-		
+		this.handler = handler;
+	}
+	
+	public String toString() {
+		return "DISCONNECTED STATE!!";
 	}
 
 }

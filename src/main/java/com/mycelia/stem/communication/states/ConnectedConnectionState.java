@@ -1,6 +1,6 @@
 package com.mycelia.stem.communication.states;
 
-import java.net.SocketException;
+import java.io.IOException;
 
 import com.mycelia.stem.communication.StemClientSession;
 import com.mycelia.stem.communication.handlers.NetworkComponentHandlerBase;
@@ -16,7 +16,7 @@ public class ConnectedConnectionState implements IConnectionState {
 	}
 	
 	@Override
-	public void process() throws SocketException {
+	public void process() throws IOException {
 		handler.handleComponent();
 	}
 

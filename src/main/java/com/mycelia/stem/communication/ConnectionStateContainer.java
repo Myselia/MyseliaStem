@@ -12,7 +12,6 @@ public class ConnectionStateContainer {
 	private IConnectionState disconnectedState;
 	private IConnectionState kickedState;
 	private IConnectionState handshakeState;
-	private int stateCount;
 	
 	public ConnectionStateContainer(StemClientSession session) {
 		initializeConnectionStates(session);
@@ -50,16 +49,7 @@ public class ConnectionStateContainer {
 		this.handshakeState = handshakeState;
 	}
 
-	public int getStateCount() {
-		return stateCount;
-	}
-
-	public void setStateCount(int stateCount) {
-		this.stateCount = stateCount;
-	}
-
 	private void initializeConnectionStates(StemClientSession session) {
-		int count = IConnectionState.stateID.values().length;
 		connectedState = new ConnectedConnectionState();
 		connectedState.primeConnectionState(session);
 		disconnectedState = new DisconnectedConnectionState();
