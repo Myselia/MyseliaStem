@@ -9,19 +9,21 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.mycelia.stem.communication.handlers.NetworkComponentHandlerBase;
-import com.mycelia.stem.communication.seekers.ISeek;
+import com.mycelia.stem.communication.handlers.ComponentHandlerBase;
+import com.mycelia.stem.communication.seekers.Seek;
 
-public class ComDock {
+public class CommunicationDock {
 
 	public static int Component_Listen_Port = 42068;
 	public static int Stem_Listen_Port = 42069;
 	//FIX THIS TO BE MORE DYNAMIC!
 	public static String Stem_IP;
 	public static Set<String> reqSet;
-	private BroadCaster seeker;
-	private static Map<String, NetworkComponentHandlerBase> connectedDeviceMap;
-
+	/* 
+	 * TODO: This should be put in a DAO of some sort
+	 */
+	private static Map<String, ComponentHandlerBase> connectedDeviceMap;
+	private Broadcaster seeker;
 	private Thread serverThread;
 	
 	static {
@@ -35,12 +37,12 @@ public class ComDock {
 		reqSet.add("hashID");
 	}
 
-	public ComDock() {
+	public CommunicationDock() {
 		Stem_IP = getLocalIP();
 		System.out.println("Initializing ComDock with local IP - " + Stem_IP);
 		
-		connectedDeviceMap = new ConcurrentHashMap<String, NetworkComponentHandlerBase>();
-		seeker = new BroadCaster();
+		connectedDeviceMap = new ConcurrentHashMap<String, ComponentHandlerBase>();
+		seeker = new Broadcaster();
 
 		// Initialize main server thread
 		serverThread = new Thread(new StemServer(Stem_Listen_Port, 100));
@@ -63,15 +65,15 @@ public class ComDock {
 	 * 
 	 *__________________SEEK METHODS__________________
 	 */
-	public void seekLenses(ArrayList<ISeek> seekers) {
+	public void seekLenses(ArrayList<Seek> seekers) {
 		seeker.seekLenses(seekers);
 	}
 	
-	public void seekDaemons(ArrayList<ISeek> seekers) {
+	public void seekDaemons(ArrayList<Seek> seekers) {
 		seeker.seekDaemons(seekers);
 	}
 	
-	public void seekSandboxes(ArrayList<ISeek> seekers) {
+	public void seekSandboxes(ArrayList<Seek> seekers) {
 		seeker.seekSandboxes(seekers);
 	}
 	
@@ -92,42 +94,12 @@ public class ComDock {
 		return ip.getHostAddress();
 	}
 	
-	public static void addNewNetworkComponent(String hashID, NetworkComponentHandlerBase handler) {
+	public static void addNewNetworkComponent(String hashID, ComponentHandlerBase handler) {
 		connectedDeviceMap.put(hashID, handler);
 	}
 	
-	public static NetworkComponentHandlerBase getNetworkComponentbyHash(String hashID) {
+	public static ComponentHandlerBase getNetworkComponentbyHash(String hashID) {
 		return connectedDeviceMap.get(hashID);
-	}
-
-	/*private InetAddress getServerNetworkBroadcast() throws SocketException {
-		Enumeration<NetworkInterface> interfaces = null;
-		InetAddress broadcast = null;
-
-		try {
-			interfaces = NetworkInterface.getNetworkInterfaces();
-		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		while (interfaces.hasMoreElements()) {
-			NetworkInterface networkInterface = interfaces.nextElement();
-
-			if (networkInterface.isLoopback())
-				continue;
-
-			for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
-				broadcast = interfaceAddress.getBroadcast();
-				//System.out.println("BCAST FIND: " + broadcast);
-
-				if (broadcast == null)
-					continue;
-			}
-		}
-
-		return broadcast;
-	}*/
-	
+	}	
 	
 }

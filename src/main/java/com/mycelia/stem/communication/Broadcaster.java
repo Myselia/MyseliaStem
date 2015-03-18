@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.mycelia.common.constants.ComponentType;
-import com.mycelia.stem.communication.seekers.ISeek;
+import com.mycelia.stem.communication.seekers.Seek;
 
-public class BroadCaster {
+public class Broadcaster {
 
 	/*
 	 * 0: Daemons 1: Lenses 2: Sandboxes
@@ -15,22 +15,22 @@ public class BroadCaster {
 	private BroadcastTorch lensBcast = null;
 	private BroadcastTorch sandboxBcast = null;
 
-	public BroadCaster() {
+	public Broadcaster() {
 	}
 
-	public void seekDaemons(ArrayList<ISeek> seekers) {
+	public void seekDaemons(ArrayList<Seek> seekers) {
 		if (daemonBcast == null)
 			daemonBcast = new BroadcastTorch(ComponentType.DAEMON, seekers);
 		seekComponent(daemonBcast);
 	}
 
-	public void seekLenses(ArrayList<ISeek> seekers) {
+	public void seekLenses(ArrayList<Seek> seekers) {
 		if (lensBcast == null)
 			lensBcast = new BroadcastTorch(ComponentType.LENS, seekers);
 		seekComponent(lensBcast);
 	}
 
-	public void seekSandboxes(ArrayList<ISeek> seekers) {
+	public void seekSandboxes(ArrayList<Seek> seekers) {
 		if (sandboxBcast == null)
 			sandboxBcast = new BroadcastTorch(ComponentType.SANDBOXMASTER, seekers);
 		seekComponent(sandboxBcast);
@@ -65,7 +65,6 @@ public class BroadCaster {
 				try {
 					bcastTorch.seek();
 				} catch (InterruptedException e) {
-					bcastTorch.close();
 					Thread.currentThread().interrupt();
 				} catch (IOException e) {
 					

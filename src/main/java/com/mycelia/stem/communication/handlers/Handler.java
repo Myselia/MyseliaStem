@@ -1,10 +1,9 @@
 package com.mycelia.stem.communication.handlers;
 
-import java.io.IOException;
 import java.util.Map;
 
 
-public interface IHandler {
+public interface Handler {
 	
 	
 	/*
@@ -13,7 +12,7 @@ public interface IHandler {
 	 * ##############################|        |##############################
 	 */
 	public void primeHandler(Map<String, String> setupMap);
-	public void handleComponent() throws IOException;
+	public void handleComponent();
 	public boolean ready();
 	
 	/*

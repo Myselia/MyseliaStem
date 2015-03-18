@@ -1,13 +1,12 @@
 package com.mycelia.stem.communication.handlers;
 
-import java.io.IOException;
 import java.util.Map;
 
 import com.google.gson.Gson;
 import com.mycelia.common.communication.structures.Transmission;
 import com.mycelia.common.communication.structures.TransmissionBuilder;
 
-public class LensHandler extends NetworkComponentHandlerBase {
+public class LensHandler extends ComponentHandlerBase {
 	
 	private static int count = 0;
 	
@@ -22,20 +21,16 @@ public class LensHandler extends NetworkComponentHandlerBase {
 	}
 	
 	@Override
-	public void handleComponent() throws IOException {
-		if (!output.checkError()) {
-			String s = buildTestPacket();
-			System.out.println("SENDING TO CLIENT: " + s);
-			try {
-				Thread.sleep(20);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			output.println(s);
-		} else {
-			throw new IOException();
+	public void handleComponent() {
+		String s = buildTestPacket();
+		System.out.println("SENDING TO CLIENT: " + s);
+		try {
+			Thread.sleep(20);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		output.println(s);
 	}
 
 	public String toString() {

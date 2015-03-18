@@ -2,13 +2,13 @@ package com.mycelia.stem.communication.seekers;
 
 import java.io.IOException;
 
-public class SeekImpl_echo implements ISeek {
+public class EchoSeek implements Seek {
 
-	private volatile static SeekImpl_echo uniqueInstance;
+	private volatile static EchoSeek uniqueInstance;
 	private String seekerName = "Echo Seeker";
 	private int port;
 	
-	private SeekImpl_echo() {
+	private EchoSeek() {
 	}
 
 	public synchronized void discoverComponents(byte[] infoPacket) throws IOException {
@@ -34,11 +34,11 @@ public class SeekImpl_echo implements ISeek {
 				+ "\n\t|-> With packet: " + packet;
 	}
 
-	public static SeekImpl_echo getInstance() {
+	public static EchoSeek getInstance() {
 		if (uniqueInstance == null) {
-			synchronized (SeekImpl_localNetwork.class) {
+			synchronized (LocalNetworkSeek.class) {
 				if (uniqueInstance == null) {
-					uniqueInstance = new SeekImpl_echo();
+					uniqueInstance = new EchoSeek();
 				}
 			}
 		}

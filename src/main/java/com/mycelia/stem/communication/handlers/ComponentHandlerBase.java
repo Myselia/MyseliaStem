@@ -1,14 +1,13 @@
 package com.mycelia.stem.communication.handlers;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
 
-import com.mycelia.stem.communication.ComDock;
+import com.mycelia.stem.communication.CommunicationDock;
 import com.mycelia.stem.communication.StemClientSession;
 
-public class NetworkComponentHandlerBase implements IHandler {
+public abstract class ComponentHandlerBase implements Handler {
 
 	protected String ip = "";
 	protected String mac = "";
@@ -19,16 +18,12 @@ public class NetworkComponentHandlerBase implements IHandler {
 	protected BufferedReader input;
 	protected PrintWriter output;
 	
-	@Override
-	public void primeHandler(Map<String, String> setupMap) {
-	}
-	
 	public void setSession(StemClientSession session) {
-		if (ComDock.getNetworkComponentbyHash(hashID) != null) {
-			System.out.println("&&&&&&&&&%%%%%%%%%%%%%%&&&&&&&&&&&&&&&&");
-			ComDock.getNetworkComponentbyHash(hashID).reviveDeadSession(session);
+		if (CommunicationDock.getNetworkComponentbyHash(hashID) != null) {
+			System.out.println("Reviving dead session.");
+			CommunicationDock.getNetworkComponentbyHash(hashID).reviveDeadSession(session);
 		} else {
-			ComDock.addNewNetworkComponent(hashID, this);
+			CommunicationDock.addNewNetworkComponent(hashID, this);
 			this.session = session;
 			input = (BufferedReader) session.getReader();
 			output = (PrintWriter) session.getWriter();
@@ -37,10 +32,10 @@ public class NetworkComponentHandlerBase implements IHandler {
 	}
 
 	@Override
-	public void handleComponent() throws IOException {
-		// TODO Auto-generated method stub
-		
-	}
+	public abstract void handleComponent();
+	
+	@Override
+	public abstract void primeHandler(Map<String, String> setupMap);
 	
 	public void reviveDeadSession(StemClientSession session) {
 		this.session.resetExistingConnection(session);

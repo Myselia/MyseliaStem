@@ -2,7 +2,7 @@ package com.mycelia.stem.communication.handlers;
 
 import java.util.Map;
 
-public class DaemonHandler extends NetworkComponentHandlerBase {
+public class DaemonHandler extends ComponentHandlerBase {
 	
 	
 	public DaemonHandler() {

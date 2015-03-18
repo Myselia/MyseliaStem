@@ -5,28 +5,29 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import com.mycelia.stem.communication.ComDock;
+import com.mycelia.stem.communication.CommunicationDock;
 
-public class SeekImpl_localNetwork implements ISeek {
-	private volatile static SeekImpl_localNetwork uniqueInstance;
+public class LocalHostSeek implements Seek {
+
+	private volatile static LocalHostSeek uniqueInstance;
 	private int port;
 	private DatagramSocket discoverSocket;
-	private String seekerName = "Local Network Seeker";
+	private String seekerName = "Local Host Seeker";
 	
-	private SeekImpl_localNetwork() {
+	private LocalHostSeek() {
 	}
 
 	public synchronized void discoverComponents(byte[] infoPacket) throws IOException {
 		DatagramPacket networkPacket = new DatagramPacket(infoPacket, infoPacket.length,
-				InetAddress.getByName("255.255.255.255"), ComDock.Component_Listen_Port);
+				InetAddress.getByName("127.0.0.1"), CommunicationDock.Component_Listen_Port);
 		discoverSocket.send(networkPacket);
 	}
 
-	public synchronized void openInternalSocket() {
+	public void openInternalSocket() {
 		try {
 			discoverSocket = new DatagramSocket(port);
 		} catch (Exception e) {
-			System.err.println("SeekImpl_localNetwork: Cant open discover port on "
+			System.err.println(seekerName + ": Cant open discover port on "
 					+ port);
 		}
 	}
@@ -46,12 +47,12 @@ public class SeekImpl_localNetwork implements ISeek {
 				+ "\n\t|-> Looking for: " + componentType + " on local port: " + port
 				+ "\n\t|-> With packet: " + packet;
 	}
-	
-	public static SeekImpl_localNetwork getInstance() {
+
+	public static LocalHostSeek getInstance() {
 		if (uniqueInstance == null) {
-			synchronized (SeekImpl_localNetwork.class) {
+			synchronized (LocalNetworkSeek.class) {
 				if (uniqueInstance == null) {
-					uniqueInstance = new SeekImpl_localNetwork();
+					uniqueInstance = new LocalHostSeek();
 				}
 			}
 		}

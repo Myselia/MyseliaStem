@@ -8,8 +8,8 @@ import java.io.Reader;
 import java.io.Writer;
 import java.net.Socket;
 
-import com.mycelia.stem.communication.handlers.NetworkComponentHandlerBase;
-import com.mycelia.stem.communication.states.IConnectionState;
+import com.mycelia.stem.communication.handlers.ComponentHandlerBase;
+import com.mycelia.stem.communication.states.ConnectionState;
 
 public class StemClientSession implements Runnable {
 
@@ -18,10 +18,11 @@ public class StemClientSession implements Runnable {
 	//private connectionStatus clientConnectionState = connectionStatus.PENDING_HANDSHAKE;
 	private boolean isRunning = true; 
 	public boolean componentAttached = false;
+	private boolean socketProblem = false;
 	// Component handler that encapsulates MySelia Component behavior and handling
-	private NetworkComponentHandlerBase componentHandler;
+	private ComponentHandlerBase componentHandler;
 	// Current state of the connection
-	private IConnectionState clientConnectionState;
+	private ConnectionState clientConnectionState;
 	// Container of all the state instances needed to decide what to do at each client tick
 	private ConnectionStateContainer stateContainer;
 	// The client's IP address
@@ -52,12 +53,17 @@ public class StemClientSession implements Runnable {
 				 * handleComponent method in their handlers located in
 				 * stem.communication.handlers
 				 */
-				clientConnectionState.process();
+				if (!output.checkError() || socketProblem) {
+					clientConnectionState.process();
+				} else {
+					throw new IOException();
+				}
 
 			} catch (IOException e) {
 				System.err.println("Client with IP " + componentHandler.getIp() + " has disconnected.");
 				clientConnectionState = stateContainer.getDisconnectedState();
 				componentAttached = false;
+				socketProblem = true;
 				try {
 					clientConnectionSocket.close();
 				} catch (IOException e1) {
@@ -69,15 +75,15 @@ public class StemClientSession implements Runnable {
 		}
 	}
 
-	public IConnectionState getConnectionState() {
+	public ConnectionState getConnectionState() {
 		return clientConnectionState;
 	}
 	
-	public NetworkComponentHandlerBase getComponentHandler() {
+	public ComponentHandlerBase getComponentHandler() {
 		return componentHandler;
 	}
 
-	public void setComponentHandler(NetworkComponentHandlerBase componentHandler) {
+	public void setComponentHandler(ComponentHandlerBase componentHandler) {
 		this.componentHandler = componentHandler;
 	}
 
@@ -85,7 +91,7 @@ public class StemClientSession implements Runnable {
 		return stateContainer;
 	}
 	
-	public void setConnectionState(IConnectionState state) {
+	public void setConnectionState(ConnectionState state) {
 		this.clientConnectionState = state;
 	}
 	
@@ -101,6 +107,7 @@ public class StemClientSession implements Runnable {
 	public void resetExistingConnection(StemClientSession session) {
 		setClientConnectionSocket(session.getClientConnectionSocket());
 		componentAttached = true;
+		socketProblem = false;
 	}
 	
 	public Socket getClientConnectionSocket() {

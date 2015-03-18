@@ -6,12 +6,12 @@ import java.io.IOException;
 import com.google.gson.Gson;
 import com.mycelia.common.communication.structures.Transmission;
 import com.mycelia.stem.communication.StemClientSession;
-import com.mycelia.stem.communication.handlers.NetworkComponentHandlerBase;
-import com.mycelia.stem.communication.handlers.NetworkComponentHandlerBuilder;
+import com.mycelia.stem.communication.handlers.ComponentHandlerBase;
+import com.mycelia.stem.communication.handlers.ComponentHandlerFactory;
 
-public class HandshakeConnectionState implements IConnectionState {
+public class HandshakeConnectionState implements ConnectionState {
 
-	private NetworkComponentHandlerBase handler;
+	private ComponentHandlerBase handler;
 	private Gson jsonParser = new Gson();
 	private StemClientSession session;
 	private String inputS = null;
@@ -39,20 +39,20 @@ public class HandshakeConnectionState implements IConnectionState {
 	}
 
 	@Override
-	public NetworkComponentHandlerBase getHandler() {
+	public ComponentHandlerBase getHandler() {
 		return handler;
 	}
 
 	@Override
-	public void setHandler(NetworkComponentHandlerBase handler) {
+	public void setHandler(ComponentHandlerBase handler) {
 		this.handler = handler;
 	}
 	
 	private void handleSetupPacket(String s) {
-		NetworkComponentHandlerBase handler = null;
+		ComponentHandlerBase handler = null;
 		try {
 			Transmission setupTransmission = jsonParser.fromJson(s, Transmission.class);
-			handler = NetworkComponentHandlerBuilder.createHandler(setupTransmission, session);
+			handler = ComponentHandlerFactory.createHandler(setupTransmission, session);
 			
 			System.out.println("VALUE OF READY IS: " + handler.ready() );
 			if (handler.ready()) {

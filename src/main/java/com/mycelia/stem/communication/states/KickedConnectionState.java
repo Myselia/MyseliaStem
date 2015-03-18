@@ -3,11 +3,11 @@ package com.mycelia.stem.communication.states;
 import java.io.IOException;
 
 import com.mycelia.stem.communication.StemClientSession;
-import com.mycelia.stem.communication.handlers.NetworkComponentHandlerBase;
+import com.mycelia.stem.communication.handlers.ComponentHandlerBase;
 
-public class KickedConnectionState implements IConnectionState{
+public class KickedConnectionState implements ConnectionState{
 
-	private NetworkComponentHandlerBase handler;
+	private ComponentHandlerBase handler;
 	private StemClientSession session;
 	
 	@Override
@@ -21,12 +21,12 @@ public class KickedConnectionState implements IConnectionState{
 	}
 
 	@Override
-	public NetworkComponentHandlerBase getHandler() {
+	public ComponentHandlerBase getHandler() {
 		return handler;
 	}
 
 	@Override
-	public void setHandler(NetworkComponentHandlerBase handler) {
+	public void setHandler(ComponentHandlerBase handler) {
 		this.handler = handler;
 	}
 	

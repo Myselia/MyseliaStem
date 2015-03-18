@@ -3,59 +3,62 @@ package com.mycelia.stem.communication;
 import com.mycelia.stem.communication.states.ConnectedConnectionState;
 import com.mycelia.stem.communication.states.DisconnectedConnectionState;
 import com.mycelia.stem.communication.states.HandshakeConnectionState;
-import com.mycelia.stem.communication.states.IConnectionState;
+import com.mycelia.stem.communication.states.ConnectionState;
 import com.mycelia.stem.communication.states.KickedConnectionState;
 
 public class ConnectionStateContainer {
 
-	private IConnectionState connectedState;
-	private IConnectionState disconnectedState;
-	private IConnectionState kickedState;
-	private IConnectionState handshakeState;
+	private ConnectionState connectedState;
+	private ConnectionState disconnectedState;
+	private ConnectionState kickedState;
+	private ConnectionState handshakeState;
 	
 	public ConnectionStateContainer(StemClientSession session) {
 		initializeConnectionStates(session);
 	}
 	
-	public IConnectionState getConnectedState() {
+	public ConnectionState getConnectedState() {
 		return connectedState;
 	}
 
-	public void setConnectedState(IConnectionState connectedState) {
+	public void setConnectedState(ConnectionState connectedState) {
 		this.connectedState = connectedState;
 	}
 
-	public IConnectionState getDisconnectedState() {
+	public ConnectionState getDisconnectedState() {
 		return disconnectedState;
 	}
 
-	public void setDisconnectedState(IConnectionState disconnectedState) {
+	public void setDisconnectedState(ConnectionState disconnectedState) {
 		this.disconnectedState = disconnectedState;
 	}
 
-	public IConnectionState getKickedState() {
+	public ConnectionState getKickedState() {
 		return kickedState;
 	}
 
-	public void setKickedState(IConnectionState kickedState) {
+	public void setKickedState(ConnectionState kickedState) {
 		this.kickedState = kickedState;
 	}
 
-	public IConnectionState getHandshakeState() {
+	public ConnectionState getHandshakeState() {
 		return handshakeState;
 	}
 
-	public void setHandshakeState(IConnectionState handshakeState) {
+	public void setHandshakeState(ConnectionState handshakeState) {
 		this.handshakeState = handshakeState;
 	}
 
 	private void initializeConnectionStates(StemClientSession session) {
 		connectedState = new ConnectedConnectionState();
 		connectedState.primeConnectionState(session);
+		
 		disconnectedState = new DisconnectedConnectionState();
 		disconnectedState.primeConnectionState(session);
+		
 		kickedState = new KickedConnectionState();
-		disconnectedState.primeConnectionState(session);
+		kickedState.primeConnectionState(session);
+		
 		handshakeState = new HandshakeConnectionState();
 		handshakeState.primeConnectionState(session);
 	}

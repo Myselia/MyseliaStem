@@ -1,11 +1,11 @@
 package com.mycelia.stem.communication.states;
 
 import com.mycelia.stem.communication.StemClientSession;
-import com.mycelia.stem.communication.handlers.NetworkComponentHandlerBase;
+import com.mycelia.stem.communication.handlers.ComponentHandlerBase;
 
-public class DisconnectedConnectionState implements IConnectionState {
+public class DisconnectedConnectionState implements ConnectionState {
 
-	private NetworkComponentHandlerBase handler;
+	private ComponentHandlerBase handler;
 	private StemClientSession session;
 	
 	@Override
@@ -24,18 +24,17 @@ public class DisconnectedConnectionState implements IConnectionState {
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public NetworkComponentHandlerBase getHandler() {
+	public ComponentHandlerBase getHandler() {
 		return handler;
 	}
 
 	@Override
-	public void setHandler(NetworkComponentHandlerBase handler) {
+	public void setHandler(ComponentHandlerBase handler) {
 		this.handler = handler;
 	}
 	

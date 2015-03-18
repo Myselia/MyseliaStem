@@ -2,7 +2,7 @@ package com.mycelia.stem.communication.seekers;
 
 import java.io.IOException;
 
-public interface ISeek {
+public interface Seek {
 
 	public void discoverComponents(byte[] infoPacket)
 			throws IOException;
