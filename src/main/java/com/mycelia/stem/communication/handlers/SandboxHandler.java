@@ -20,17 +20,15 @@ public class SandboxHandler extends ComponentHandlerBase {
 		this.hashID = setupMap.get("hashID");
 	}
 
-	@Override
 	public void handleComponent() {
-		String s = buildTestPacket();
-		System.out.println("SENDING TO CLIENT: " + s);
-		try {
-			Thread.sleep(20);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		output.println(s);
+		super.handleComponent();
+	}
+	
+	@Override
+	protected void transmissionReceived() {
+		System.out.println("Sandbox Receive:"
+				+ "\n\t|-> Hash: " + getHashID()
+				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(mb.getNextReceived()));
 	}
 
 	public String toString() {
@@ -47,5 +45,7 @@ public class SandboxHandler extends ComponentHandlerBase {
 		count++;
 		return g.toJson(t);
 	}
+
+
 
 }

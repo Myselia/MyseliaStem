@@ -25,8 +25,6 @@ public class StemClientSession implements Runnable {
 	private ConnectionState clientConnectionState;
 	// Container of all the state instances needed to decide what to do at each client tick
 	private ConnectionStateContainer stateContainer;
-	// The client's IP address
-	private String ipAddress;
 	// Input stream used to receive data from MySelia Component
 	public volatile BufferedReader input;
 	// Output stream used to send data to MySelia Component
@@ -34,7 +32,7 @@ public class StemClientSession implements Runnable {
 	
 	public StemClientSession(Socket clientConnectionSocket, int componentID) {
 		this.clientConnectionSocket = clientConnectionSocket;
-		this.ipAddress = clientConnectionSocket.getInetAddress().getHostAddress();
+		//this.ipAddress = clientConnectionSocket.getInetAddress().getHostAddress();
 
 		setupStreams();
 

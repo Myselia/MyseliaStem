@@ -74,8 +74,4 @@ public class Broadcaster {
 
 		}
 	}
-	/*
-	 * ~INTERNAL CLASS
-	 */
-
 }

@@ -1,6 +1,8 @@
 package com.mycelia.stem.communication;
 
 import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -13,9 +15,9 @@ import com.mycelia.stem.communication.seekers.Seek;
 public class BroadcastTorch {
 
 	private int BROADCAST_SLEEP = 1500;
-	private final String TERMINATOR = "\r\n";
 	private volatile ArrayList<Seek> seekInterfaces;
 	private byte[] seekProbeText; /* THIS IS IN JSON */
+	private static DatagramSocket discoverSocket;
 	public ComponentType type;
 
 	public BroadcastTorch(	ComponentType type,
@@ -23,6 +25,13 @@ public class BroadcastTorch {
 	{
 		this.seekInterfaces = seekers;
 		this.type = type;
+		try {
+			if (discoverSocket == null)
+				discoverSocket = new DatagramSocket(CommunicationDock.Stem_Broadcast_Port);
+		} catch (SocketException e) {
+			System.err.println("Cant create a broadcast socket on port: " + CommunicationDock.Stem_Broadcast_Port);
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -56,11 +65,8 @@ public class BroadcastTorch {
 		Iterator<Seek> iterator = seekInterfaces.iterator();
 		while (iterator.hasNext()) {
 			Seek seeker = iterator.next();
-
-				if (seeker.getPort() == 0) {
-					seeker.setPort(BroadcastPortHandler.nextPort());
-					seeker.openInternalSocket();
-			}
+			if (!seeker.hasSocket())
+				seeker.setSocket(BroadcastTorch.discoverSocket);
 
 		}
 		seekProbeText = buildInfoPacket();
@@ -105,8 +111,7 @@ public class BroadcastTorch {
 		default:
 			break;
 		}
-
-		seekPacketString += TERMINATOR;
+		
 		return seekPacketString.getBytes();
 	}
 	
@@ -119,21 +124,11 @@ public class BroadcastTorch {
 
 		tb.newTransmission(1000, "stem", "all");
 		tb.newAtom("ip", "String", CommunicationDock.Stem_IP);
-		tb.newAtom("port", "int", Integer.toString(CommunicationDock.Stem_Listen_Port));
+		tb.newAtom("port", "int", Integer.toString(CommunicationDock.Stem_Communication_Port));
 		tb.newAtom("type", "String", type);
 		Transmission t = tb.getTransmission();
 
 		return g.toJson(t);
-	}
-
-	//Fix this shit, like, super srs
-	static class BroadcastPortHandler {
-		private static int portAssignable = 42080;
-
-		synchronized static int nextPort() {
-			portAssignable++;
-			return portAssignable;
-		}
 	}
 
 }

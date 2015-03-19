@@ -8,6 +8,11 @@ public class DaemonHandler extends ComponentHandlerBase {
 	public DaemonHandler() {
 	}
 
+	
+	public void handleComponent() {
+		// TODO Auto-generated method stub
+	}
+	
 	@Override
 	public void primeHandler(Map<String, String> setupMap) {
 		this.ip = setupMap.get("ip");
@@ -15,7 +20,7 @@ public class DaemonHandler extends ComponentHandlerBase {
 	}
 	
 	@Override
-	public void handleComponent() {
+	protected void transmissionReceived() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -23,5 +28,4 @@ public class DaemonHandler extends ComponentHandlerBase {
 	public String toString() {
 		return "TYPE: DAEMON, " + "IP: " + this.ip + ", MAC: " + this.mac;
 	}
-
 }

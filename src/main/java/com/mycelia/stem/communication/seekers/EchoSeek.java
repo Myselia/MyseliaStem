@@ -1,36 +1,35 @@
 package com.mycelia.stem.communication.seekers;
 
 import java.io.IOException;
+import java.net.DatagramSocket;
 
 public class EchoSeek implements Seek {
 
 	private volatile static EchoSeek uniqueInstance;
+	private DatagramSocket socket;
 	private String seekerName = "Echo Seeker";
-	private int port;
 	
 	private EchoSeek() {
 	}
 
-	public synchronized void discoverComponents(byte[] infoPacket) throws IOException {
+	public void discoverComponents(byte[] infoPacket) throws IOException {
 	}
-
-	public void openInternalSocket() {
-		System.out.println("ECHO SEEKER: TRYING TO OPEN SOCKET! HERE IS MY PORT: " + getPort());
+	
+	@Override
+	public boolean hasSocket() {
+		if (socket == null) 
+			return false;
+		return true;
 	}
 
 	@Override
-	public int getPort() {
-		return port;
-	}
-
-	@Override
-	public void setPort(int port) {
-		this.port = port;
+	public void setSocket(DatagramSocket socket) {
+		this.socket = socket;
 	}
 	
 	public String printStatus(String componentType, String packet) {
 		return	seekerName
-				+ "\n\t|-> Looking for: " + componentType + " on local port: " + port
+				+ "\n\t|-> Looking for: " + componentType  
 				+ "\n\t|-> With packet: " + packet;
 	}
 

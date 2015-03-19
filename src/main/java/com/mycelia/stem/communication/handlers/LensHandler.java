@@ -3,14 +3,17 @@ package com.mycelia.stem.communication.handlers;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import com.mycelia.common.communication.MailBox;
 import com.mycelia.common.communication.structures.Transmission;
 import com.mycelia.common.communication.structures.TransmissionBuilder;
 
 public class LensHandler extends ComponentHandlerBase {
 	
+	int testcount = 8;
 	private static int count = 0;
 	
 	public LensHandler() {
+		mb = new MailBox();
 	}
 
 	@Override
@@ -20,24 +23,25 @@ public class LensHandler extends ComponentHandlerBase {
 		this.hashID = setupMap.get("hashID");
 	}
 	
-	@Override
 	public void handleComponent() {
-		String s = buildTestPacket();
-		System.out.println("SENDING TO CLIENT: " + s);
-		try {
-			Thread.sleep(20);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		output.println(s);
+		super.handleComponent();
+		buildTestPacket();
 	}
+	
+	@Override
+	protected void transmissionReceived() {
+		System.out.println("Lens Receive:"
+				+ "\n\t|-> Hash: " + getHashID()
+				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(mb.getNextReceived()));
+	}
+	
 
 	public String toString() {
 		return "TYPE: LENS, " + "IP: " + this.ip + ", MAC: " + this.mac + ", HASHID: " + hashID;
 	}
 	
-	private static String buildTestPacket() {
+	private void buildTestPacket() {
+		if (testcount > 0) {
 		TransmissionBuilder tb = new TransmissionBuilder();
 		Gson g = new Gson();
 		
@@ -45,7 +49,28 @@ public class LensHandler extends ComponentHandlerBase {
 		tb.newAtom("someNumber", "int", Integer.toString(count));
 		Transmission t = tb.getTransmission();
 		count++;
-		return g.toJson(t);
+		
+		mb.send(t);
+		}
+		
+		if (testcount == -8) {
+			testcount = 8;
+		}
+		
+		testcount--;
 	}
+	
+	private String buildTestPacketS() {
+		TransmissionBuilder tb = new TransmissionBuilder();
+		Gson g = new Gson();
+		
+		tb.newTransmission(1000, "stem", "all");
+		tb.newAtom("someNumber", "int", Integer.toString(count));
+		Transmission t = tb.getTransmission();
+		count++;
+		return jsonInterpreter.toJson(t);
+	}
+
+	
 
 }

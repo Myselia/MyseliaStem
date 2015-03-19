@@ -24,18 +24,14 @@ public class HandshakeConnectionState implements ConnectionState {
 	}
 	
 	@Override
-	public void process() {
-		try {
-			while ((inputS = input.readLine()) != null) {
-				System.out.println("RECV: " + inputS);
-				handleSetupPacket(inputS);
-				break;
-				
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void process() throws IOException {
+
+		while ((inputS = input.readLine()) != null) {
+			System.out.println("RECV: " + inputS);
+			handleSetupPacket(inputS);
+			break;
 		}
+
 	}
 
 	@Override
@@ -49,6 +45,7 @@ public class HandshakeConnectionState implements ConnectionState {
 	}
 	
 	private void handleSetupPacket(String s) {
+		System.out.print("Setting up received packet...");
 		ComponentHandlerBase handler = null;
 		try {
 			Transmission setupTransmission = jsonParser.fromJson(s, Transmission.class);
@@ -69,6 +66,7 @@ public class HandshakeConnectionState implements ConnectionState {
 			System.out.println("Setup packet from component is malformed!");
 			e.printStackTrace();
 		}
+		System.out.println("....done");
 	}
 	
 	public String toString() {

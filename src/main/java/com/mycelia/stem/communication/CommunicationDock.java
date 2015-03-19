@@ -15,7 +15,8 @@ import com.mycelia.stem.communication.seekers.Seek;
 public class CommunicationDock {
 
 	public static int Component_Listen_Port = 42068;
-	public static int Stem_Listen_Port = 42069;
+	public static int Stem_Communication_Port = 42069;
+	public static int Stem_Broadcast_Port = 42070;
 	//FIX THIS TO BE MORE DYNAMIC!
 	public static String Stem_IP;
 	public static Set<String> reqSet;
@@ -45,7 +46,7 @@ public class CommunicationDock {
 		seeker = new Broadcaster();
 
 		// Initialize main server thread
-		serverThread = new Thread(new StemServer(Stem_Listen_Port, 100));
+		serverThread = new Thread(new StemServer(Stem_Communication_Port, 100));
 		serverThread.start();
 	}
 
