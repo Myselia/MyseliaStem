@@ -3,10 +3,8 @@ package com.mycelia.stem;
 import java.util.ArrayList;
 
 import com.mycelia.stem.communication.CommunicationDock;
-import com.mycelia.stem.communication.seekers.Seek;
-import com.mycelia.stem.communication.seekers.EchoSeek;
 import com.mycelia.stem.communication.seekers.LocalHostSeek;
-import com.mycelia.stem.communication.seekers.LocalNetworkSeek;
+import com.mycelia.stem.communication.seekers.Seek;
 import com.mycelia.stem.control.ConfigHandler;
 import com.mycelia.stem.control.ConsoleUnit;
 import com.mycelia.stem.databank.Databank;
