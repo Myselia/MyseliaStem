@@ -3,6 +3,7 @@ package com.mycelia.stem.communication.handlers;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import com.mycelia.common.communication.MailBox;
 import com.mycelia.common.communication.structures.Transmission;
 import com.mycelia.common.communication.structures.TransmissionBuilder;
 
@@ -11,6 +12,7 @@ public class SandboxHandler extends ComponentHandlerBase {
 	private static int count = 0;
 
 	public SandboxHandler() {
+		mb = new MailBox<Transmission>();
 	}
 
 	@Override

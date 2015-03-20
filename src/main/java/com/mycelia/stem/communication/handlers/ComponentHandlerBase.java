@@ -21,7 +21,7 @@ public abstract class ComponentHandlerBase implements Handler {
 	protected StemClientSession session;
 	protected BufferedReader input;
 	protected PrintWriter output;
-	protected MailBox mb;
+	protected MailBox<Transmission> mb;
 	protected Gson jsonInterpreter;
 	private String inputToken = "";
 	private String outputToken = "";
@@ -45,7 +45,9 @@ public abstract class ComponentHandlerBase implements Handler {
 		try {
 			if (input.ready()) {
 				if ((inputToken = input.readLine()) != null) {
-					mb.receive(jsonInterpreter.fromJson(inputToken, Transmission.class));
+					System.out.println("||" + inputToken + "||");
+					Transmission transmission_test = jsonInterpreter.fromJson(inputToken, Transmission.class);
+					mb.receive(transmission_test);
 					transmissionReceived();
 				}
 			}
