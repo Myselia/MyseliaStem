@@ -6,8 +6,8 @@ import java.io.PrintWriter;
 import java.util.Map;
 
 import com.google.gson.Gson;
-import com.mycelia.common.communication.MailBox;
-import com.mycelia.common.communication.structures.Transmission;
+import com.mycelia.common.communication.structures.MailBox;
+import com.mycelia.common.communication.units.Transmission;
 import com.mycelia.stem.communication.CommunicationDock;
 import com.mycelia.stem.communication.StemClientSession;
 

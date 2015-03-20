@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import com.google.gson.Gson;
-import com.mycelia.common.communication.structures.Transmission;
+import com.mycelia.common.communication.units.Transmission;
 import com.mycelia.stem.communication.StemClientSession;
 import com.mycelia.stem.communication.handlers.ComponentHandlerBase;
 import com.mycelia.stem.communication.handlers.ComponentHandlerFactory;

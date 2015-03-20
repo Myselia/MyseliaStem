@@ -3,9 +3,9 @@ package com.mycelia.stem.communication.handlers;
 import java.util.Map;
 
 import com.google.gson.Gson;
-import com.mycelia.common.communication.MailBox;
-import com.mycelia.common.communication.structures.Transmission;
-import com.mycelia.common.communication.structures.TransmissionBuilder;
+import com.mycelia.common.communication.structures.MailBox;
+import com.mycelia.common.communication.tools.TransmissionBuilder;
+import com.mycelia.common.communication.units.Transmission;
 
 public class SandboxHandler extends ComponentHandlerBase {
 

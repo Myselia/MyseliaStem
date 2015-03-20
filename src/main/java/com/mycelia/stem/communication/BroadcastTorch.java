@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.google.gson.Gson;
-import com.mycelia.common.communication.structures.Transmission;
-import com.mycelia.common.communication.structures.TransmissionBuilder;
+import com.mycelia.common.communication.tools.TransmissionBuilder;
+import com.mycelia.common.communication.units.Transmission;
 import com.mycelia.common.constants.ComponentType;
 import com.mycelia.stem.communication.seekers.Seek;
 
