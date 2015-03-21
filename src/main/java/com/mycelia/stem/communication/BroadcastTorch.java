@@ -121,8 +121,8 @@ public class BroadcastTorch {
 	private String seekPacket(ComponentType type) {
 		TransmissionBuilder tb = new TransmissionBuilder();
 		Gson g = new Gson();
-		String from = OpcodeAccessor.make(ComponentType.STEM, ActionType.SETUP, StemOperation.SEND_SETUP);
-		String to = OpcodeAccessor.make(type, ActionType.SETUP, StemOperation.ACCEPT_SETUP);
+		String from = OpcodeAccessor.make(ComponentType.STEM, ActionType.SETUP, StemOperation.BROADCAST);
+		String to = OpcodeAccessor.make(type, ActionType.SETUP, StemOperation.BROADCAST);
 		tb.newTransmission(from, to);
 		tb.addAtom("ip", "String", CommunicationDock.Stem_IP);
 		tb.addAtom("port", "int", Integer.toString(CommunicationDock.Stem_Communication_Port));
