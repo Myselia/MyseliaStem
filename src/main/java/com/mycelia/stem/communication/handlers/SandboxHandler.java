@@ -30,7 +30,7 @@ public class SandboxHandler extends ComponentHandlerBase {
 	protected void transmissionReceived() {
 		System.out.println("Sandbox Receive:"
 				+ "\n\t|-> Hash: " + getHashID()
-				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(mb.getNextReceived()));
+				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(mb.getFromInQueue()));
 	}
 
 	public String toString() {

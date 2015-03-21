@@ -47,13 +47,13 @@ public abstract class ComponentHandlerBase implements Handler {
 				if ((inputToken = input.readLine()) != null) {
 					System.out.println("||" + inputToken + "||");
 					Transmission transmission_test = jsonInterpreter.fromJson(inputToken, Transmission.class);
-					mb.receive(transmission_test);
+					mb.putInInQueue(transmission_test);
 					transmissionReceived();
 				}
 			}
 			// Send Packets
 			if (mb.getOutQueueSize() > 0) {
-				outputToken = jsonInterpreter.toJson(mb.getNextToSend());
+				outputToken = jsonInterpreter.toJson(mb.getFromOutQueue());
 				System.out.println("Sending: " + outputToken);
 				output.println(outputToken);
 			}

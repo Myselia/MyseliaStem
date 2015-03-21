@@ -32,7 +32,7 @@ public class LensHandler extends ComponentHandlerBase {
 	protected void transmissionReceived() {
 		System.out.println("Lens Receive:"
 				+ "\n\t|-> Hash: " + getHashID()
-				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(mb.getNextReceived()));
+				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(mb.getFromInQueue()));
 	}
 	
 
@@ -50,7 +50,7 @@ public class LensHandler extends ComponentHandlerBase {
 		Transmission t = tb.getTransmission();
 		count++;
 		
-		mb.send(t);
+		mb.putInOutQueue(t);
 		}
 		
 		if (testcount == -8) {
