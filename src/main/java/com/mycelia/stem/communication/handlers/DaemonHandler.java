@@ -4,7 +4,6 @@ import java.util.Map;
 
 public class DaemonHandler extends ComponentHandlerBase {
 	
-	
 	public DaemonHandler() {
 	}
 

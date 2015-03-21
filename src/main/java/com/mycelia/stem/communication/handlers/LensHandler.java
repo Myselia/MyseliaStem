@@ -2,10 +2,8 @@ package com.mycelia.stem.communication.handlers;
 
 import java.util.Map;
 
-import com.google.gson.Gson;
-import com.mycelia.common.communication.structures.MailBox;
-import com.mycelia.common.communication.tools.TransmissionBuilder;
 import com.mycelia.common.communication.units.Transmission;
+import com.mycelia.common.communication.units.TransmissionBuilder;
 
 public class LensHandler extends ComponentHandlerBase {
 	
@@ -13,7 +11,6 @@ public class LensHandler extends ComponentHandlerBase {
 	private static int count = 0;
 	
 	public LensHandler() {
-		mb = new MailBox();
 	}
 
 	@Override
@@ -43,10 +40,9 @@ public class LensHandler extends ComponentHandlerBase {
 	private void buildTestPacket() {
 		if (testcount > 0) {
 		TransmissionBuilder tb = new TransmissionBuilder();
-		Gson g = new Gson();
 		
-		tb.newTransmission(1000, "stem", "all");
-		tb.newAtom("someNumber", "int", Integer.toString(count));
+		tb.newTransmission("stem", "all");
+		tb.addAtom("someNumber", "int", Integer.toString(count));
 		Transmission t = tb.getTransmission();
 		count++;
 		
@@ -59,18 +55,5 @@ public class LensHandler extends ComponentHandlerBase {
 		
 		testcount--;
 	}
-	
-	private String buildTestPacketS() {
-		TransmissionBuilder tb = new TransmissionBuilder();
-		Gson g = new Gson();
-		
-		tb.newTransmission(1000, "stem", "all");
-		tb.newAtom("someNumber", "int", Integer.toString(count));
-		Transmission t = tb.getTransmission();
-		count++;
-		return jsonInterpreter.toJson(t);
-	}
-
-	
 
 }
