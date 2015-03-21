@@ -36,6 +36,7 @@ public abstract class ComponentHandlerBase implements Handler {
 			input = (BufferedReader) session.getReader();
 			output = (PrintWriter) session.getWriter();
 			jsonInterpreter = new Gson();
+			mb = new MailBox<Transmission>();
 			ready = true;
 		}
 	}
@@ -45,17 +46,13 @@ public abstract class ComponentHandlerBase implements Handler {
 		try {
 			if (input.ready()) {
 				if ((inputToken = input.readLine()) != null) {
-					System.out.println("||" + inputToken + "||");
-					Transmission transmission_test = jsonInterpreter.fromJson(inputToken, Transmission.class);
-					mb.putInInQueue(transmission_test);
+					mb.putInInQueue(jsonInterpreter.fromJson(inputToken, Transmission.class));
 					transmissionReceived();
 				}
 			}
 			// Send Packets
 			if (mb.getOutQueueSize() > 0) {
 				outputToken = jsonInterpreter.toJson(mb.getFromOutQueue());
-				System.out.println("Sending: " + outputToken);
-				output.println(outputToken);
 			}
 
 		} catch (IOException e1) {
