@@ -7,9 +7,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.google.gson.Gson;
-import com.mycelia.common.communication.tools.TransmissionBuilder;
 import com.mycelia.common.communication.units.Transmission;
-import com.mycelia.common.constants.ComponentType;
+import com.mycelia.common.communication.units.TransmissionBuilder;
+import com.mycelia.common.constants.opcode.ActionType;
+import com.mycelia.common.constants.opcode.ComponentType;
+import com.mycelia.common.constants.opcode.OpcodeAccessor;
+import com.mycelia.common.constants.opcode.operations.StemOperation;
 import com.mycelia.stem.communication.seekers.Seek;
 
 public class BroadcastTorch {
@@ -88,25 +91,22 @@ public class BroadcastTorch {
 
 		switch (type) {
 		case DAEMON:
-			seekPacketString = seekPacket(ComponentType.DAEMON.toString());
+			seekPacketString = seekPacket(ComponentType.DAEMON);
 			break;
 		case LENS:
-			seekPacketString = seekPacket(ComponentType.LENS.toString());
+			seekPacketString = seekPacket(ComponentType.LENS);
 			break;
 		case SANDBOXMASTER:
-			seekPacketString = seekPacket(ComponentType.SANDBOXMASTER.toString());
+			seekPacketString = seekPacket(ComponentType.SANDBOXMASTER);
 			break;
 		case DATABASE:
-			seekPacketString = seekPacket(ComponentType.DATABASE.toString());
+			seekPacketString = seekPacket(ComponentType.DATABASE);
 			break;
 		case SANDBOXSLAVE:
 			//Does not accept connections of this type
 			break;
-		case STEMMASTER:
-			//Does not accept connections of this type
-			break;
-		case STEMSLAVE:
-			seekPacketString = seekPacket(ComponentType.STEMSLAVE.toString());
+		case STEM:
+			//Does not accept connections of this type....YET
 			break;
 		default:
 			break;
@@ -118,14 +118,15 @@ public class BroadcastTorch {
 	/*
 	 * TODO, ABSTRACT THIS 
 	 */
-	private String seekPacket(String type) {
+	private String seekPacket(ComponentType type) {
 		TransmissionBuilder tb = new TransmissionBuilder();
 		Gson g = new Gson();
-
-		tb.newTransmission(1000, "stem", "all");
-		tb.newAtom("ip", "String", CommunicationDock.Stem_IP);
-		tb.newAtom("port", "int", Integer.toString(CommunicationDock.Stem_Communication_Port));
-		tb.newAtom("type", "String", type);
+		String from = OpcodeAccessor.make(ComponentType.STEM, ActionType.SETUP, StemOperation.SEND_SETUP);
+		String to = OpcodeAccessor.make(type, ActionType.SETUP, StemOperation.ACCEPT_SETUP);
+		tb.newTransmission(from, to);
+		tb.addAtom("ip", "String", CommunicationDock.Stem_IP);
+		tb.addAtom("port", "int", Integer.toString(CommunicationDock.Stem_Communication_Port));
+		tb.addAtom("type", "String", type.toString());
 		Transmission t = tb.getTransmission();
 
 		return g.toJson(t);

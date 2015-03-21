@@ -3,7 +3,7 @@ package com.mycelia.stem.communication;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.mycelia.common.constants.ComponentType;
+import com.mycelia.common.constants.opcode.ComponentType;
 import com.mycelia.stem.communication.seekers.Seek;
 
 public class Broadcaster {

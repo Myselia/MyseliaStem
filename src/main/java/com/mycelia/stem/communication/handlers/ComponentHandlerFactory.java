@@ -7,7 +7,7 @@ import java.util.Set;
 
 import com.mycelia.common.communication.units.Atom;
 import com.mycelia.common.communication.units.Transmission;
-import com.mycelia.common.constants.ComponentType;
+import com.mycelia.common.constants.opcode.ComponentType;
 import com.mycelia.stem.communication.CommunicationDock;
 import com.mycelia.stem.communication.StemClientSession;
 
@@ -64,11 +64,8 @@ public class ComponentHandlerFactory {
 			case SANDBOXSLAVE:
 				// Does not accept!
 				break;
-			case STEMMASTER:
+			case STEM:
 				// Does not accept!
-				break;
-			case STEMSLAVE:
-				newComponent = null;
 				break;
 			}
 			// All required fields fulfilled
