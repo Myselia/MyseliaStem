@@ -53,6 +53,15 @@ public abstract class ComponentHandlerBase implements Handler {
 			// Send Packets
 			if (mb.getOutQueueSize() > 0) {
 				outputToken = jsonInterpreter.toJson(mb.getFromOutQueue());
+				System.out.println("Sending: " + outputToken);
+				output.println(outputToken);
+				try {
+					System.out.println("Sent: " + outputToken);
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 		} catch (IOException e1) {

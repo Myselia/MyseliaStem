@@ -4,10 +4,14 @@ import java.util.Map;
 
 import com.mycelia.common.communication.units.Transmission;
 import com.mycelia.common.communication.units.TransmissionBuilder;
+import com.mycelia.common.constants.opcode.ActionType;
+import com.mycelia.common.constants.opcode.ComponentType;
+import com.mycelia.common.constants.opcode.OpcodeAccessor;
+import com.mycelia.common.constants.opcode.operations.LensOperation;
+import com.mycelia.common.constants.opcode.operations.StemOperation;
 
 public class LensHandler extends ComponentHandlerBase {
-	
-	int testcount = 8;
+
 	private static int count = 0;
 	
 	public LensHandler() {
@@ -32,28 +36,20 @@ public class LensHandler extends ComponentHandlerBase {
 				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(mb.getFromInQueue()));
 	}
 	
-
 	public String toString() {
 		return "TYPE: LENS, " + "IP: " + this.ip + ", MAC: " + this.mac + ", HASHID: " + hashID;
 	}
-	
+
 	private void buildTestPacket() {
-		if (testcount > 0) {
 		TransmissionBuilder tb = new TransmissionBuilder();
-		
-		tb.newTransmission("stem", "all");
+		String from = OpcodeAccessor.make(ComponentType.STEM, ActionType.DATA, StemOperation.TEST);
+		String to = OpcodeAccessor.make(ComponentType.LENS, ActionType.DATA, LensOperation.TEST);
+		tb.newTransmission(from, to);
 		tb.addAtom("someNumber", "int", Integer.toString(count));
 		Transmission t = tb.getTransmission();
 		count++;
-		
+
 		mb.putInOutQueue(t);
-		}
-		
-		if (testcount == -8) {
-			testcount = 8;
-		}
-		
-		testcount--;
 	}
 
 }
