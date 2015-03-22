@@ -57,8 +57,8 @@ public abstract class ComponentHandlerBase implements Handler {
 				output.println(outputToken);
 				try {
 					System.out.println("Sent: " + outputToken);
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
+					//Thread.sleep(10);
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
