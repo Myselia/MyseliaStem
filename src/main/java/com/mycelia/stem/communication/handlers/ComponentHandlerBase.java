@@ -6,12 +6,14 @@ import java.io.PrintWriter;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import com.mycelia.common.communication.Addressable;
+import com.mycelia.common.communication.MailService;
 import com.mycelia.common.communication.structures.MailBox;
 import com.mycelia.common.communication.units.Transmission;
 import com.mycelia.stem.communication.CommunicationDock;
 import com.mycelia.stem.communication.StemClientSession;
 
-public abstract class ComponentHandlerBase implements Handler {
+public abstract class ComponentHandlerBase implements Handler, Addressable {
 
 	protected String ip = "";
 	protected String mac = "";
@@ -37,6 +39,9 @@ public abstract class ComponentHandlerBase implements Handler {
 			output = (PrintWriter) session.getWriter();
 			jsonInterpreter = new Gson();
 			mb = new MailBox<Transmission>();
+			//TODO Mail Service Stuff !
+			MailService.registerAddressable(this);
+			//
 			ready = true;
 		}
 	}
@@ -55,13 +60,6 @@ public abstract class ComponentHandlerBase implements Handler {
 				outputToken = jsonInterpreter.toJson(mb.getFromOutQueue());
 				System.out.println("Sending: " + outputToken);
 				output.println(outputToken);
-				try {
-					System.out.println("Sent: " + outputToken);
-					//Thread.sleep(10);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 
 		} catch (IOException e1) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.mycelia.stem.communication.CommunicationDock;
 import com.mycelia.stem.communication.seekers.LocalHostSeek;
+import com.mycelia.stem.communication.seekers.LocalNetworkSeek;
 import com.mycelia.stem.communication.seekers.Seek;
 import com.mycelia.stem.control.ConfigHandler;
 import com.mycelia.stem.control.ConsoleUnit;
@@ -44,7 +45,8 @@ public class Main {
 		
 
 		ArrayList<Seek> seekerListSandbox = new ArrayList<Seek>();
-		seekerListSandbox.add(LocalHostSeek.getInstance());
+		//seekerListSandbox.add(LocalHostSeek.getInstance());
+		seekerListSandbox.add(LocalNetworkSeek.getInstance());
 		comDock.seekSandboxes(seekerListSandbox);
 		
 	}

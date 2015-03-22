@@ -7,6 +7,10 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.mycelia.common.communication.MailService;
+import com.mycelia.common.communication.distributors.DistributorType;
+import com.mycelia.common.constants.opcode.ComponentType;
+
 public class StemServer implements Runnable {
 
 	public boolean SERVER_RUNNING = false;
@@ -26,6 +30,8 @@ public class StemServer implements Runnable {
 		this.port = port;
 		this.backlog = backlog;
 		this.SERVER_RUNNING = true;
+		Thread data = new Thread(new MailService(DistributorType.FORWARDER, ComponentType.STEM));
+    	data.start();
 		threadPool = Executors.newFixedThreadPool(MAX_SERVER_THREAD_POOLS);
 	}
 

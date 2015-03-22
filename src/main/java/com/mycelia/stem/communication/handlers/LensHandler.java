@@ -2,6 +2,8 @@ package com.mycelia.stem.communication.handlers;
 
 import java.util.Map;
 
+import com.mycelia.common.communication.MailService;
+import com.mycelia.common.communication.structures.MailBox;
 import com.mycelia.common.communication.units.Transmission;
 import com.mycelia.common.communication.units.TransmissionBuilder;
 import com.mycelia.common.constants.opcode.ActionType;
@@ -15,6 +17,7 @@ public class LensHandler extends ComponentHandlerBase {
 	private static int count = 0;
 	
 	public LensHandler() {
+		MailService.register("SANDBOXMASTER_RUNTIME_DATA", this);
 	}
 
 	@Override
@@ -26,7 +29,9 @@ public class LensHandler extends ComponentHandlerBase {
 	
 	public void handleComponent() {
 		super.handleComponent();
-		buildTestPacket();
+		if (mb.getInQueueSize() > 0) {
+			mb.putInOutQueue(mb.getFromInQueue());
+		}
 	}
 	
 	@Override
@@ -50,6 +55,11 @@ public class LensHandler extends ComponentHandlerBase {
 		count++;
 
 		mb.putInOutQueue(t);
+	}
+	
+	@Override
+	public MailBox<Transmission> getMailBox() {
+		return this.mb;
 	}
 
 }
