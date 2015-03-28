@@ -3,12 +3,19 @@ package com.mycelia.stem.communication.states;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Base64.Encoder;
 
+import com.google.gson.Gson;
+import com.mycelia.common.communication.units.Transmission;
+import com.mycelia.common.communication.units.TransmissionBuilder;
+import com.mycelia.common.constants.opcode.ActionType;
+import com.mycelia.common.constants.opcode.ComponentType;
+import com.mycelia.common.constants.opcode.OpcodeAccessor;
+import com.mycelia.common.constants.opcode.operations.LensOperation;
+import com.mycelia.common.constants.opcode.operations.StemOperation;
 import com.mycelia.stem.communication.StemClientSession;
 import com.mycelia.stem.communication.handlers.ComponentHandlerBase;
 
@@ -22,7 +29,7 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 	private String keyStringSearch = "Sec-WebSocket-Key: ";
 	private String webSocketUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 	boolean finished = false;
-	
+	static int count = 0;
 	@Override
 	public void primeConnectionState(StemClientSession session) {
 		this.session = session;
@@ -40,8 +47,22 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 					break;
 			}
 		} else {
+			try {
+				int len = 0;
+				byte[] buff = new byte[2048];
+				if (input.ready()) {
+					len = session.getInStream().read(buff);
+					if (len > 0) {
+						System.out.println("RECV FROM WEBSOCK: " + decodeWebSocketPayload(buff, len));
+					}
+				}
+
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 			System.out.println("!!!!!!!!!!!SENDING TEST BITS!!!!!!!!!!!");
-			session.getOutStream().write(encodeWebSocketPayload("number: "));
+			session.getOutStream().write(encodeWebSocketPayload(testPack()));
+			count++;
 			session.getOutStream().flush();
 			try {
 				Thread.sleep(2000);
@@ -173,53 +194,43 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 		return replyWebSocketFrame;
 	}
 
-	/*private String decodeWebSocketPayload(byte[] s) {
-		int len = 0;
-		byte[] b = new byte[1024];
-		// rawIn is a Socket.getInputStream();
-		while (true) {
-			len = rawIn.read(b);
-			if (len != -1) {
+	private String decodeWebSocketPayload(byte[] framedPacket, int bytesRead) {
+		byte[] message;
+		byte rLength = 0;
+		int totalMessageLength;
+		int rMaskIndex = 2;
+		int rDataStart = 0;
+		
+		// b[0] is always text in my case so no need to check;
+		byte data = framedPacket[1];
+		byte op = (byte) 127;
+		rLength = (byte) (data & op);
 
-				byte rLength = 0;
-				int rMaskIndex = 2;
-				int rDataStart = 0;
-				// b[0] is always text in my case so no need to check;
-				byte data = b[1];
-				byte op = (byte) 127;
-				rLength = (byte) (data & op);
+		if (rLength == (byte) 126)
+			rMaskIndex = 4;
+		if (rLength == (byte) 127)
+			rMaskIndex = 10;
 
-				if (rLength == (byte) 126)
-					rMaskIndex = 4;
-				if (rLength == (byte) 127)
-					rMaskIndex = 10;
+		byte[] masks = new byte[4];
 
-				byte[] masks = new byte[4];
-
-				int j = 0;
-				int i = 0;
-				for (i = rMaskIndex; i < (rMaskIndex + 4); i++) {
-					masks[j] = b[i];
-					j++;
-				}
-
-				rDataStart = rMaskIndex + 4;
-
-				int messLen = len - rDataStart;
-
-				byte[] message = new byte[messLen];
-
-				for (i = rDataStart, j = 0; i < len; i++, j++) {
-					message[j] = (byte) (b[i] ^ masks[j % 4]);
-				}
-
-				return new String(message);
-
-			}
+		int j = 0;
+		int i = 0;
+		for (i = rMaskIndex; i < (rMaskIndex + 4); i++) {
+			masks[j] = framedPacket[i];
+			j++;
 		}
-	}*/
-	
-	
+
+		rDataStart = rMaskIndex + 4;
+		totalMessageLength = bytesRead - rDataStart;
+
+		message = new byte[totalMessageLength];
+		for (i = rDataStart, j = 0; i < bytesRead; i++, j++) {
+			message[j] = (byte) (framedPacket[i] ^ masks[j % 4]);
+		}
+
+		return new String(message);
+	}
+
 	private void printBytes(byte[] b) {
 		for (int i = 0; i < b.length; i++) {
 			String s = String.format("%8s", Integer.toBinaryString(b[i] & 0xFF)).replace(' ', '0');
@@ -247,6 +258,17 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 		
 		encodedKey = new String(encoder.encode(sha1hash));
 		return encodedKey;
+	}
+	
+	private String testPack() {
+		TransmissionBuilder tb = new TransmissionBuilder();
+		String from = OpcodeAccessor.make(ComponentType.STEM, ActionType.DATA, StemOperation.TEST);
+		String to = OpcodeAccessor.make(ComponentType.LENS, ActionType.DATA, LensOperation.TEST);
+		tb.newTransmission(from, to);
+		tb.addAtom("someNumber", "int", Integer.toString(count));
+		Transmission t = tb.getTransmission();
+		Gson gson = new Gson();
+		return gson.toJson(t);
 	}
 	
 	

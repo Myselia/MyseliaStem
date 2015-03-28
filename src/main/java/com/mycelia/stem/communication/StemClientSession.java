@@ -2,6 +2,7 @@ package com.mycelia.stem.communication;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -105,6 +106,17 @@ public class StemClientSession implements Runnable {
 	public OutputStream getOutStream() {
 		try {
 			return clientConnectionSocket.getOutputStream();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public InputStream getInStream() {
+		try {
+			return clientConnectionSocket.getInputStream();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
