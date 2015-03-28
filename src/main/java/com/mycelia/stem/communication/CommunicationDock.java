@@ -17,6 +17,7 @@ public class CommunicationDock {
 	public static int Component_Listen_Port = 42068;
 	public static int Stem_Communication_Port = 42069;
 	public static int Stem_Broadcast_Port = 42070;
+	public static int Stem_HTTP_Port = 42071;
 	//FIX THIS TO BE MORE DYNAMIC!
 	public static String Stem_IP;
 	public static Set<String> reqSet;
@@ -26,6 +27,7 @@ public class CommunicationDock {
 	private static Map<String, ComponentHandlerBase> connectedDeviceMap;
 	private Broadcaster seeker;
 	private Thread serverThread;
+	private Thread httpServerThread;
 	
 	static {
 		/*
@@ -46,14 +48,18 @@ public class CommunicationDock {
 		seeker = new Broadcaster();
 
 		// Initialize main server thread
-		serverThread = new Thread(new StemServer(Stem_Communication_Port, 100));
+		serverThread = new Thread(new StemServer(Stem_Communication_Port, 100, false));
 		serverThread.start();
+
+		// Initialize HTTP server thread
+		httpServerThread = new Thread(new StemServer(Stem_HTTP_Port, 100, true));
+		httpServerThread.start();
 	}
 
 	/*
-	 * ##############################|        |##############################
+	 * ##############################| |##############################
 	 * ##############################| PUBLIC |##############################
-	 * ##############################|        |##############################
+	 * ##############################| |##############################
 	 */
 	
 	/*

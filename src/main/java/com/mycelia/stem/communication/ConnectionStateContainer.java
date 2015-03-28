@@ -4,6 +4,7 @@ import com.mycelia.stem.communication.states.ConnectedConnectionState;
 import com.mycelia.stem.communication.states.DisconnectedConnectionState;
 import com.mycelia.stem.communication.states.HandshakeConnectionState;
 import com.mycelia.stem.communication.states.ConnectionState;
+import com.mycelia.stem.communication.states.HttpHandshakeConnectionState;
 import com.mycelia.stem.communication.states.KickedConnectionState;
 
 public class ConnectionStateContainer {
@@ -58,8 +59,13 @@ public class ConnectionStateContainer {
 		
 		kickedState = new KickedConnectionState();
 		kickedState.primeConnectionState(session);
-		
-		handshakeState = new HandshakeConnectionState();
-		handshakeState.primeConnectionState(session);
+
+		if (session.isHTTP()) {
+			handshakeState = new HttpHandshakeConnectionState();
+			handshakeState.primeConnectionState(session);
+		} else {
+			handshakeState = new HandshakeConnectionState();
+			handshakeState.primeConnectionState(session);
+		}
 	}
 }

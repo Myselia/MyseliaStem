@@ -3,9 +3,8 @@ package com.mycelia.stem.communication;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.Writer;
 import java.net.Socket;
 
 import com.mycelia.stem.communication.handlers.ComponentHandlerBase;
@@ -29,11 +28,12 @@ public class StemClientSession implements Runnable {
 	public volatile BufferedReader input;
 	// Output stream used to send data to MySelia Component
 	private volatile PrintWriter output;
+	private boolean isHTTP;
 	
-	public StemClientSession(Socket clientConnectionSocket, int componentID) {
+	public StemClientSession(Socket clientConnectionSocket, int componentID, boolean isHTTP) {
+		this.isHTTP = isHTTP;
 		this.clientConnectionSocket = clientConnectionSocket;
 		//this.ipAddress = clientConnectionSocket.getInetAddress().getHostAddress();
-
 		setupStreams();
 
 		this.stateContainer = new ConnectionStateContainer(this);
@@ -94,12 +94,23 @@ public class StemClientSession implements Runnable {
 	}
 	
 	
-	public Writer getWriter() {
+	public PrintWriter getWriter() {
 		return output;
 	}
 	
-	public Reader getReader() {
+	public BufferedReader getReader() {
 		return input;
+	}
+	
+	public OutputStream getOutStream() {
+		try {
+			return clientConnectionSocket.getOutputStream();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
 	public void resetExistingConnection(StemClientSession session) {
@@ -110,6 +121,10 @@ public class StemClientSession implements Runnable {
 	
 	public Socket getClientConnectionSocket() {
 		return clientConnectionSocket;
+	}
+	
+	public boolean isHTTP() {
+		return isHTTP;
 	}
 
 	private void setClientConnectionSocket(Socket clientConnectionSocket) {

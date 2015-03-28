@@ -23,8 +23,12 @@ public class StemServer implements Runnable {
 	protected ServerSocket serverSocket;
 	protected Socket clientConnectionSocket;
 	protected ExecutorService threadPool;
+	
+	private boolean isHTTP;
 
-	public StemServer(int port, int backlog) {
+	public StemServer(int port, int backlog, boolean isHTTP) {
+		System.out.println("Starting Stem Server with Port: " + port);
+		this.isHTTP = isHTTP;
 		this.serverSocket = null;
 		this.clientConnectionSocket = null;
 		this.port = port;
@@ -52,9 +56,10 @@ public class StemServer implements Runnable {
 			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--------------------!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ACCEPTING CONNECTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--------------------!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			this.threadPool.execute(new Thread(new StemClientSession(
-					clientConnectionSocket,
-					assignInternalID(clientConnectionSocket))));
+			if (isHTTP)
+				this.threadPool.execute(new Thread(new StemClientSession(clientConnectionSocket, assignInternalID(clientConnectionSocket), true)));
+			else
+				this.threadPool.execute(new Thread(new StemClientSession(clientConnectionSocket, assignInternalID(clientConnectionSocket), false)));
 
 		}
 		System.out.println("server no longer listening on port: " + port);
