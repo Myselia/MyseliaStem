@@ -2,11 +2,6 @@ package com.mycelia.stem.communication.states;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.Base64.Encoder;
 
 import com.google.gson.Gson;
 import com.mycelia.common.communication.units.Transmission;
@@ -16,8 +11,10 @@ import com.mycelia.common.constants.opcode.ComponentType;
 import com.mycelia.common.constants.opcode.OpcodeAccessor;
 import com.mycelia.common.constants.opcode.operations.LensOperation;
 import com.mycelia.common.constants.opcode.operations.StemOperation;
+import com.mycelia.common.framework.communication.WebSocketHelper;
 import com.mycelia.stem.communication.StemClientSession;
 import com.mycelia.stem.communication.handlers.ComponentHandlerBase;
+import com.mycelia.stem.communication.handlers.ComponentHandlerFactory;
 
 public class HttpHandshakeConnectionState implements ConnectionState {
 
@@ -27,33 +24,39 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 	private BufferedReader input = null;
 	private String webSocketKey = null;
 	private String keyStringSearch = "Sec-WebSocket-Key: ";
-	private String webSocketUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-	boolean finished = false;
+	private Gson jsonParser;
+	boolean connectionEstablished = false;
+	boolean handshakeFinished = false;
 	static int count = 0;
+	
 	@Override
 	public void primeConnectionState(StemClientSession session) {
 		this.session = session;
 		this.input = (BufferedReader)session.getReader();
+		this.jsonParser = new Gson();
 	}
 	
 	@Override
 	public void process() throws IOException {
-		if (!finished) {
+		if (!connectionEstablished) {
 			while ((inputS = input.readLine()) != null) {
 				System.out.println("RECV IN HTTP: " + inputS);
 
 				handleHeaders(inputS);
-				if (finished)
+
+				if (connectionEstablished)
 					break;
 			}
 		} else {
 			try {
+				//Send a ready packet to the component
 				int len = 0;
 				byte[] buff = new byte[2048];
 				if (input.ready()) {
 					len = session.getInStream().read(buff);
 					if (len > 0) {
-						System.out.println("RECV FROM WEBSOCK: " + decodeWebSocketPayload(buff, len));
+						System.out.println("RECV FROM WEBSOCK: " + WebSocketHelper.decodeWebSocketPayload(buff, len));
+						handleSetupPacket(WebSocketHelper.decodeWebSocketPayload(buff, len));
 					}
 				}
 
@@ -61,7 +64,7 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 				e1.printStackTrace();
 			}
 			System.out.println("!!!!!!!!!!!SENDING TEST BITS!!!!!!!!!!!");
-			session.getOutStream().write(encodeWebSocketPayload(testPack()));
+			session.getOutStream().write(WebSocketHelper.encodeWebSocketPayload(connectionReadyPacket()));
 			count++;
 			session.getOutStream().flush();
 			try {
@@ -84,192 +87,79 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 		this.handler = handler;
 	}
 	
-	public String toString() {
-		return "HTTP HANDSHAKER!!";
-	}
-
 	private void handleHeaders(String input) {
-		if (!finished) {
+		if (!connectionEstablished) {
 			// Get the webSocketKey
-			if (input.startsWith(keyStringSearch)) {
+			if (input.startsWith(WebSocketHelper.keyStringSearch)) {
 				webSocketKey = input.substring(keyStringSearch.length());
 				System.out.println("KEY IS:" + webSocketKey);
 			}
 
 			// They're done
 			if (input.equals(""))
-				finished = true;
+				connectionEstablished = true;
 
 			// We need a webSocketKey to continue
 			if (webSocketKey == null)
 				System.err.println("No Sec-WebSocket-Key was passed at: " + session);
 		}
 
-		if (finished && webSocketKey != null) {
+		if (connectionEstablished && webSocketKey != null) {
 			// Send our headers
 			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			System.out.println("!!!!!SENDING RESPONSE HEADERS!!!!!!");
 			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			//session.getWriter().println("HTTP/1.1 101 Web Socket Protocols\r");
-			session.getWriter().println("HTTP/1.1 101 Switching Protocols");
-			session.getWriter().println("Upgrade: WebSocket");
-			session.getWriter().println("Connection: Upgrade");
-			session.getWriter().println("Sec-WebSocket-Accept: " + generateOK(webSocketKey));
-			//session.getWriter().println("Sec-WebSocket-Protocol: chat\r");
-			session.getWriter().println("");
-			session.getWriter().flush();
+			WebSocketHelper.sendHandshakeResponse(session.getWriter(), webSocketKey);
 			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			System.out.println("!!!!!!!!!!!!!DONE!!!!!!!!!!!!!!!!!!");
 			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
-
-	/**
-	 * This funciton is used to wrap a string passed into it with a websocket compatible frame
-	 * This frame is RFC 6455 compatible and available at: http://tools.ietf.org/html/rfc6455#page-20.
-	 * @param s	The string to be wrapped with the frame
-	 * @return	An array of bytes to be sent over a connection
-	 */
-	private byte[] encodeWebSocketPayload(String s) {
-		byte[] payloadBytes = s.getBytes();
-		byte[] contructedWebSocketFrame = new byte[10];
-		byte[] replyWebSocketFrame;
-		int payloadLen = payloadBytes.length;
-		int amountOfFrames = 0;
-		int totalFrameLength = 0;
-
-		/*
-		 * SETUP OF FIRST BYTE, BY RFC 6455 THIS IS 129d -> "1000 0001"
-		 */
-		contructedWebSocketFrame[0] = (byte) 129; /* FOR TEXT FRAME*/
-
-		/*
-		 * SETUP OF LENGTH BYTES
-		 * PAYLOAD LENGTH
-		 * 	0-125 : NO ADDITIONAL BYTES
-		 * 	126-65535 : TWO ADDITIONAL BYTES, SECOND(IN FRAME) BYTE 126
-		 * 	>65536 : EIGHT ADDITIONAL BYTES, SECOND(IN FRAME) BYTE 127
-		 */
-		if (payloadBytes.length <= 125) {
-			contructedWebSocketFrame[1] = (byte) payloadBytes.length;
-			amountOfFrames = 2;
-		} else if (payloadBytes.length >= 126 && payloadBytes.length <= 65535) {
-			contructedWebSocketFrame[1] = (byte) 126;
-			contructedWebSocketFrame[2] = (byte) ((payloadLen >> 8) & (byte) 255);
-			contructedWebSocketFrame[3] = (byte) (payloadLen & (byte) 255);
-			amountOfFrames = 4;
-		} else {
-			contructedWebSocketFrame[1] = (byte) 127;
-			contructedWebSocketFrame[2] = (byte) ((payloadLen >> 56) & (byte) 255);
-			contructedWebSocketFrame[3] = (byte) ((payloadLen >> 48) & (byte) 255);
-			contructedWebSocketFrame[4] = (byte) ((payloadLen >> 40) & (byte) 255);
-			contructedWebSocketFrame[5] = (byte) ((payloadLen >> 32) & (byte) 255);
-			contructedWebSocketFrame[6] = (byte) ((payloadLen >> 24) & (byte) 255);
-			contructedWebSocketFrame[7] = (byte) ((payloadLen >> 16) & (byte) 255);
-			contructedWebSocketFrame[8] = (byte) ((payloadLen >> 8) & (byte) 255);
-			contructedWebSocketFrame[9] = (byte) (payloadLen & (byte) 255);
-			amountOfFrames = 10;
-		}
-
-		totalFrameLength = amountOfFrames + payloadBytes.length;
-
-		replyWebSocketFrame = new byte[totalFrameLength];
-
-		int frameByteLimiter = 0;
-		for (int i = 0; i < amountOfFrames; i++) {
-			replyWebSocketFrame[frameByteLimiter] = contructedWebSocketFrame[i];
-			frameByteLimiter++;
-		}
-		for (int i = 0; i < payloadBytes.length; i++) {
-			replyWebSocketFrame[frameByteLimiter] = payloadBytes[i];
-			frameByteLimiter++;
-		}
-		
-		return replyWebSocketFrame;
-	}
-
-	private String decodeWebSocketPayload(byte[] framedPacket, int bytesRead) {
-		byte[] message;
-		byte rLength = 0;
-		int totalMessageLength;
-		int rMaskIndex = 2;
-		int rDataStart = 0;
-		
-		// b[0] is always text in my case so no need to check;
-		byte data = framedPacket[1];
-		byte op = (byte) 127;
-		rLength = (byte) (data & op);
-
-		if (rLength == (byte) 126)
-			rMaskIndex = 4;
-		if (rLength == (byte) 127)
-			rMaskIndex = 10;
-
-		byte[] masks = new byte[4];
-
-		int j = 0;
-		int i = 0;
-		for (i = rMaskIndex; i < (rMaskIndex + 4); i++) {
-			masks[j] = framedPacket[i];
-			j++;
-		}
-
-		rDataStart = rMaskIndex + 4;
-		totalMessageLength = bytesRead - rDataStart;
-
-		message = new byte[totalMessageLength];
-		for (i = rDataStart, j = 0; i < bytesRead; i++, j++) {
-			message[j] = (byte) (framedPacket[i] ^ masks[j % 4]);
-		}
-
-		return new String(message);
-	}
-
-	private void printBytes(byte[] b) {
-		for (int i = 0; i < b.length; i++) {
-			String s = String.format("%8s", Integer.toBinaryString(b[i] & 0xFF)).replace(' ', '0');
-			System.out.println(s);
-		}
-	}
-
-	private String generateOK(String key) {
-		Encoder encoder = Base64.getEncoder();
-		String genWith = key + webSocketUID;
-		String encodedKey = null;
-		MessageDigest md = null;
-		byte[] sha1hash = null;
-
+	
+	private void handleSetupPacket(String s) {
+		System.out.print("Setting up received packet...");
+		ComponentHandlerBase handler = null;
 		try {
-			md = MessageDigest.getInstance("SHA-1");
-			sha1hash = new byte[40];
-			md.update(genWith.getBytes("iso-8859-1"), 0, genWith.length());
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
+			Transmission setupTransmission = jsonParser.fromJson(s, Transmission.class);
+			handler = ComponentHandlerFactory.createHandler(setupTransmission, session);
+			
+			System.out.println("VALUE OF READY IS: " + handler.ready() );
+			if (handler.ready()) {
+				this.setHandler(handler);
+				session.setComponentHandler(handler);
+				session.getStateContainer().getConnectedState().setHandler(handler);
+				session.setConnectionState(session.getStateContainer().getConnectedState());
+			} else {
+				//Tell the session thread to die
+				session.die();
+			}
+		} catch (Exception e) {
+			System.out.println("Setup packet from component is malformed!");
 			e.printStackTrace();
 		}
-		sha1hash = md.digest();
-		
-		encodedKey = new String(encoder.encode(sha1hash));
-		return encodedKey;
+		System.out.println("....done");
 	}
 	
-	private String testPack() {
+
+	
+	private String connectionReadyPacket() {
 		TransmissionBuilder tb = new TransmissionBuilder();
 		String from = OpcodeAccessor.make(ComponentType.STEM, ActionType.DATA, StemOperation.TEST);
 		String to = OpcodeAccessor.make(ComponentType.LENS, ActionType.DATA, LensOperation.TEST);
 		tb.newTransmission(from, to);
-		tb.addAtom("someNumber", "int", Integer.toString(count));
+		tb.addAtom("ready", "boolean", "true");
 		Transmission t = tb.getTransmission();
 		Gson gson = new Gson();
 		return gson.toJson(t);
 	}
 	
+	public String toString() {
+		return "HTTP Handshaker";
+	}
 	
 }

@@ -34,7 +34,7 @@ public class ComponentHandlerFactory {
 	public static synchronized ComponentHandlerBase createHandler(Transmission setupPacket, StemClientSession clientSession) {
 		ComponentHandlerBase newComponent = null;
 		int reqCount = CommunicationDock.reqSet.size();
-
+		System.err.println("SETUP PACKET: " + setupPacket.toString());
 		Iterator<Atom> it = setupPacket.get_atoms().iterator();
 		while (it.hasNext()) {
 			if (reqCount == 0)

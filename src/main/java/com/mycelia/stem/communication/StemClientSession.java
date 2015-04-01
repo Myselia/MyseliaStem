@@ -59,7 +59,7 @@ public class StemClientSession implements Runnable {
 				}
 
 			} catch (IOException e) {
-				System.err.println("Client with IP " + componentHandler.getIp() + " has disconnected.");
+				System.err.println("Session at " + this.toString() + " has broken stream!");
 				clientConnectionState = stateContainer.getDisconnectedState();
 				componentAttached = false;
 				socketProblem = true;
