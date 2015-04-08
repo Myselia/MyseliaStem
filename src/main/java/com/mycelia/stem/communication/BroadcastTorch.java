@@ -54,7 +54,7 @@ public class BroadcastTorch {
 		Iterator<Seek> iterator = seekInterfaces.iterator();
 		while (iterator.hasNext()) {
 			Seek seeker = iterator.next();
-			System.out.println(seeker.printStatus(type.name(), new String(seekProbeText)));
+			//System.out.println(seeker.printStatus(type.name(), new String(seekProbeText)));
 			seeker.discoverComponents(seekProbeText);
 		}
 		Thread.sleep(BROADCAST_SLEEP); //FOR TESTING, PREVENTS CONSOLE SPAM

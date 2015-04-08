@@ -55,9 +55,7 @@ public class HandshakeConnectionState implements ConnectionState {
 			if (handler.ready()) {
 				this.setHandler(handler);
 				session.setComponentHandler(handler);
-				session.getStateContainer().getConnectedState().setHandler(handler);
-				session.setConnectionState(session.getStateContainer()
-						.getConnectedState());
+				session.setConnectionState(session.getStateContainer().getConnectedState());
 			} else {
 				//Tell the session thread to die
 				session.die();

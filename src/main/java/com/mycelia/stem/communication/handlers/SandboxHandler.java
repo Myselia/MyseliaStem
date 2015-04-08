@@ -21,16 +21,13 @@ public class SandboxHandler extends ComponentHandlerBase {
 
 	public void handleComponent() {
 		super.handleComponent();
-		if (mb.getInQueueSize() > 0) {
-			mb.putInOutQueue(mb.getFromInQueue());
-		}
 	}
 	
 	@Override
 	protected void transmissionReceived() {
 		System.out.println("Sandbox Receive:"
 				+ "\n\t|-> Hash: " + getHashID()
-				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(mb.getFromInQueue()));
+				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(mb.peekOutQueue()));
 		
 	}
 

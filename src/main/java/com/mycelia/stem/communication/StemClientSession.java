@@ -84,6 +84,7 @@ public class StemClientSession implements Runnable {
 
 	public void setComponentHandler(ComponentHandlerBase componentHandler) {
 		this.componentHandler = componentHandler;
+		this.stateContainer.setHandlers(componentHandler);
 	}
 
 	public ConnectionStateContainer getStateContainer() {
@@ -118,7 +119,6 @@ public class StemClientSession implements Runnable {
 		try {
 			return clientConnectionSocket.getInputStream();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

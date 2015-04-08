@@ -10,6 +10,7 @@ import com.mycelia.common.communication.Addressable;
 import com.mycelia.common.communication.MailService;
 import com.mycelia.common.communication.structures.MailBox;
 import com.mycelia.common.communication.units.Transmission;
+import com.mycelia.common.framework.communication.WebSocketHelper;
 import com.mycelia.stem.communication.CommunicationDock;
 import com.mycelia.stem.communication.StemClientSession;
 
@@ -49,17 +50,36 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 	@Override
 	public void handleComponent() {
 		try {
-			if (input.ready()) {
-				if ((inputToken = input.readLine()) != null) {
-					mb.putInInQueue(jsonInterpreter.fromJson(inputToken, Transmission.class));
-					transmissionReceived();
+			if (session.isHTTP()) {
+				int len = 0;
+				byte[] buff = new byte[2048];
+				if (input.ready()) {
+					len = session.getInStream().read(buff);
+					if (len > 0) {
+						String payload = WebSocketHelper.decodeWebSocketPayload(buff, len);
+						mb.putInOutQueue(jsonInterpreter.fromJson(payload, Transmission.class));
+					}
 				}
-			}
-			// Send Packets
-			if (mb.getOutQueueSize() > 0) {
-				outputToken = jsonInterpreter.toJson(mb.getFromOutQueue());
-				System.out.println("Sending: " + outputToken);
-				output.println(outputToken);
+				
+				if (mb.getInQueueSize() > 0) {
+					outputToken = jsonInterpreter.toJson(mb.getFromInQueue());
+					System.out.println("Sending: " + outputToken);
+					session.getOutStream().write(WebSocketHelper.encodeWebSocketPayload(outputToken));
+				}
+				
+			} else {
+				if (input.ready()) {
+					if ((inputToken = input.readLine()) != null) {
+						mb.putInOutQueue(jsonInterpreter.fromJson(inputToken, Transmission.class));
+						transmissionReceived();
+					}
+				}
+				// Send Packets
+				if (mb.getInQueueSize() > 0) {
+					outputToken = jsonInterpreter.toJson(mb.getFromInQueue());
+					System.out.println("Sending: " + outputToken);
+					output.println(outputToken);
+				}
 			}
 
 		} catch (IOException e1) {

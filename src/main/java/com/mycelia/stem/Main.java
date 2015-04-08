@@ -46,6 +46,7 @@ public class Main {
 
 		ArrayList<Seek> seekerListSandbox = new ArrayList<Seek>();
 		//seekerListSandbox.add(LocalHostSeek.getInstance());
+		seekerListSandbox.add(LocalHostSeek.getInstance());
 		seekerListSandbox.add(LocalNetworkSeek.getInstance());
 		comDock.seekSandboxes(seekerListSandbox);
 		

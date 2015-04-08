@@ -17,7 +17,8 @@ public class LensHandler extends ComponentHandlerBase {
 	private static int count = 0;
 	
 	public LensHandler() {
-		MailService.register("SANDBOXMASTER_RUNTIME_DATA", this);
+		MailService.register("SANDBOXMASTER", this);
+		System.out.println(MailService.isRegistered(this));
 	}
 
 	@Override
@@ -29,16 +30,13 @@ public class LensHandler extends ComponentHandlerBase {
 	
 	public void handleComponent() {
 		super.handleComponent();
-		if (mb.getInQueueSize() > 0) {
-			mb.putInOutQueue(mb.getFromInQueue());
-		}
 	}
 	
 	@Override
 	protected void transmissionReceived() {
 		System.out.println("Lens Receive:"
 				+ "\n\t|-> Hash: " + getHashID()
-				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(mb.getFromInQueue()));
+				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(mb.peekOutQueue()));
 	}
 	
 	public String toString() {

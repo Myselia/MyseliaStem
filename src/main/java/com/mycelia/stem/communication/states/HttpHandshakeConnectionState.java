@@ -9,7 +9,7 @@ import com.mycelia.common.communication.units.TransmissionBuilder;
 import com.mycelia.common.constants.opcode.ActionType;
 import com.mycelia.common.constants.opcode.ComponentType;
 import com.mycelia.common.constants.opcode.OpcodeAccessor;
-import com.mycelia.common.constants.opcode.operations.LensOperation;
+import com.mycelia.common.constants.opcode.Operation;
 import com.mycelia.common.constants.opcode.operations.StemOperation;
 import com.mycelia.common.framework.communication.WebSocketHelper;
 import com.mycelia.stem.communication.StemClientSession;
@@ -49,7 +49,9 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 			}
 		} else {
 			try {
-				//Send a ready packet to the component
+				//Wait for a ready response from the lens, if it is received and properly processed, a 
+				//LENS_DATA_SETUPOK opcode packet is sent. Otherwise a LENS_DATA_SETUPERR is sent and resolution
+				//of any issues is handed off to the client while the server-side session is terminated.
 				int len = 0;
 				byte[] buff = new byte[2048];
 				if (input.ready()) {
@@ -61,17 +63,9 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 				}
 
 			} catch (IOException e1) {
+				System.err.println("Setup of LENS failed, terminating session");
+				session.die();
 				e1.printStackTrace();
-			}
-			System.out.println("!!!!!!!!!!!SENDING TEST BITS!!!!!!!!!!!");
-			session.getOutStream().write(WebSocketHelper.encodeWebSocketPayload(connectionReadyPacket()));
-			count++;
-			session.getOutStream().flush();
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 
@@ -121,8 +115,7 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 		}
 	}
 	
-	private void handleSetupPacket(String s) {
-		System.out.print("Setting up received packet...");
+	private void handleSetupPacket(String s) throws IOException {
 		ComponentHandlerBase handler = null;
 		try {
 			Transmission setupTransmission = jsonParser.fromJson(s, Transmission.class);
@@ -132,27 +125,38 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 			if (handler.ready()) {
 				this.setHandler(handler);
 				session.setComponentHandler(handler);
-				session.getStateContainer().getConnectedState().setHandler(handler);
 				session.setConnectionState(session.getStateContainer().getConnectedState());
+				session.getOutStream().write(WebSocketHelper.encodeWebSocketPayload(connectionReadyPacket(true)));
 			} else {
 				//Tell the session thread to die
+				session.getOutStream().write(WebSocketHelper.encodeWebSocketPayload(connectionReadyPacket(false)));
 				session.die();
 			}
 		} catch (Exception e) {
 			System.out.println("Setup packet from component is malformed!");
 			e.printStackTrace();
 		}
-		System.out.println("....done");
+		
+		session.getOutStream().flush();
 	}
 	
-
-	
-	private String connectionReadyPacket() {
+	private String connectionReadyPacket(boolean ok) {
+		String isReady = null;
+		String setupStatus = null;
+		
+		if (ok) {
+			isReady = "true";
+			setupStatus = Operation.SETUPOK;
+		} else {
+			isReady = "false";
+			setupStatus = Operation.SETUPERR;
+		}
+		
 		TransmissionBuilder tb = new TransmissionBuilder();
-		String from = OpcodeAccessor.make(ComponentType.STEM, ActionType.DATA, StemOperation.TEST);
-		String to = OpcodeAccessor.make(ComponentType.LENS, ActionType.DATA, LensOperation.TEST);
+		String from = OpcodeAccessor.make(ComponentType.STEM, ActionType.DATA, StemOperation.SETUP);
+		String to = OpcodeAccessor.make(ComponentType.LENS, ActionType.DATA, setupStatus);
 		tb.newTransmission(from, to);
-		tb.addAtom("ready", "boolean", "true");
+		tb.addAtom("ready", "boolean", isReady);
 		Transmission t = tb.getTransmission();
 		Gson gson = new Gson();
 		return gson.toJson(t);

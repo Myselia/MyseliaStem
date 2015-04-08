@@ -1,5 +1,8 @@
 package com.mycelia.stem.communication;
 
+import javax.swing.plaf.basic.BasicSliderUI.ComponentHandler;
+
+import com.mycelia.stem.communication.handlers.ComponentHandlerBase;
 import com.mycelia.stem.communication.states.ConnectedConnectionState;
 import com.mycelia.stem.communication.states.DisconnectedConnectionState;
 import com.mycelia.stem.communication.states.HandshakeConnectionState;
@@ -50,6 +53,13 @@ public class ConnectionStateContainer {
 		this.handshakeState = handshakeState;
 	}
 
+	public void setHandlers(ComponentHandlerBase handler) {
+		 connectedState.setHandler(handler);
+		 disconnectedState.setHandler(handler);
+		 kickedState.setHandler(handler);
+		 handshakeState.setHandler(handler);
+	}
+	
 	private void initializeConnectionStates(StemClientSession session) {
 		connectedState = new ConnectedConnectionState();
 		connectedState.primeConnectionState(session);
@@ -68,4 +78,5 @@ public class ConnectionStateContainer {
 			handshakeState.primeConnectionState(session);
 		}
 	}
+	
 }
