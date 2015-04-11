@@ -18,7 +18,7 @@ public class LensHandler extends ComponentHandlerBase {
 	private static int count = 0;
 	
 	public LensHandler() {
-		MailService.register("SANDBOXMASTER", this);
+		MailService.register("SANDBOXSLAVE", this);
 	}
 
 	@Override

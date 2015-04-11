@@ -44,11 +44,11 @@ public class Main {
 		comDock.seekLenses(seekerListLens);
 		
 
-		ArrayList<Seek> seekerListSandbox = new ArrayList<Seek>();
+		ArrayList<Seek> seekerListDaemon = new ArrayList<Seek>();
 		//seekerListSandbox.add(LocalHostSeek.getInstance());
-		seekerListSandbox.add(LocalHostSeek.getInstance());
-		seekerListSandbox.add(LocalNetworkSeek.getInstance());
-		comDock.seekSandboxes(seekerListSandbox);
+		seekerListDaemon.add(LocalHostSeek.getInstance());
+		seekerListDaemon.add(LocalNetworkSeek.getInstance());
+		comDock.seekDaemons(seekerListDaemon);
 		
 	}
 }
