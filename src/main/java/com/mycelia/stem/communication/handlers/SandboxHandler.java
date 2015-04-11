@@ -1,11 +1,10 @@
 package com.mycelia.stem.communication.handlers;
 
+import java.io.IOException;
 import java.util.Map;
 
-import com.mycelia.common.communication.MailService;
 import com.mycelia.common.communication.structures.MailBox;
 import com.mycelia.common.communication.units.Transmission;
-import com.mycelia.common.constants.opcode.ComponentType;
 
 public class SandboxHandler extends ComponentHandlerBase {
 
@@ -19,7 +18,7 @@ public class SandboxHandler extends ComponentHandlerBase {
 		this.hashID = setupMap.get("hashID");
 	}
 
-	public void handleComponent() {
+	public void handleComponent() throws IOException {
 		super.handleComponent();
 	}
 	
@@ -28,7 +27,6 @@ public class SandboxHandler extends ComponentHandlerBase {
 		System.out.println("Sandbox Receive:"
 				+ "\n\t|-> Hash: " + getHashID()
 				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(mb.peekOutQueue()));
-		
 	}
 
 	public String toString() {

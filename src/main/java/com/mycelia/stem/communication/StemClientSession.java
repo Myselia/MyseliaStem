@@ -55,6 +55,8 @@ public class StemClientSession implements Runnable {
 				if (!output.checkError() || socketProblem) {
 					clientConnectionState.process();
 				} else {
+					System.err.println("DEADSESSION!!!!!!!!!!!!!!!!!!!!");
+					clientConnectionSocket.close();
 					throw new IOException();
 				}
 
@@ -63,12 +65,6 @@ public class StemClientSession implements Runnable {
 				clientConnectionState = stateContainer.getDisconnectedState();
 				componentAttached = false;
 				socketProblem = true;
-				try {
-					clientConnectionSocket.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			}
 
 		}

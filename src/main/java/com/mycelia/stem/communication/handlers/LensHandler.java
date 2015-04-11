@@ -1,5 +1,6 @@
 package com.mycelia.stem.communication.handlers;
 
+import java.io.IOException;
 import java.util.Map;
 
 import com.mycelia.common.communication.MailService;
@@ -18,7 +19,6 @@ public class LensHandler extends ComponentHandlerBase {
 	
 	public LensHandler() {
 		MailService.register("SANDBOXMASTER", this);
-		System.out.println(MailService.isRegistered(this));
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class LensHandler extends ComponentHandlerBase {
 		this.hashID = setupMap.get("hashID");
 	}
 	
-	public void handleComponent() {
+	public void handleComponent() throws IOException {
 		super.handleComponent();
 	}
 	

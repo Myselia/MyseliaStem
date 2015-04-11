@@ -1,5 +1,7 @@
 package com.mycelia.stem.communication.states;
 
+import java.io.IOException;
+
 import com.mycelia.stem.communication.StemClientSession;
 import com.mycelia.stem.communication.handlers.ComponentHandlerBase;
 
@@ -13,7 +15,7 @@ public class ConnectedConnectionState implements ConnectionState {
 	}
 	
 	@Override
-	public void process() {
+	public void process() throws IOException {
 		handler.handleComponent();
 	}
 

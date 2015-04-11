@@ -58,7 +58,7 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 					len = session.getInStream().read(buff);
 					if (len > 0) {
 						System.out.println("RECV FROM WEBSOCK: " + WebSocketHelper.decodeWebSocketPayload(buff, len));
-						handleSetupPacket(WebSocketHelper.decodeWebSocketPayload(buff, len));
+						handleSetupPacket(new String(WebSocketHelper.decodeWebSocketPayload(buff, len)));
 					}
 				}
 
@@ -92,10 +92,6 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 			// They're done
 			if (input.equals(""))
 				connectionEstablished = true;
-
-			// We need a webSocketKey to continue
-			if (webSocketKey == null)
-				System.err.println("No Sec-WebSocket-Key was passed at: " + session);
 		}
 
 		if (connectionEstablished && webSocketKey != null) {

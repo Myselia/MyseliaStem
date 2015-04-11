@@ -28,7 +28,7 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 	protected Gson jsonInterpreter;
 	private String inputToken = "";
 	private String outputToken = "";
-	
+
 	public void setSession(StemClientSession session) {
 		if (CommunicationDock.getNetworkComponentbyHash(hashID) != null) {
 			System.out.println("Reviving dead session.");
@@ -40,7 +40,7 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 			output = (PrintWriter) session.getWriter();
 			jsonInterpreter = new Gson();
 			mb = new MailBox<Transmission>();
-			//TODO Mail Service Stuff !
+			// TODO Mail Service Stuff !
 			MailService.registerAddressable(this);
 			//
 			ready = true;
@@ -48,47 +48,59 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 	}
 
 	@Override
-	public void handleComponent() {
-		try {
-			if (session.isHTTP()) {
-				int len = 0;
-				byte[] buff = new byte[2048];
-				if (input.ready()) {
-					len = session.getInStream().read(buff);
-					if (len > 0) {
-						String payload = WebSocketHelper.decodeWebSocketPayload(buff, len);
-						mb.putInOutQueue(jsonInterpreter.fromJson(payload, Transmission.class));
+	public void handleComponent() throws IOException {
+		if (session.isHTTP()) {
+			int len = 0;
+			byte[] buff = new byte[2048];
+			byte[] rawPayload;
+
+			if (input.ready()) {
+				len = session.getInStream().read(buff);
+
+				if (len > 0) {
+					rawPayload = WebSocketHelper.decodeWebSocketPayload(buff, len);
+
+					if (WebSocketHelper.isEndStreamSignal(rawPayload)) {
+						throw new IOException();
+					} else {
+						String payload = new String(rawPayload);
+						System.out.println("GOT FROM LENS: " + payload);
+						try {
+							Transmission t = (jsonInterpreter.fromJson(payload, Transmission.class));
+							mb.putInOutQueue(t);
+						} catch (Exception e) {
+							System.err.println("Error parsing json @ " + this);
+						}
 					}
-				}
-				
-				if (mb.getInQueueSize() > 0) {
-					outputToken = jsonInterpreter.toJson(mb.getFromInQueue());
-					System.out.println("Sending: " + outputToken);
-					session.getOutStream().write(WebSocketHelper.encodeWebSocketPayload(outputToken));
-				}
-				
-			} else {
-				if (input.ready()) {
-					if ((inputToken = input.readLine()) != null) {
-						mb.putInOutQueue(jsonInterpreter.fromJson(inputToken, Transmission.class));
-						transmissionReceived();
-					}
-				}
-				// Send Packets
-				if (mb.getInQueueSize() > 0) {
-					outputToken = jsonInterpreter.toJson(mb.getFromInQueue());
-					System.out.println("Sending: " + outputToken);
-					output.println(outputToken);
+
 				}
 			}
 
-		} catch (IOException e1) {
-			e1.printStackTrace();
+			if (mb.getInQueueSize() > 0) {
+				outputToken = jsonInterpreter.toJson(mb.getFromInQueue());
+				System.out.println("Sending: " + outputToken);
+				session.getOutStream().write(WebSocketHelper.encodeWebSocketPayload(outputToken));
+			}
+
+			session.getOutStream().flush();
+		} else {
+			
+			if (input.ready()) {
+				if ((inputToken = input.readLine()) != null) {
+					mb.putInOutQueue(jsonInterpreter.fromJson(inputToken, Transmission.class));
+					transmissionReceived();
+				}
+			}
+			if (mb.getInQueueSize() > 0) {
+				outputToken = jsonInterpreter.toJson(mb.getFromInQueue());
+				System.out.println("Sending: " + outputToken);
+				output.println(outputToken);
+			} 
 		}
 	}
-	
+
 	protected abstract void transmissionReceived();
-	
+
 	@Override
 	public abstract void primeHandler(Map<String, String> setupMap);
 
@@ -96,7 +108,7 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 	public boolean ready() {
 		return ready;
 	}
-	
+
 	public void reviveDeadSession(StemClientSession session) {
 		this.session.resetExistingConnection(session);
 	}
@@ -116,7 +128,7 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 	public void setMac(String mac) {
 		this.mac = mac;
 	}
-	
+
 	public String getHashID() {
 		return hashID;
 	}
@@ -124,7 +136,7 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 	public void setHashID(String hashID) {
 		this.hashID = hashID;
 	}
-	
+
 	public BufferedReader getInput() {
 		return input;
 	}
@@ -132,10 +144,10 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 	public PrintWriter getOutput() {
 		return output;
 	}
-	
+
 	public void resetStreams(PrintWriter w, BufferedReader r) {
-		input = (BufferedReader)r;
-		output = (PrintWriter)w;
+		input = (BufferedReader) r;
+		output = (PrintWriter) w;
 	}
 
 }
