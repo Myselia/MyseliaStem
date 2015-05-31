@@ -25,23 +25,11 @@ public class SandboxHandler extends ComponentHandlerBase {
 	protected void transmissionReceived() {
 		System.out.println("Sandbox Receive:"
 				+ "\n\t|-> Hash: " + getHashID()
-				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(mb.peekOut()));
+				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(networkMailbox.peekOut()));
 	}
 
 	public String toString() {
 		return "TYPE: SANDBOX-MASTER, " + "IP: " + this.ip + ", MAC: " + this.mac + ", HASHID: " + hashID;
-	}
-
-	@Override
-	public void in(Transmission trans) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Transmission out() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

@@ -35,7 +35,7 @@ public class LensHandler extends ComponentHandlerBase {
 	protected void transmissionReceived() {
 		System.out.println("Lens Receive:"
 				+ "\n\t|-> Hash: " + getHashID()
-				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(mb.peekOut()));
+				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(networkMailbox.peekOut()));
 	}
 	
 	public String toString() {
@@ -51,19 +51,7 @@ public class LensHandler extends ComponentHandlerBase {
 		Transmission t = tb.getTransmission();
 		count++;
 
-		mb.enqueueOut(t);
-	}
-
-	@Override
-	public void in(Transmission trans) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Transmission out() {
-		// TODO Auto-generated method stub
-		return null;
+		networkMailbox.enqueueOut(t);
 	}
 
 }

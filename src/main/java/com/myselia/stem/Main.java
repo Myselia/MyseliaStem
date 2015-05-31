@@ -29,7 +29,7 @@ public class Main {
 	public static void main(String[] args) {
 		System.out.print("myseliaStem setup... ");
 		
-		ConfigHandler.init();
+		//ConfigHandler.init();
 
 		console_thread = new Thread(console);
 		console_thread.start();
