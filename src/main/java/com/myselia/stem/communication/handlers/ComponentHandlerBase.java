@@ -6,9 +6,9 @@ import java.io.PrintWriter;
 import java.util.Map;
 
 import com.google.gson.Gson;
-import com.myselia.javacommon.communication.Addressable;
-import com.myselia.javacommon.communication.MailService;
-import com.myselia.javacommon.communication.structures.MailBox;
+import com.myselia.javacommon.communication.mail.Addressable;
+import com.myselia.javacommon.communication.mail.MailBox;
+import com.myselia.javacommon.communication.mail.MailService;
 import com.myselia.javacommon.communication.units.Transmission;
 import com.myselia.javacommon.framework.communication.WebSocketHelper;
 import com.myselia.stem.communication.CommunicationDock;
@@ -67,7 +67,7 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 						System.out.println("GOT FROM LENS: " + payload);
 						try {
 							Transmission t = (jsonInterpreter.fromJson(payload, Transmission.class));
-							mb.putInOutQueue(t);
+							mb.enqueueOut(t);
 						} catch (Exception e) {
 							System.err.println("Error parsing json @ " + this);
 						}
@@ -76,8 +76,8 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 				}
 			}
 
-			if (mb.getInQueueSize() > 0) {
-				outputToken = jsonInterpreter.toJson(mb.getFromInQueue());
+			if (mb.getInSize() > 0) {
+				outputToken = jsonInterpreter.toJson(mb.dequeueIn());
 				System.out.println("Sending: " + outputToken);
 				session.getOutStream().write(WebSocketHelper.encodeWebSocketPayload(outputToken));
 			}
@@ -87,12 +87,12 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 			
 			if (input.ready()) {
 				if ((inputToken = input.readLine()) != null) {
-					mb.putInOutQueue(jsonInterpreter.fromJson(inputToken, Transmission.class));
+					mb.enqueueOut(jsonInterpreter.fromJson(inputToken, Transmission.class));
 					transmissionReceived();
 				}
 			}
-			if (mb.getInQueueSize() > 0) {
-				outputToken = jsonInterpreter.toJson(mb.getFromInQueue());
+			if (mb.getInSize() > 0) {
+				outputToken = jsonInterpreter.toJson(mb.dequeueIn());
 				System.out.println("Sending: " + outputToken);
 				output.println(outputToken);
 			} 

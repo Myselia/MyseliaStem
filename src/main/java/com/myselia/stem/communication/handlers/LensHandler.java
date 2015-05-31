@@ -3,8 +3,7 @@ package com.myselia.stem.communication.handlers;
 import java.io.IOException;
 import java.util.Map;
 
-import com.myselia.javacommon.communication.MailService;
-import com.myselia.javacommon.communication.structures.MailBox;
+import com.myselia.javacommon.communication.mail.MailService;
 import com.myselia.javacommon.communication.units.Transmission;
 import com.myselia.javacommon.communication.units.TransmissionBuilder;
 import com.myselia.javacommon.constants.opcode.ActionType;
@@ -36,7 +35,7 @@ public class LensHandler extends ComponentHandlerBase {
 	protected void transmissionReceived() {
 		System.out.println("Lens Receive:"
 				+ "\n\t|-> Hash: " + getHashID()
-				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(mb.peekOutQueue()));
+				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(mb.peekOut()));
 	}
 	
 	public String toString() {
@@ -52,12 +51,19 @@ public class LensHandler extends ComponentHandlerBase {
 		Transmission t = tb.getTransmission();
 		count++;
 
-		mb.putInOutQueue(t);
+		mb.enqueueOut(t);
 	}
-	
+
 	@Override
-	public MailBox<Transmission> getMailBox() {
-		return this.mb;
+	public void in(Transmission trans) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Transmission out() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
