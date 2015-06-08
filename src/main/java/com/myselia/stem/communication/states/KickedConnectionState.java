@@ -2,6 +2,7 @@ package com.myselia.stem.communication.states;
 
 import java.io.IOException;
 
+import com.myselia.javacommon.communication.units.Transmission;
 import com.myselia.stem.communication.StemClientSession;
 import com.myselia.stem.communication.handlers.ComponentHandlerBase;
 
@@ -16,8 +17,8 @@ public class KickedConnectionState implements ConnectionState{
 	}
 	
 	@Override
-	public void process() throws IOException {
-		handler.handleComponent();
+	public void process(Transmission t) throws IOException {
+		handler.handleComponent(t);
 	}
 
 	@Override

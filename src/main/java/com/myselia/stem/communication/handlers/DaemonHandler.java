@@ -17,15 +17,14 @@ public class DaemonHandler extends ComponentHandlerBase {
 		this.hashID = setupMap.get("hashID");
 	}
 	
-	public void handleComponent() throws IOException {
-		super.handleComponent();
+	public void handleComponent(Transmission t) throws IOException {
+		super.handleComponent(t);
 	}
 
 	@Override
 	protected void transmissionReceived() {
 		System.out.println("Daemon Receive:"
-				+ "\n\t|-> Hash: " + getHashID()
-				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(systemMailbox.peekOut()));
+				+ "\n\t|-> Hash: " + getHashID());
 	}
 	
 	public String toString() {

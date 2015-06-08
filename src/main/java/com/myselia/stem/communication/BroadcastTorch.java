@@ -50,7 +50,6 @@ public class BroadcastTorch {
 	 * @throws IOException
 	 */
 	public void seek() throws InterruptedException, IOException {
-
 		Iterator<Seek> iterator = seekInterfaces.iterator();
 		while (iterator.hasNext()) {
 			Seek seeker = iterator.next();

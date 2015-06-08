@@ -1,5 +1,6 @@
 package com.myselia.stem.communication.states;
 
+import com.myselia.javacommon.communication.units.Transmission;
 import com.myselia.stem.communication.StemClientSession;
 import com.myselia.stem.communication.handlers.ComponentHandlerBase;
 
@@ -14,7 +15,7 @@ public class DisconnectedConnectionState implements ConnectionState {
 	}
 	
 	@Override
-	public void process() {
+	public void process(Transmission t) {
 		
 		if (session.componentAttached)
 			session.setConnectionState(session.getStateContainer().getConnectedState());

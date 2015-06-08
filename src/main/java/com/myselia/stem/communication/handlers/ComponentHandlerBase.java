@@ -1,16 +1,12 @@
 package com.myselia.stem.communication.handlers;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Map;
 
-import com.google.gson.Gson;
 import com.myselia.javacommon.communication.mail.Addressable;
 import com.myselia.javacommon.communication.mail.MailBox;
 import com.myselia.javacommon.communication.mail.MailService;
 import com.myselia.javacommon.communication.units.Transmission;
-import com.myselia.javacommon.framework.communication.WebSocketHelper;
 import com.myselia.stem.communication.CommunicationDock;
 import com.myselia.stem.communication.StemClientSession;
 
@@ -22,27 +18,20 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 
 	protected boolean ready = false;
 	protected StemClientSession session;
-	protected BufferedReader input;
-	protected PrintWriter output;
 	protected MailBox<Transmission> systemMailbox;
 	protected MailBox<Transmission> networkMailbox;
-	protected Gson jsonInterpreter;
-	private String inputToken = "";
-	private String outputToken = "";
-
+	
 	public void setSession(StemClientSession session) {
 		if (CommunicationDock.getNetworkComponentbyHash(hashID) != null) {
+			//This is an old session, revive it
 			System.out.println("Reviving dead session.");
 			CommunicationDock.getNetworkComponentbyHash(hashID).reviveDeadSession(session);
 		} else {
-			CommunicationDock.addNewNetworkComponent(hashID, this);
+			//This is a brand new session, initialize required objects
 			this.session = session;
-			input = (BufferedReader) session.getReader();
-			output = (PrintWriter) session.getWriter();
-			jsonInterpreter = new Gson();
+			CommunicationDock.addNewNetworkComponent(hashID, this);
 			systemMailbox = new MailBox<Transmission>();
 			networkMailbox = new MailBox<Transmission>();
-			// TODO Mail Service Stuff !
 			MailService.registerAddressable(this);
 			ready = true;
 		}
@@ -52,8 +41,8 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 	 * Primary network handling code
 	 */
 	@Override
-	public void handleComponent() throws IOException {
-		if (session.isHTTP()) {
+	public void handleComponent(Transmission t) throws IOException {
+		/*if (session.isHTTP()) {
 			int len = 0;
 			byte[] buff = new byte[2048];
 			byte[] rawPayload;
@@ -109,10 +98,13 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 			} 
 		}
 		
+		*/
 		
+		System.out.println("[Component Handler] ~~ Handling stuff");
+		System.out.println("\t[Transmission] --> " + t.toString());
 	}
 	
-	public void handleMailBoxPair(){
+	public void handleMailBoxPair() {
 		//re-routing network in to system out
 		if(networkMailbox.getInSize() > 0){
 			systemMailbox.enqueueOut(networkMailbox.dequeueIn());
@@ -136,7 +128,7 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 	}
 
 	public void reviveDeadSession(StemClientSession session) {
-		this.session.resetExistingConnection(session);
+		//this.session.resetExistingConnection(session);
 	}
 
 	public String getIp() {
@@ -161,19 +153,6 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 
 	public void setHashID(String hashID) {
 		this.hashID = hashID;
-	}
-
-	public BufferedReader getInput() {
-		return input;
-	}
-
-	public PrintWriter getOutput() {
-		return output;
-	}
-
-	public void resetStreams(PrintWriter w, BufferedReader r) {
-		input = (BufferedReader) r;
-		output = (PrintWriter) w;
 	}
 	
 	@Override

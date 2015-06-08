@@ -27,15 +27,14 @@ public class LensHandler extends ComponentHandlerBase {
 		this.hashID = setupMap.get("hashID");
 	}
 	
-	public void handleComponent() throws IOException {
-		super.handleComponent();
+	public void handleComponent(Transmission t) throws IOException {
+		super.handleComponent(t);
 	}
 	
 	@Override
 	protected void transmissionReceived() {
 		System.out.println("Lens Receive:"
-				+ "\n\t|-> Hash: " + getHashID()
-				+ "\n\t|-> Transmission: " + jsonInterpreter.toJson(networkMailbox.peekOut()));
+				+ "\n\t|-> Hash: " + getHashID());
 	}
 	
 	public String toString() {

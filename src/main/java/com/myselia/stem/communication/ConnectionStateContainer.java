@@ -1,12 +1,10 @@
 package com.myselia.stem.communication;
 
-import javax.swing.plaf.basic.BasicSliderUI.ComponentHandler;
-
 import com.myselia.stem.communication.handlers.ComponentHandlerBase;
 import com.myselia.stem.communication.states.ConnectedConnectionState;
+import com.myselia.stem.communication.states.ConnectionState;
 import com.myselia.stem.communication.states.DisconnectedConnectionState;
 import com.myselia.stem.communication.states.HandshakeConnectionState;
-import com.myselia.stem.communication.states.ConnectionState;
 import com.myselia.stem.communication.states.HttpHandshakeConnectionState;
 import com.myselia.stem.communication.states.KickedConnectionState;
 

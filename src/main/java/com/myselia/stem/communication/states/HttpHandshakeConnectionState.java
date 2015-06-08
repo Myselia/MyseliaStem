@@ -1,7 +1,11 @@
 package com.myselia.stem.communication.states;
 
-import java.io.BufferedReader;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelPipeline;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.google.gson.Gson;
 import com.myselia.javacommon.communication.units.Transmission;
@@ -13,62 +17,58 @@ import com.myselia.javacommon.constants.opcode.Operation;
 import com.myselia.javacommon.constants.opcode.operations.StemOperation;
 import com.myselia.javacommon.framework.communication.WebSocketHelper;
 import com.myselia.stem.communication.StemClientSession;
+import com.myselia.stem.communication.codecs.StringToTransmissionDecoder;
+import com.myselia.stem.communication.codecs.TransmissionToStringEncoder;
+import com.myselia.stem.communication.codecs.WebSocketDecoder;
+import com.myselia.stem.communication.codecs.WebSocketEncoder;
 import com.myselia.stem.communication.handlers.ComponentHandlerBase;
 import com.myselia.stem.communication.handlers.ComponentHandlerFactory;
 
 public class HttpHandshakeConnectionState implements ConnectionState {
 
+	private final String keyStringSearch = "Sec-WebSocket-Key: ";
+	
 	private ComponentHandlerBase handler;
 	private StemClientSession session;
-	private String inputS = null;
-	private BufferedReader input = null;
 	private String webSocketKey = null;
-	private String keyStringSearch = "Sec-WebSocket-Key: ";
-	private Gson jsonParser;
 	boolean connectionEstablished = false;
 	boolean handshakeFinished = false;
-	static int count = 0;
 	
 	@Override
 	public void primeConnectionState(StemClientSession session) {
 		this.session = session;
-		this.input = (BufferedReader)session.getReader();
-		this.jsonParser = new Gson();
 	}
-	
+
 	@Override
-	public void process() throws IOException {
-		if (!connectionEstablished) {
-			while ((inputS = input.readLine()) != null) {
-				System.out.println("RECV IN HTTP: " + inputS);
+	@SuppressWarnings("unchecked")
+	public void process(Transmission s) throws IOException {
 
-				handleHeaders(inputS);
-
-				if (connectionEstablished)
-					break;
-			}
+		if (connectionEstablished) {
+			System.err.println("CONNECTION ESTABLISHED");
+			
+			// Wait for the setup packet after the headers have been handled
+			handleSetupPacket(s);
 		} else {
-			try {
-				//Wait for a ready response from the lens, if it is received and properly processed, a 
-				//LENS_DATA_SETUPOK opcode packet is sent. Otherwise a LENS_DATA_SETUPERR is sent and resolution
-				//of any issues is handed off to the client while the server-side session is terminated.
-				int len = 0;
-				byte[] buff = new byte[2048];
-				if (input.ready()) {
-					len = session.getInStream().read(buff);
-					if (len > 0) {
-						System.out.println("RECV FROM WEBSOCK: " + WebSocketHelper.decodeWebSocketPayload(buff, len));
-						handleSetupPacket(new String(WebSocketHelper.decodeWebSocketPayload(buff, len)));
-					}
-				}
-
-			} catch (IOException e1) {
-				System.err.println("Setup of LENS failed, terminating session");
-				session.die();
-				e1.printStackTrace();
-			}
+			// This is first contact with the WebSocket client, generate an
+			// accept response
+			setWebSocketKey((ArrayList<String>) session.getFirstContact());
+			handleHeaders(session.getClientChannel());	
+			//Setup the pipeline since the WebSocket handshake has been completed
+			setupPipeline(session.getClientChannel());
+			connectionEstablished = true;
 		}
 
+	}
+
+	private void setWebSocketKey(ArrayList<String> HTTPRequest) {
+		Iterator<String> it = HTTPRequest.iterator();
+		while (it.hasNext()) {
+			String s = it.next();
+			if (s.contains(keyStringSearch)) {
+				webSocketKey = s.substring(keyStringSearch.length());
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -80,66 +80,63 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 	public void setHandler(ComponentHandlerBase handler) {
 		this.handler = handler;
 	}
-	
-	private void handleHeaders(String input) {
-		if (!connectionEstablished) {
-			// Get the webSocketKey
-			if (input.startsWith(WebSocketHelper.keyStringSearch)) {
-				webSocketKey = input.substring(keyStringSearch.length());
-				System.out.println("KEY IS:" + webSocketKey);
-			}
 
-			// They're done
-			if (input.equals(""))
-				connectionEstablished = true;
-		}
-
-		if (connectionEstablished && webSocketKey != null) {
-			// Send our headers
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			System.out.println("!!!!!SENDING RESPONSE HEADERS!!!!!!");
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			WebSocketHelper.sendHandshakeResponse(session.getWriter(), webSocketKey);
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			System.out.println("!!!!!!!!!!!!!DONE!!!!!!!!!!!!!!!!!!");
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+	private void handleHeaders(Channel ch) {
+		// Send our headers
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println("!!!!!SENDING RESPONSE HEADERS!!!!!!");
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		WebSocketHelper.sendHandshakeResponse(ch, webSocketKey);
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println("!!!!!!!!!!!!!DONE!!!!!!!!!!!!!!!!!!");
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	}
-	
-	private void handleSetupPacket(String s) throws IOException {
+
+	private void handleSetupPacket(Transmission s) throws IOException {
 		ComponentHandlerBase handler = null;
 		try {
-			Transmission setupTransmission = jsonParser.fromJson(s, Transmission.class);
-			handler = ComponentHandlerFactory.createHandler(setupTransmission, session);
-			
-			System.out.println("VALUE OF READY IS: " + handler.ready() );
+			handler = ComponentHandlerFactory.createHandler(s, session);
+
+			System.out.println("VALUE OF READY IS: " + handler.ready());
 			if (handler.ready()) {
 				this.setHandler(handler);
 				session.setComponentHandler(handler);
 				session.setConnectionState(session.getStateContainer().getConnectedState());
-				session.getOutStream().write(WebSocketHelper.encodeWebSocketPayload(connectionReadyPacket(true)));
+				session.getClientChannel().write(connectionReadyPacket(true));
 			} else {
-				//Tell the session thread to die
-				session.getOutStream().write(WebSocketHelper.encodeWebSocketPayload(connectionReadyPacket(false)));
+				// Tell the session thread to die
+				session.getClientChannel().write(connectionReadyPacket(false));
 				session.die();
 			}
 		} catch (Exception e) {
 			System.out.println("Setup packet from component is malformed!");
 			e.printStackTrace();
 		}
-		
-		session.getOutStream().flush();
+
+		session.getClientChannel().flush();
 	}
 	
+	/**
+	 * This method sets up the channel pipeline to contain the proper codecs for websocket payload transportation
+	 *
+	 */
+	private void setupPipeline(Channel ch) {
+		ChannelPipeline pipeline = ch.pipeline();
+		
+		//Decoders
+		pipeline.replace("stringDecoder", "webSocketDecoder", new WebSocketDecoder());
+		pipeline.addAfter("webSocketDecoder", "transmissionDecoder", new StringToTransmissionDecoder());
+		
+		//Encoders
+		pipeline.replace("stringEncoder", "transmissionEncoder", new TransmissionToStringEncoder());
+		pipeline.addAfter("transmissionEncoder", "webSocketEncoder", new WebSocketEncoder());
+		System.err.println("[HTTP Handshaker] ~~ Pipeline Setup Complete");
+	}
+
 	private String connectionReadyPacket(boolean ok) {
 		String isReady = null;
 		String setupStatus = null;
-		
+
 		if (ok) {
 			isReady = "true";
 			setupStatus = Operation.SETUPOK;
@@ -147,7 +144,7 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 			isReady = "false";
 			setupStatus = Operation.SETUPERR;
 		}
-		
+
 		TransmissionBuilder tb = new TransmissionBuilder();
 		String from = OpcodeAccessor.make(ComponentType.STEM, ActionType.DATA, StemOperation.SETUP);
 		String to = OpcodeAccessor.make(ComponentType.LENS, ActionType.DATA, setupStatus);
@@ -157,9 +154,9 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 		Gson gson = new Gson();
 		return gson.toJson(t);
 	}
-	
+
 	public String toString() {
-		return "HTTP Handshaker";
+		return "[Connection State] ~~ HTTP Handshaker";
 	}
-	
+
 }

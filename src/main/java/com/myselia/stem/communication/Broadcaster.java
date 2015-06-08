@@ -12,7 +12,6 @@ public class Broadcaster {
 	 * 0: Daemons 1: Lenses 2: Sandboxes
 	 */
 	private BroadcastTorch daemonBcast = null;
-	private BroadcastTorch lensBcast = null;
 	private BroadcastTorch sandboxBcast = null;
 
 	public Broadcaster() {
@@ -22,12 +21,6 @@ public class Broadcaster {
 		if (daemonBcast == null)
 			daemonBcast = new BroadcastTorch(ComponentType.DAEMON, seekers);
 		seekComponent(daemonBcast);
-	}
-
-	public void seekLenses(ArrayList<Seek> seekers) {
-		if (lensBcast == null)
-			lensBcast = new BroadcastTorch(ComponentType.LENS, seekers);
-		seekComponent(lensBcast);
 	}
 
 	public void seekSandboxes(ArrayList<Seek> seekers) {

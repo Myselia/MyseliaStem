@@ -9,25 +9,24 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.myselia.stem.Main;
 import com.myselia.stem.communication.handlers.ComponentHandlerBase;
 import com.myselia.stem.communication.seekers.Seek;
 
 public class CommunicationDock {
 
-	public static int Component_Listen_Port = 42068;
-	public static int Stem_Communication_Port = 42069;
-	public static int Stem_Broadcast_Port = 42070;
-	public static int Stem_HTTP_Port = 42071;
-	//FIX THIS TO BE MORE DYNAMIC!
+	public static final int Component_Listen_Port = 42068;
+	public static final int Stem_Communication_Port = 42069;
+	public static final int Stem_Broadcast_Port = 42070;
+	public static final int Stem_HTTP_Port = 42071;
+	
+	
 	public static String Stem_IP;
 	public static Set<String> reqSet;
-	/* 
-	 * TODO: This should be put in a DAO of some sort
-	 */
 	private static Map<String, ComponentHandlerBase> connectedDeviceMap;
 	private Broadcaster seeker;
-	private Thread serverThread;
-	private Thread httpServerThread;
+	//private Thread serverThread;
+	//private Thread httpServerThread;
 	
 	static {
 		/*
@@ -46,14 +45,6 @@ public class CommunicationDock {
 		
 		connectedDeviceMap = new ConcurrentHashMap<String, ComponentHandlerBase>();
 		seeker = new Broadcaster();
-
-		// Initialize main server thread
-		serverThread = new Thread(new StemServer(Stem_Communication_Port, 100, false));
-		serverThread.start();
-
-		// Initialize HTTP server thread
-		httpServerThread = new Thread(new StemServer(Stem_HTTP_Port, 100, true));
-		httpServerThread.start();
 	}
 
 	/*
@@ -61,7 +52,17 @@ public class CommunicationDock {
 	 * ##############################| PUBLIC |##############################
 	 * ##############################| |##############################
 	 */
-	
+
+	public void startServers() {
+		try {
+			Main.startSeeking();
+			new StemServer(Stem_Communication_Port).run();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	/*
 	 *__________________SEEK METHODS__________________
 	 * 
@@ -72,9 +73,6 @@ public class CommunicationDock {
 	 * 
 	 *__________________SEEK METHODS__________________
 	 */
-	public void seekLenses(ArrayList<Seek> seekers) {
-		seeker.seekLenses(seekers);
-	}
 	
 	public void seekDaemons(ArrayList<Seek> seekers) {
 		seeker.seekDaemons(seekers);
@@ -90,6 +88,7 @@ public class CommunicationDock {
 	 * ##############################| |##############################
 	 */
 
+	//TODO: Fix to work on linux machines (currently gets lo)
 	private String getLocalIP() {
 		InetAddress ip = null;
 		try {

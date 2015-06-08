@@ -1,9 +1,7 @@
 package com.myselia.stem.communication.states;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 
-import com.google.gson.Gson;
 import com.myselia.javacommon.communication.units.Transmission;
 import com.myselia.stem.communication.StemClientSession;
 import com.myselia.stem.communication.handlers.ComponentHandlerBase;
@@ -12,26 +10,17 @@ import com.myselia.stem.communication.handlers.ComponentHandlerFactory;
 public class HandshakeConnectionState implements ConnectionState {
 
 	private ComponentHandlerBase handler;
-	private Gson jsonParser = new Gson();
 	private StemClientSession session;
-	private String inputS = null;
-	private BufferedReader input = null;
-	
+
 	@Override
 	public void primeConnectionState(StemClientSession session) {
 		this.session = session;
-		this.input = (BufferedReader)session.getReader();
 	}
-	
+
 	@Override
-	public void process() throws IOException {
-
-		while ((inputS = input.readLine()) != null) {
-			System.out.println("RECV: " + inputS);
-			handleSetupPacket(inputS);
-			break;
-		}
-
+	public void process(Transmission t) throws IOException {
+		System.out.println("HANDSHAKE RECV: " + t);
+		handleSetupPacket(t);
 	}
 
 	@Override
@@ -43,31 +32,29 @@ public class HandshakeConnectionState implements ConnectionState {
 	public void setHandler(ComponentHandlerBase handler) {
 		this.handler = handler;
 	}
-	
-	private void handleSetupPacket(String s) {
-		System.out.print("Setting up received packet...");
+
+	private void handleSetupPacket(Transmission s) {
+		System.out.print("[HANDSHAKE BEGIN]");
 		ComponentHandlerBase handler = null;
 		try {
-			Transmission setupTransmission = jsonParser.fromJson(s, Transmission.class);
-			handler = ComponentHandlerFactory.createHandler(setupTransmission, session);
-			
-			System.out.println("VALUE OF READY IS: " + handler.ready() );
+			System.out.println("\t!!!!!!!!!!!!!!!RECV!!!!!!!!!!!!!!!!!!\n" + "\t|----> " + s);
+			handler = ComponentHandlerFactory.createHandler(s, session);
+			System.out.println("\tVALUE OF READY IS: " + handler.ready());
 			if (handler.ready()) {
 				this.setHandler(handler);
 				session.setComponentHandler(handler);
 				session.setConnectionState(session.getStateContainer().getConnectedState());
 			} else {
-				//Tell the session thread to die
 				session.die();
 			}
 		} catch (Exception e) {
-			System.out.println("Setup packet from component is malformed!");
+			System.out.println("\tSetup packet from component is malformed!");
 			e.printStackTrace();
 		}
-		System.out.println("....done");
+		System.out.println("[HANDSHAKE COMPLETE]");
 	}
-	
+
 	public String toString() {
-		return "HANDSHAKER!!";
+		return "[State] ~~ Handshake @ " + this.getClass();
 	}
 }
