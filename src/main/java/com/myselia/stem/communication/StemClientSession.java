@@ -1,10 +1,10 @@
 package com.myselia.stem.communication;
 
-import java.io.IOException;
-
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+
+import java.io.IOException;
 
 import com.myselia.javacommon.communication.units.Transmission;
 import com.myselia.stem.communication.handlers.ComponentHandlerBase;

@@ -2,12 +2,13 @@ package com.myselia.stem.communication.states;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelPipeline;
+import io.netty.handler.codec.http.websocketx.WebSocket13FrameDecoder;
+import io.netty.handler.codec.http.websocketx.WebSocket13FrameEncoder;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.google.gson.Gson;
 import com.myselia.javacommon.communication.units.Transmission;
 import com.myselia.javacommon.communication.units.TransmissionBuilder;
 import com.myselia.javacommon.constants.opcode.ActionType;
@@ -20,7 +21,6 @@ import com.myselia.stem.communication.StemClientSession;
 import com.myselia.stem.communication.codecs.StringToTransmissionDecoder;
 import com.myselia.stem.communication.codecs.TransmissionToStringEncoder;
 import com.myselia.stem.communication.codecs.WebSocketDecoder;
-import com.myselia.stem.communication.codecs.WebSocketEncoder;
 import com.myselia.stem.communication.handlers.ComponentHandlerBase;
 import com.myselia.stem.communication.handlers.ComponentHandlerFactory;
 
@@ -102,18 +102,16 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 				this.setHandler(handler);
 				session.setComponentHandler(handler);
 				session.setConnectionState(session.getStateContainer().getConnectedState());
-				session.getClientChannel().write(connectionReadyPacket(true));
+				session.getClientChannel().writeAndFlush(connectionReadyPacket(true));
 			} else {
 				// Tell the session thread to die
-				session.getClientChannel().write(connectionReadyPacket(false));
+				session.getClientChannel().writeAndFlush(connectionReadyPacket(false));
 				session.die();
 			}
 		} catch (Exception e) {
-			System.out.println("Setup packet from component is malformed!");
+			System.err.println("Setup packet from component is malformed!");
 			e.printStackTrace();
 		}
-
-		session.getClientChannel().flush();
 	}
 	
 	/**
@@ -124,16 +122,18 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 		ChannelPipeline pipeline = ch.pipeline();
 		
 		//Decoders
-		pipeline.replace("stringDecoder", "webSocketDecoder", new WebSocketDecoder());
+		pipeline.remove("frameDecoder");
+		pipeline.replace("stringDecoder", "webSocketFrameDecoder", new WebSocket13FrameDecoder(true, false, 4096));
+		pipeline.addAfter("webSocketFrameDecoder", "webSocketDecoder", new WebSocketDecoder());
 		pipeline.addAfter("webSocketDecoder", "transmissionDecoder", new StringToTransmissionDecoder());
 		
 		//Encoders
 		pipeline.replace("stringEncoder", "transmissionEncoder", new TransmissionToStringEncoder());
-		pipeline.addAfter("transmissionEncoder", "webSocketEncoder", new WebSocketEncoder());
+		pipeline.addFirst("webSocketFrameEncoder", new WebSocket13FrameEncoder(false));
 		System.err.println("[HTTP Handshaker] ~~ Pipeline Setup Complete");
 	}
 
-	private String connectionReadyPacket(boolean ok) {
+	private Transmission connectionReadyPacket(boolean ok) {
 		String isReady = null;
 		String setupStatus = null;
 
@@ -151,8 +151,7 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 		tb.newTransmission(from, to);
 		tb.addAtom("ready", "boolean", isReady);
 		Transmission t = tb.getTransmission();
-		Gson gson = new Gson();
-		return gson.toJson(t);
+		return t;
 	}
 
 	public String toString() {
