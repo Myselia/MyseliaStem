@@ -1,6 +1,7 @@
 package com.myselia.stem.communication.states;
 
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.websocketx.WebSocket13FrameDecoder;
 import io.netty.handler.codec.http.websocketx.WebSocket13FrameEncoder;
@@ -8,18 +9,19 @@ import io.netty.handler.codec.http.websocketx.WebSocket13FrameEncoder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import com.myselia.javacommon.communication.units.Transmission;
 import com.myselia.javacommon.communication.units.TransmissionBuilder;
 import com.myselia.javacommon.constants.opcode.ActionType;
 import com.myselia.javacommon.constants.opcode.ComponentType;
-import com.myselia.javacommon.constants.opcode.OpcodeAccessor;
-import com.myselia.javacommon.constants.opcode.Operation;
+import com.myselia.javacommon.constants.opcode.OpcodeBroker;
+import com.myselia.javacommon.constants.opcode.operations.LensOperation;
 import com.myselia.javacommon.constants.opcode.operations.StemOperation;
 import com.myselia.javacommon.framework.communication.WebSocketHelper;
 import com.myselia.stem.communication.StemClientSession;
 import com.myselia.stem.communication.codecs.StringToTransmissionDecoder;
-import com.myselia.stem.communication.codecs.TransmissionToStringEncoder;
+import com.myselia.stem.communication.codecs.TransmissionToWebSocketEncoder;
 import com.myselia.stem.communication.codecs.WebSocketDecoder;
 import com.myselia.stem.communication.handlers.ComponentHandlerBase;
 import com.myselia.stem.communication.handlers.ComponentHandlerFactory;
@@ -32,7 +34,6 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 	private StemClientSession session;
 	private String webSocketKey = null;
 	boolean connectionEstablished = false;
-	boolean handshakeFinished = false;
 	
 	@Override
 	public void primeConnectionState(StemClientSession session) {
@@ -82,14 +83,7 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 	}
 
 	private void handleHeaders(Channel ch) {
-		// Send our headers
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		System.out.println("!!!!!SENDING RESPONSE HEADERS!!!!!!");
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		WebSocketHelper.sendHandshakeResponse(ch, webSocketKey);
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		System.out.println("!!!!!!!!!!!!!DONE!!!!!!!!!!!!!!!!!!");
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	}
 
 	private void handleSetupPacket(Transmission s) throws IOException {
@@ -128,26 +122,35 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 		pipeline.addAfter("webSocketDecoder", "transmissionDecoder", new StringToTransmissionDecoder());
 		
 		//Encoders
-		pipeline.replace("stringEncoder", "transmissionEncoder", new TransmissionToStringEncoder());
+		pipeline.replace("stringEncoder", "transmissionEncoder", new TransmissionToWebSocketEncoder());
 		pipeline.addFirst("webSocketFrameEncoder", new WebSocket13FrameEncoder(false));
 		System.err.println("[HTTP Handshaker] ~~ Pipeline Setup Complete");
+		
+		Iterator<Entry<String, ChannelHandler>> it = pipeline.iterator();
+		while (it.hasNext()) {
+			Entry<String, ChannelHandler> s = it.next();
+			System.out.println("Entry is: " + s.getKey() );
+			System.out.println("\t->Handler: " + s.toString() );
+			
+		}
+		
 	}
 
 	private Transmission connectionReadyPacket(boolean ok) {
 		String isReady = null;
-		String setupStatus = null;
+		LensOperation setupStatus;
 
 		if (ok) {
 			isReady = "true";
-			setupStatus = Operation.SETUPOK;
+			setupStatus = LensOperation.SETUPOK;
 		} else {
 			isReady = "false";
-			setupStatus = Operation.SETUPERR;
+			setupStatus = LensOperation.SETUPERR;
 		}
 
 		TransmissionBuilder tb = new TransmissionBuilder();
-		String from = OpcodeAccessor.make(ComponentType.STEM, ActionType.DATA, StemOperation.SETUP);
-		String to = OpcodeAccessor.make(ComponentType.LENS, ActionType.DATA, setupStatus);
+		String from = OpcodeBroker.make(ComponentType.STEM, null, ActionType.DATA, StemOperation.SETUP);
+		String to = OpcodeBroker.make(ComponentType.LENS, null, ActionType.DATA, setupStatus);
 		tb.newTransmission(from, to);
 		tb.addAtom("ready", "boolean", isReady);
 		Transmission t = tb.getTransmission();

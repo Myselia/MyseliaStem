@@ -11,7 +11,7 @@ import com.myselia.javacommon.communication.units.Transmission;
 import com.myselia.javacommon.communication.units.TransmissionBuilder;
 import com.myselia.javacommon.constants.opcode.ActionType;
 import com.myselia.javacommon.constants.opcode.ComponentType;
-import com.myselia.javacommon.constants.opcode.OpcodeAccessor;
+import com.myselia.javacommon.constants.opcode.OpcodeBroker;
 import com.myselia.javacommon.constants.opcode.operations.StemOperation;
 import com.myselia.stem.communication.seekers.Seek;
 
@@ -120,8 +120,8 @@ public class BroadcastTorch {
 	private String seekPacket(ComponentType type) {
 		TransmissionBuilder tb = new TransmissionBuilder();
 		Gson g = new Gson();
-		String from = OpcodeAccessor.make(ComponentType.STEM, ActionType.SETUP, StemOperation.BROADCAST);
-		String to = OpcodeAccessor.make(type, ActionType.SETUP, StemOperation.BROADCAST);
+		String from = OpcodeBroker.make(ComponentType.STEM, null, ActionType.SETUP, StemOperation.BROADCAST);
+		String to = OpcodeBroker.make(type, null, ActionType.SETUP, StemOperation.BROADCAST);
 		tb.newTransmission(from, to);
 		tb.addAtom("ip", "String", CommunicationDock.Stem_IP);
 		tb.addAtom("port", "int", Integer.toString(CommunicationDock.Stem_Communication_Port));

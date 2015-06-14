@@ -5,7 +5,9 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.io.IOException;
+import java.util.Iterator;
 
+import com.myselia.javacommon.communication.units.Atom;
 import com.myselia.javacommon.communication.units.Transmission;
 import com.myselia.stem.communication.handlers.ComponentHandlerBase;
 import com.myselia.stem.communication.states.ConnectionState;
@@ -37,14 +39,18 @@ public class StemClientSession extends SimpleChannelInboundHandler<Transmission>
 		this.clientChannel = clientChannel;
 		this.stateContainer = new ConnectionStateContainer(this);
 		this.clientConnectionState = stateContainer.getHandshakeState();
+		
+		try {
+			if (isHTTP) {
 
-		if (isHTTP) {
-			try {
 				clientConnectionState.process(null);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+			} else {
+				clientConnectionState.process((Transmission) firstContact);
 			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		this.componentAttached = true;
@@ -58,8 +64,25 @@ public class StemClientSession extends SimpleChannelInboundHandler<Transmission>
 
 	@Override
 	protected void messageReceived(ChannelHandlerContext ctx, Transmission msg) throws Exception {
-		System.out.println("[Message Received] : " + msg.get_header().get_from());
+		printRecvMsg(msg);
 		clientConnectionState.process(msg);
+	}
+	
+	private void printRecvMsg(Transmission t) {
+		System.out.println();
+		System.out.println("[Message Received]");
+		System.out.println("\t->From: " + t.get_header().get_from());
+		System.out.println("\t->To: " + t.get_header().get_to());
+		System.out.println("\t->Atoms:");
+		
+		Iterator<Atom> it = t.get_atoms().iterator();
+		while (it.hasNext()) {
+			Atom a = it.next();
+			System.out.println("\t\t->Field: " + a.get_field());
+			System.out.println("\t\t\t->Type: " + a.get_type());
+			System.out.println("\t\t\t->Value: " + a.get_value());
+		}
+		System.out.println();
 	}
 
 	@Override

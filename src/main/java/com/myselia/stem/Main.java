@@ -36,5 +36,6 @@ public class Main {
 		//seekerListDaemon.add(LocalHostSeek.getInstance());
 		seekerListDaemon.add(LocalNetworkSeek.getInstance());
 		comDock.seekDaemons(seekerListDaemon);
+		comDock.seekSandboxes(seekerListDaemon);
 	}
 }

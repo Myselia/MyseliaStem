@@ -7,6 +7,9 @@ import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
+import com.myselia.javacommon.communication.units.Transmission;
+
 /**
  * The StemClientSessionSwapper is, at the creation of a channel pipeline, at
  * the tail of the pipeline. It handles the initial transmission and figures out
@@ -21,7 +24,8 @@ public class StemClientSessionSwapper extends SimpleChannelInboundHandler<String
 	private Channel clientChannel;
 	private ArrayList<String> HTTPRequest = new ArrayList<String>();
 	private final CharSequence HTTPHeader = "GET / HTTP/1.1";
-
+	private Gson jsonCodec = new Gson();
+	
 	public StemClientSessionSwapper(Channel clientChannel) {
 		this.clientChannel = clientChannel;
 	}
@@ -43,8 +47,11 @@ public class StemClientSessionSwapper extends SimpleChannelInboundHandler<String
 				HTTPRequest.add(msg);
 			}
 		} else {
-			//We have a transmission, we can directly pass it for further processing now.
-			setupPipeline(msg);
+			//We have a transmission, we can directly pass it for further processing now. 
+			//First we have to convert from string to Transmission.
+			
+			Transmission t = jsonCodec.fromJson(msg, Transmission.class);
+			setupPipeline(t);
 		}
 	}
 	

@@ -7,12 +7,17 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
+import com.myselia.javacommon.communication.mail.MailService;
+import com.myselia.javacommon.constants.opcode.ComponentType;
+
 public class StemServer {
 
 	protected int port, backlog;
+	private MailService s;
 	
 	public StemServer(int port) {
 		System.out.println("Starting Stem Server with Port: " + port);
+		s = new MailService(ComponentType.STEM);
 		this.port = port; 
 	}
 	
@@ -37,44 +42,4 @@ public class StemServer {
             bossGroup.shutdownGracefully();
         }
     }
-	
-
-	/*private void openServerSocket(int port) {
-		try {
-			serverSocket = new ServerSocket(port);
-		} catch (Exception e) {
-			System.err.println("FATAL: Cannot open Stem Server port on " + port);
-		}
-	}*/
 }
-
-/*//Ticks as long as the server is running. Used to accept connections. Blocks until one is received.
-public void serverTick() throws ClassNotFoundException {
-	if (serverSocket == null){
-		openServerSocket(port);
-	}
-
-	while (SERVER_RUNNING) {
-		clientConnectionSocket = null;
-		try {
-			clientConnectionSocket = this.serverSocket.accept();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		// Create a thread for a client if accepted containing an StemClientSession
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--------------------!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ACCEPTING CONNECTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--------------------!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		if (isHTTP)
-			this.threadPool.execute(new Thread(new StemClientSession(clientConnectionSocket, assignInternalID(clientConnectionSocket), true)));
-		else
-			this.threadPool.execute(new Thread(new StemClientSession(clientConnectionSocket, assignInternalID(clientConnectionSocket), false)));
-
-	}
-	System.out.println("server no longer listening on port: " + port);
-}
-
-private int assignInternalID(Socket clientConnectionSocket) {
-	return 0;
-}*/
-

@@ -18,8 +18,7 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 
 	protected boolean ready = false;
 	protected StemClientSession session;
-	protected MailBox<Transmission> systemMailbox;
-	protected MailBox<Transmission> networkMailbox;
+	protected MailBox<Transmission> mailbox;
 	
 	public void setSession(StemClientSession session) {
 		if (CommunicationDock.getNetworkComponentbyHash(hashID) != null) {
@@ -30,8 +29,7 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 			//This is a brand new session, initialize required objects
 			this.session = session;
 			CommunicationDock.addNewNetworkComponent(hashID, this);
-			systemMailbox = new MailBox<Transmission>();
-			networkMailbox = new MailBox<Transmission>();
+			mailbox = new MailBox<Transmission>();
 			MailService.registerAddressable(this);
 			ready = true;
 		}
@@ -42,79 +40,10 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 	 */
 	@Override
 	public void handleComponent(Transmission t) throws IOException {
-		/*if (session.isHTTP()) {
-			int len = 0;
-			byte[] buff = new byte[2048];
-			byte[] rawPayload;
-
-			if (input.ready()) {
-				len = session.getInStream().read(buff);
-
-				if (len > 0) {
-					rawPayload = WebSocketHelper.decodeWebSocketPayload(buff, len);
-
-					if (WebSocketHelper.isEndStreamSignal(rawPayload)) {
-						throw new IOException();
-					} else {
-						String payload = new String(rawPayload);
-						System.out.println("GOT FROM LENS: " + payload);
-						try {
-							//receiving part
-							Transmission t = (jsonInterpreter.fromJson(payload, Transmission.class));
-							networkMailbox.enqueueIn(t);
-							handleMailBoxPair();
-						} catch (Exception e) {
-							System.err.println("Error parsing json @ " + this);
-						}
-					}
-
-				}
-			}
-
-			//sending part
-			if (systemMailbox.getInSize() > 0) {
-				handleMailBoxPair();
-				outputToken = jsonInterpreter.toJson(networkMailbox.dequeueOut());
-				System.out.println("Sending: " + outputToken);
-				session.getOutStream().write(WebSocketHelper.encodeWebSocketPayload(outputToken));
-			}
-
-			session.getOutStream().flush();
-		} else {
-			//Data coming into the handlers
-			if (input.ready()) {
-				if ((inputToken = input.readLine()) != null) {
-					networkMailbox.enqueueIn(jsonInterpreter.fromJson(inputToken, Transmission.class));
-					handleMailBoxPair();
-					//transmissionReceived();
-				}
-			}
-			//Data to be sent out
-			if (systemMailbox.getInSize() > 0) {
-				handleMailBoxPair();
-				outputToken = jsonInterpreter.toJson(networkMailbox.dequeueOut());
-				System.out.println("Sending: " + outputToken);
-				output.println(outputToken);
-			} 
-		}
-		
-		*/
-		
 		System.out.println("[Component Handler] ~~ Handling stuff");
 		System.out.println("\t[Transmission] --> " + t.toString());
-	}
-	
-	public void handleMailBoxPair() {
-		//re-routing network in to system out
-		if(networkMailbox.getInSize() > 0){
-			systemMailbox.enqueueOut(networkMailbox.dequeueIn());
-			MailService.notify(this);
-		}
-		
-		//re-routing system in to network out
-		if(systemMailbox.getInSize() > 0){
-			networkMailbox.enqueueOut(systemMailbox.dequeueIn());
-		}
+		mailbox.enqueueIn(t);
+		transmissionReceived();
 	}
 
 	protected abstract void transmissionReceived();
@@ -157,13 +86,12 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 	
 	@Override
 	public void in(Transmission trans) {
-		systemMailbox.enqueueIn(trans);
-		//handleMailBoxPair();
+		mailbox.enqueueIn(trans);
 	}
 
 	@Override
 	public Transmission out() {
-		return systemMailbox.dequeueOut();
+		return mailbox.dequeueOut();
 	}
 
 }

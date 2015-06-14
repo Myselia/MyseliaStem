@@ -5,15 +5,16 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.Delimiters;
+import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.CharsetUtil;
 
 public class StemClientSessionInitializer extends ChannelInitializer<SocketChannel> {
 
-	private static final int MAX_FRAME_SIZE = 4096;
+	private static final int MAX_FRAME_SIZE = 8096;
 	private final StringDecoder stringDecoder = new StringDecoder(CharsetUtil.UTF_8);
-	private final StringEncoder stringEncoder = new StringEncoder();
+	private final StringEncoder stringEncoder = new StringEncoder(CharsetUtil.UTF_8);
 
 	public StemClientSessionInitializer() {
 	}
@@ -42,7 +43,8 @@ public class StemClientSessionInitializer extends ChannelInitializer<SocketChann
 		 */
 
 		// Decoders
-		pipeline.addLast("frameDecoder", new DelimiterBasedFrameDecoder(MAX_FRAME_SIZE, true, Delimiters.lineDelimiter()));
+		pipeline.addLast("frameDecoder", new LineBasedFrameDecoder(MAX_FRAME_SIZE));
+		//pipeline.addLast("frameDecoder", new DelimiterBasedFrameDecoder(MAX_FRAME_SIZE, true, Delimiters.lineDelimiter()));
 		pipeline.addLast("stringDecoder", stringDecoder);
 
 		// Encoders

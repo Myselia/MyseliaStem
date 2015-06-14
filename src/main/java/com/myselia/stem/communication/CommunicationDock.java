@@ -25,9 +25,7 @@ public class CommunicationDock {
 	public static Set<String> reqSet;
 	private static Map<String, ComponentHandlerBase> connectedDeviceMap;
 	private Broadcaster seeker;
-	//private Thread serverThread;
-	//private Thread httpServerThread;
-	
+
 	static {
 		/*
 		 * INITIALIZATION PACKET FIELD REQUIREMENTS FOR COMPONENTS THAT WISH TO CONNECT
