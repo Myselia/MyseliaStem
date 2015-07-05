@@ -27,13 +27,15 @@ public class SandboxHandler extends ComponentHandlerBase {
 
 	public void handleComponent(Transmission t) throws IOException {
 		super.handleComponent(t);
-		
 	}
 	
 	@Override
 	public void in(Transmission trans) {
+		System.out.println("GOT TRANS WITH ID : " + trans.get_header().get_id());
 		super.in(trans);
 		System.out.println("~~!! SANDBOX-MASTER GOT MESSAGE !!~~ ");
+		System.out.println("MAILBOX SIZE: " + mailbox.getInSize());
+		
 		session.getClientChannel().writeAndFlush(mailbox.dequeueIn());
 	}
 	
@@ -43,9 +45,9 @@ public class SandboxHandler extends ComponentHandlerBase {
 				+ "\n\t|-> Hash: " + getHashID());
 		
 
-		Transmission t = mailbox.dequeueIn();
+		/*Transmission t = mailbox.dequeueIn();
 		mailbox.enqueueOut(t);
-		MailService.notify(this);
+		MailService.notify(this);*/
 	}
 
 	public String toString() {

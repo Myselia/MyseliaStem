@@ -71,10 +71,15 @@ public class StemClientSession extends SimpleChannelInboundHandler<Transmission>
 	private void printRecvMsg(Transmission t) {
 		System.out.println();
 		System.out.println("[Message Received]");
-		System.out.println("\t->From: " + t.get_header().get_from());
-		System.out.println("\t->To: " + t.get_header().get_to());
-		System.out.println("\t->Atoms:");
 		
+		
+		//Header
+		System.out.println("\t->Header: ");
+		System.out.println("\t\t->ID: " + t.get_header().get_id());
+		System.out.println("\t\t->From: " + t.get_header().get_from());
+		System.out.println("\t\t->To: " + t.get_header().get_to());
+		//Atoms
+		System.out.println("\t->Atoms:");
 		Iterator<Atom> it = t.get_atoms().iterator();
 		while (it.hasNext()) {
 			Atom a = it.next();

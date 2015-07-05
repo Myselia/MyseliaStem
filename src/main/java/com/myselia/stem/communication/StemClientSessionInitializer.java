@@ -43,8 +43,8 @@ public class StemClientSessionInitializer extends ChannelInitializer<SocketChann
 		 */
 
 		// Decoders
-		pipeline.addLast("frameDecoder", new LineBasedFrameDecoder(MAX_FRAME_SIZE));
-		//pipeline.addLast("frameDecoder", new DelimiterBasedFrameDecoder(MAX_FRAME_SIZE, true, Delimiters.lineDelimiter()));
+		//pipeline.addLast("frameDecoder", new LineBasedFrameDecoder(MAX_FRAME_SIZE));
+		pipeline.addLast("frameDecoder", new DelimiterBasedFrameDecoder(MAX_FRAME_SIZE, true, Delimiters.lineDelimiter()));
 		pipeline.addLast("stringDecoder", stringDecoder);
 
 		// Encoders
