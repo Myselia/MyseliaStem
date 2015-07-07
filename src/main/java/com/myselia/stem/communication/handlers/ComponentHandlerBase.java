@@ -38,16 +38,22 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 	/*
 	 * Primary network handling code
 	 */
+	
+	//Called by xConnectionState when Transmission is received
 	@Override
 	public void handleComponent(Transmission t) throws IOException {
-		System.out.println("[Component Handler] ~~ Handling stuff");
-		System.out.println("\t[Transmission] --> " + t.toString());
-		mailbox.enqueueIn(t);
-		transmissionReceived();
+		transmissionReceived(t);
 	}
 
-	protected abstract void transmissionReceived();
+	//Override in child classes to handle received transmission 
+	protected abstract void transmissionReceived(Transmission t);
+	//Use in conjunction with this class' overridden MailBox.In method to signify that a transmission has
+	//reached the in queue from the system
+	protected abstract void endpointReceive();
 
+	/*
+	 * Setup Methods
+	 */
 	@Override
 	public abstract void primeHandler(Map<String, String> setupMap);
 
@@ -84,14 +90,18 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 		this.hashID = hashID;
 	}
 	
+	/*
+	 * MailBox Overrides
+	 */
 	@Override
 	public void in(Transmission trans) {
 		mailbox.enqueueIn(trans);
+		endpointReceive();
 	}
 
 	@Override
 	public Transmission out() {
 		return mailbox.dequeueOut();
 	}
-
+	
 }

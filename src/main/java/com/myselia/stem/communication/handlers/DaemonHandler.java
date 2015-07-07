@@ -27,11 +27,8 @@ public class DaemonHandler extends ComponentHandlerBase {
 	}
 
 	@Override
-	protected void transmissionReceived() {
+	protected void transmissionReceived(Transmission t) {
 		System.out.println("Daemon Receive:" + "\n\t|-> Hash: " + getHashID());
-
-		// Temporary Adapter
-		Transmission t = mailbox.dequeueIn();
 
 		if (t.get_header().get_to().equals("LENS_RUNTIME_DATA")) {
 			// Add Time Field
@@ -58,6 +55,12 @@ public class DaemonHandler extends ComponentHandlerBase {
 
 	public String toString() {
 		return "TYPE: DAEMON, " + "IP: " + this.ip + ", MAC: " + this.mac + ", HASHID: " + hashID;
+	}
+
+	@Override
+	protected void endpointReceive() {
+		System.out.println("[Sandbox] ~ Sending To: " + mailbox.peekIn().get_header().get_to());
+		session.getClientChannel().writeAndFlush(mailbox.dequeueIn());
 	}
 
 }

@@ -33,16 +33,14 @@ public class LensHandler extends ComponentHandlerBase {
 	}
 	
 	@Override
-	protected void transmissionReceived() {
+	protected void transmissionReceived(Transmission t) {
 		System.out.println("Lens Receive:"
 				+ "\n\t|-> Hash: " + getHashID());
-		
 	}
 	
 	@Override
-	public void in(Transmission trans) {
-		super.in(trans);
-		System.out.println("~~!! LENS GOT MESSAGE !!~~");
+	protected void endpointReceive() {
+		System.out.println("[Sandbox] ~ Sending To: " + mailbox.peekIn().get_header().get_to());
 		session.getClientChannel().writeAndFlush(mailbox.dequeueIn());
 	}
 	
