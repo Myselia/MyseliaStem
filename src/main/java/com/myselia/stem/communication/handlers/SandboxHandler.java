@@ -1,7 +1,6 @@
 package com.myselia.stem.communication.handlers;
 
 import java.io.IOException;
-import java.util.Map;
 
 import com.myselia.javacommon.communication.mail.MailService;
 import com.myselia.javacommon.communication.units.Transmission;
@@ -21,13 +20,6 @@ public class SandboxHandler extends ComponentHandlerBase {
 		MailService.register("SANDBOXMASTER_RUNTIME", this);
 	}
 
-	@Override
-	public void primeHandler(Map<String, String> setupMap) {
-		this.ip = setupMap.get("ip");
-		this.mac = setupMap.get("mac");
-		this.hashID = setupMap.get("hashID");
-	}
-
 	public void handleComponent(Transmission t) throws IOException {
 		super.handleComponent(t);
 	}
@@ -36,10 +28,6 @@ public class SandboxHandler extends ComponentHandlerBase {
 	protected void transmissionReceived(Transmission t) {
 		mailbox.enqueueOut(t);
 		MailService.notify(this);
-	}
-
-	public String toString() {
-		return "TYPE: SANDBOX-MASTER, " + "IP: " + this.ip + ", MAC: " + this.mac + ", HASHID: " + hashID;
 	}
 
 	@Override

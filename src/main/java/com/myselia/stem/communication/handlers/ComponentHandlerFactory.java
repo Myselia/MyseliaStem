@@ -1,24 +1,16 @@
 package com.myselia.stem.communication.handlers;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
+import com.google.gson.Gson;
 import com.myselia.javacommon.communication.units.Atom;
 import com.myselia.javacommon.communication.units.Transmission;
-import com.myselia.javacommon.constants.opcode.ComponentType;
-import com.myselia.stem.communication.CommunicationDock;
+import com.myselia.javacommon.topology.ComponentCertificate;
 import com.myselia.stem.communication.StemClientSession;
 
 public class ComponentHandlerFactory {
 
-	private static Map<String, String> setupMapPrototype;
-	private static Map<String, String> setupMap;
-
-	static {
-		prepareSetupMap(CommunicationDock.reqSet);
-	}
+	private static Gson jsonInterpreter = new Gson();
 
 	/**
 	 * Creates an appropriate network component handler.
@@ -33,80 +25,43 @@ public class ComponentHandlerFactory {
 	 */
 	public static synchronized ComponentHandlerBase createHandler(Transmission setupPacket, StemClientSession clientSession) {
 		ComponentHandlerBase newComponent = null;
-		int reqCount = CommunicationDock.reqSet.size();
+		ComponentCertificate cert = null;
+		
 		System.err.println("SETUP PACKET: " + setupPacket.toString());
 		Iterator<Atom> it = setupPacket.get_atoms().iterator();
 		while (it.hasNext()) {
-			if (reqCount == 0)
-				break;
 			Atom a = it.next();
-			String atomField = a.get_field();
-			if (CommunicationDock.reqSet.contains(atomField)) {
-				setupMap.put(atomField, a.get_value());
-				reqCount--;
-			}
+			String atomValue = a.get_value();
+			
+			cert = jsonInterpreter.fromJson(atomValue, ComponentCertificate.class);
+			break;
 		}
 
-		if (reqCount == 0) {
-			switch (ComponentType.valueOf(setupMap.get("type"))) {
-			case DAEMON:
-				newComponent = new DaemonHandler();
-				break;
-			case LENS:
-				newComponent = new LensHandler();
-				break;
-			case SANDBOXMASTER:
-				newComponent = new SandboxHandler();
-				break;
-			case DATABASE:
-				newComponent = null;
-				break;
-			case SANDBOXSLAVE:
-				// Does not accept!
-				break;
-			case STEM:
-				// Does not accept!
-				break;
-			}
-			// All required fields fulfilled
-			newComponent.primeHandler(setupMap);
-			newComponent.setSession(clientSession);
-		} else {
-			// There is a setup field missing, throw an exception and allow the
-			// Server to retry
-			System.err.println("Could not create a network component handler!");
+		switch (cert.getComponentType()) {
+		case DAEMON:
+			newComponent = new DaemonHandler();
+			break;
+		case LENS:
+			newComponent = new LensHandler();
+			break;
+		case SANDBOXMASTER:
+			newComponent = new SandboxHandler();
+			break;
+		case DATABASE:
+			newComponent = null;
+			break;
+		case SANDBOXSLAVE:
+			// Does not accept!
+			break;
+		case STEM:
+			// Does not accept!
+			break;
 		}
+		
+		// All required fields fulfilled
+		newComponent.primeHandler(cert);
+		newComponent.setSession(clientSession);
 
-		// Reset the map for the next component that comes along
-		resetSetupMap();
 		return newComponent;
 	}
-
-	/**
-	 * Run once at static init. Takes a set of fields that the component must
-	 * send in the handshake packet to be properly initialized.
-	 * 
-	 * @param s
-	 *            The set of required parameters.
-	 */
-	private static void prepareSetupMap(Set<String> s) {
-		setupMapPrototype = new HashMap<String, String>();
-		Iterator<String> it = s.iterator();
-		while (it.hasNext()) {
-			String requiredField = it.next();
-			System.out.println("Found a required field: " + requiredField);
-			setupMapPrototype.put(requiredField, "");
-		}
-		setupMap = new HashMap<String, String>(setupMapPrototype);
-	}
-
-	/**
-	 * This method is run every time the builder finishes creating a handler. It
-	 * resets the setupMap that is passed to the handler for initialization to
-	 * the empty prototype, ensuring it is ready to create a new handler.
-	 */
-	private static void resetSetupMap() {
-		setupMap = new HashMap<String, String>(setupMapPrototype);
-	}
-
 }

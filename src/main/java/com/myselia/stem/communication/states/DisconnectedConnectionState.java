@@ -20,13 +20,7 @@ public class DisconnectedConnectionState implements ConnectionState {
 		if (session.componentAttached)
 			session.setConnectionState(session.getStateContainer().getConnectedState());
 		else 
-			System.out.println("Waiting for re-connect");
-		
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+			System.out.println("[StemClientSession] : Waiting on reconnect from: " + handler.getCertificate());
 	}
 
 	@Override

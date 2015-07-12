@@ -123,7 +123,7 @@ public class BroadcastTorch {
 		String from = OpcodeBroker.make(ComponentType.STEM, null, ActionType.SETUP, StemOperation.BROADCAST);
 		String to = OpcodeBroker.make(type, null, ActionType.SETUP, StemOperation.BROADCAST);
 		tb.newTransmission(from, to);
-		tb.addAtom("ip", "String", CommunicationDock.Stem_IP);
+		tb.addAtom("ip", "String", CommunicationDock.getStemCertificate().getIpAddress());
 		tb.addAtom("port", "int", Integer.toString(CommunicationDock.Stem_Communication_Port));
 		tb.addAtom("type", "String", type.toString());
 		Transmission t = tb.getTransmission();
