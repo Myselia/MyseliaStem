@@ -13,6 +13,7 @@ import com.myselia.javacommon.constants.opcode.ActionType;
 import com.myselia.javacommon.constants.opcode.ComponentType;
 import com.myselia.javacommon.constants.opcode.OpcodeBroker;
 import com.myselia.javacommon.constants.opcode.operations.StemOperation;
+import com.myselia.javacommon.topology.ComponentCertificate;
 import com.myselia.stem.communication.seekers.Seek;
 
 public class BroadcastTorch {
@@ -21,6 +22,7 @@ public class BroadcastTorch {
 	private volatile ArrayList<Seek> seekInterfaces;
 	private byte[] seekProbeText; /* THIS IS IN JSON */
 	private static DatagramSocket discoverSocket;
+	private static Gson jsonInterpreter = new Gson();
 	public ComponentType type;
 
 	public BroadcastTorch(	ComponentType type,
@@ -118,17 +120,17 @@ public class BroadcastTorch {
 	 * TODO, ABSTRACT THIS 
 	 */
 	private String seekPacket(ComponentType type) {
+		ComponentCertificate stemCert = CommunicationDock.getStemCertificate();
 		TransmissionBuilder tb = new TransmissionBuilder();
-		Gson g = new Gson();
-		String from = OpcodeBroker.make(ComponentType.STEM, null, ActionType.SETUP, StemOperation.BROADCAST);
+		String from = OpcodeBroker.make(ComponentType.STEM, stemCert.getUUID(), ActionType.SETUP, StemOperation.BROADCAST);
 		String to = OpcodeBroker.make(type, null, ActionType.SETUP, StemOperation.BROADCAST);
 		tb.newTransmission(from, to);
-		tb.addAtom("ip", "String", CommunicationDock.getStemCertificate().getIpAddress());
+		tb.addAtom("stemCertificate", "componentCertificate", jsonInterpreter.toJson(stemCert));
 		tb.addAtom("port", "int", Integer.toString(CommunicationDock.Stem_Communication_Port));
-		tb.addAtom("type", "String", type.toString());
+		tb.addAtom("type", "String", type.name());
 		Transmission t = tb.getTransmission();
 
-		return g.toJson(t);
+		return jsonInterpreter.toJson(t);
 	}
 
 }

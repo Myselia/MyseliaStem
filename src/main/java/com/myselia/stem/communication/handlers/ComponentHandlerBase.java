@@ -24,7 +24,6 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 	}
 	
 	public void write(Transmission t) {
-		System.err.println("****~~ CALLED WRITE ON ID{" + t.get_header().get_id() +"}~~****");
 		session.getClientChannel().writeAndFlush(t);
 	}
 

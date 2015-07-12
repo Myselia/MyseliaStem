@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import com.myselia.javacommon.communication.codecs.StringToTransmissionDecoder;
+import com.myselia.javacommon.communication.codecs.TransmissionToWebSocketEncoder;
+import com.myselia.javacommon.communication.codecs.WebSocketDecoder;
 import com.myselia.javacommon.communication.units.Transmission;
 import com.myselia.javacommon.communication.units.TransmissionBuilder;
 import com.myselia.javacommon.constants.opcode.ActionType;
@@ -20,9 +23,6 @@ import com.myselia.javacommon.constants.opcode.operations.LensOperation;
 import com.myselia.javacommon.constants.opcode.operations.StemOperation;
 import com.myselia.javacommon.framework.communication.WebSocketHelper;
 import com.myselia.stem.communication.StemClientSession;
-import com.myselia.stem.communication.codecs.StringToTransmissionDecoder;
-import com.myselia.stem.communication.codecs.TransmissionToWebSocketEncoder;
-import com.myselia.stem.communication.codecs.WebSocketDecoder;
 import com.myselia.stem.communication.handlers.ComponentHandlerBase;
 import com.myselia.stem.communication.handlers.ComponentHandlerFactory;
 
