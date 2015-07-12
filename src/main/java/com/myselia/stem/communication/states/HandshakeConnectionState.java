@@ -9,6 +9,12 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import com.myselia.javacommon.communication.units.Transmission;
+import com.myselia.javacommon.communication.units.TransmissionBuilder;
+import com.myselia.javacommon.constants.opcode.ActionType;
+import com.myselia.javacommon.constants.opcode.ComponentType;
+import com.myselia.javacommon.constants.opcode.OpcodeBroker;
+import com.myselia.javacommon.constants.opcode.operations.SandboxMasterOperation;
+import com.myselia.javacommon.constants.opcode.operations.StemOperation;
 import com.myselia.stem.communication.StemClientSession;
 import com.myselia.stem.communication.codecs.StringToTransmissionDecoder;
 import com.myselia.stem.communication.codecs.TransmissionToStringEncoder;
@@ -61,6 +67,16 @@ public class HandshakeConnectionState implements ConnectionState {
 			e.printStackTrace();
 		}
 		System.out.println("[HANDSHAKE COMPLETE]");
+		
+		session.getClientChannel().writeAndFlush(testTrans(69));
+	}
+	public Transmission testTrans(int num) {
+		TransmissionBuilder tb = new TransmissionBuilder();
+		String from = OpcodeBroker.make(ComponentType.STEM, null, ActionType.DATA, StemOperation.TEST);
+		String to = OpcodeBroker.make(ComponentType.SANDBOXMASTER, null, ActionType.DATA, SandboxMasterOperation.RESULTCONTAINER);
+		tb.newTransmission(from, to);
+		tb.addAtom("someNumber", "int", Integer.toString(num));
+		return tb.getTransmission();
 	}
 	
 	/**

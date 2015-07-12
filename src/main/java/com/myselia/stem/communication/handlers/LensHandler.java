@@ -5,17 +5,9 @@ import java.util.Map;
 
 import com.myselia.javacommon.communication.mail.MailService;
 import com.myselia.javacommon.communication.units.Transmission;
-import com.myselia.javacommon.communication.units.TransmissionBuilder;
-import com.myselia.javacommon.constants.opcode.ActionType;
-import com.myselia.javacommon.constants.opcode.ComponentType;
-import com.myselia.javacommon.constants.opcode.OpcodeBroker;
-import com.myselia.javacommon.constants.opcode.operations.LensOperation;
-import com.myselia.javacommon.constants.opcode.operations.StemOperation;
 
 public class LensHandler extends ComponentHandlerBase {
 
-	private static int count = 0;
-	
 	public LensHandler() {
 		MailService.register("LENS_RUNTIME", this);
 		MailService.register("LENS_DATA", this);
@@ -41,14 +33,14 @@ public class LensHandler extends ComponentHandlerBase {
 	@Override
 	protected void endpointReceive() {
 		System.out.println("[Sandbox] ~ Sending To: " + mailbox.peekIn().get_header().get_to());
-		session.getClientChannel().writeAndFlush(mailbox.dequeueIn());
+		write(mailbox.dequeueIn());
 	}
 	
 	public String toString() {
 		return "TYPE: LENS, " + "IP: " + this.ip + ", MAC: " + this.mac + ", HASHID: " + hashID;
 	}
 
-	private void buildTestPacket() {
+	/*private void buildTestPacket() {
 		TransmissionBuilder tb = new TransmissionBuilder();
 		String from = OpcodeBroker.make(ComponentType.STEM, null, ActionType.DATA, StemOperation.TEST);
 		String to = OpcodeBroker.make(ComponentType.LENS, null, ActionType.DATA, LensOperation.TEST);
@@ -58,6 +50,6 @@ public class LensHandler extends ComponentHandlerBase {
 		count++;
 
 		mailbox.enqueueOut(t);
-	}
+	}*/
 
 }

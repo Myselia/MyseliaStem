@@ -1,17 +1,13 @@
 package com.myselia.stem.communication.handlers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
 
-import com.google.gson.Gson;
 import com.myselia.javacommon.communication.mail.MailService;
-import com.myselia.javacommon.communication.units.Atom;
 import com.myselia.javacommon.communication.units.Transmission;
 
 public class DaemonHandler extends ComponentHandlerBase {
 	
-	private Gson json = new Gson();
 	public DaemonHandler() {
 	}
 	
@@ -28,9 +24,9 @@ public class DaemonHandler extends ComponentHandlerBase {
 
 	@Override
 	protected void transmissionReceived(Transmission t) {
-		System.out.println("Daemon Receive:" + "\n\t|-> Hash: " + getHashID());
 
-		if (t.get_header().get_to().equals("LENS_RUNTIME_DATA")) {
+		/*if (t.get_header().get_to().equals("LENS_RUNTIME_DATA")) {
+			System.out.println("WRAPPING LENS_RUNTIME_DATA IN NEW FORMAT");
 			// Add Time Field
 			long unixTime = System.currentTimeMillis() / 1000L;
 			Atom a = new Atom("Time", "long", Long.toString(unixTime));
@@ -48,8 +44,9 @@ public class DaemonHandler extends ComponentHandlerBase {
 			mailbox.enqueueOut(t2);
 		} else {
 			mailbox.enqueueOut(t);
-		}
+		}*/
 		
+		mailbox.enqueueOut(t);
 		MailService.notify(this);
 	}
 
@@ -59,8 +56,7 @@ public class DaemonHandler extends ComponentHandlerBase {
 
 	@Override
 	protected void endpointReceive() {
-		System.out.println("[Sandbox] ~ Sending To: " + mailbox.peekIn().get_header().get_to());
-		session.getClientChannel().writeAndFlush(mailbox.dequeueIn());
+		write(mailbox.dequeueIn());
 	}
 
 }

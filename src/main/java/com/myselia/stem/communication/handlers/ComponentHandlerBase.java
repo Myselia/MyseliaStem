@@ -7,6 +7,12 @@ import com.myselia.javacommon.communication.mail.Addressable;
 import com.myselia.javacommon.communication.mail.MailBox;
 import com.myselia.javacommon.communication.mail.MailService;
 import com.myselia.javacommon.communication.units.Transmission;
+import com.myselia.javacommon.communication.units.TransmissionBuilder;
+import com.myselia.javacommon.constants.opcode.ActionType;
+import com.myselia.javacommon.constants.opcode.ComponentType;
+import com.myselia.javacommon.constants.opcode.OpcodeBroker;
+import com.myselia.javacommon.constants.opcode.operations.SandboxMasterOperation;
+import com.myselia.javacommon.constants.opcode.operations.StemOperation;
 import com.myselia.stem.communication.CommunicationDock;
 import com.myselia.stem.communication.StemClientSession;
 
@@ -43,6 +49,11 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 	@Override
 	public void handleComponent(Transmission t) throws IOException {
 		transmissionReceived(t);
+	}
+	
+	public void write(Transmission t) {
+		System.err.println("****~~ CALLED WRITE ON ID{" + t.get_header().get_id() +"}~~****");
+		session.getClientChannel().writeAndFlush(t);
 	}
 
 	//Override in child classes to handle received transmission 
