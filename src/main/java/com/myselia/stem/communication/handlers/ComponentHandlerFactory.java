@@ -27,15 +27,20 @@ public class ComponentHandlerFactory {
 		ComponentHandlerBase newComponent = null;
 		ComponentCertificate cert = null;
 		
-		System.err.println("SETUP PACKET: " + setupPacket.toString());
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println("!!!!!!!!!!SETUP PACKET: " + jsonInterpreter.toJson(setupPacket));
 		Iterator<Atom> it = setupPacket.get_atoms().iterator();
-		while (it.hasNext()) {
-			Atom a = it.next();
-			String atomValue = a.get_value();
-			
-			cert = jsonInterpreter.fromJson(atomValue, ComponentCertificate.class);
-			break;
-		}
+		Atom a = it.next();
+		String atomValue = a.get_value();
+		System.out.println("Certificate : " + atomValue);
+		cert = jsonInterpreter.fromJson(atomValue, ComponentCertificate.class);
 
 		switch (cert.getComponentType()) {
 		case DAEMON:
