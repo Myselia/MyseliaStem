@@ -79,6 +79,7 @@ public class CommunicationDock {
 	// TODO: IMPROVE THESE -Sylvain
 	public static void addNetworkComponent(ComponentCertificate cert, ComponentHandlerBase handler) {
 		connectedDeviceMap.put(cert, handler);
+		System.out.println(cert.toString());
 		uuidMap.put(cert.getUUID(), cert);
 	}
 
