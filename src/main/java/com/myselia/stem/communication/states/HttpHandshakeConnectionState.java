@@ -22,12 +22,14 @@ import com.myselia.javacommon.constants.opcode.OpcodeBroker;
 import com.myselia.javacommon.constants.opcode.operations.LensOperation;
 import com.myselia.javacommon.constants.opcode.operations.StemOperation;
 import com.myselia.javacommon.framework.communication.WebSocketHelper;
+import com.myselia.stem.communication.CommunicationDock;
 import com.myselia.stem.communication.StemClientSession;
 import com.myselia.stem.communication.handlers.ComponentHandlerBase;
 import com.myselia.stem.communication.handlers.ComponentHandlerFactory;
 
 public class HttpHandshakeConnectionState implements ConnectionState {
 
+	//TODO: Perhaps implement netty.WebSocketServerHandshaker and WebSocketServerHandshakerFactory 
 	private final String keyStringSearch = "Sec-WebSocket-Key: ";
 	
 	private ComponentHandlerBase handler;
@@ -149,8 +151,8 @@ public class HttpHandshakeConnectionState implements ConnectionState {
 		}
 
 		TransmissionBuilder tb = new TransmissionBuilder();
-		String from = OpcodeBroker.make(ComponentType.STEM, null, ActionType.DATA, StemOperation.SETUP);
-		String to = OpcodeBroker.make(ComponentType.LENS, null, ActionType.DATA, setupStatus);
+		String from = OpcodeBroker.make(ComponentType.STEM, CommunicationDock.stemCertificate.getUUID(), ActionType.DATA, StemOperation.SETUP);
+		String to = OpcodeBroker.make(ComponentType.LENS, this.handler.getCertificate().getUUID(), ActionType.DATA, setupStatus);
 		tb.newTransmission(from, to);
 		tb.addAtom("ready", "boolean", isReady);
 		Transmission t = tb.getTransmission();

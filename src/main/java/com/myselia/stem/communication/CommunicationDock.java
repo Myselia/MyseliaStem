@@ -18,7 +18,7 @@ public class CommunicationDock {
 	public static final int Stem_Broadcast_Port = 42070;
 
 	public static Set<String> reqSet;
-	private static ComponentCertificate stemCertificate;
+	public static ComponentCertificate stemCertificate;
 	private static Map<MyseliaUUID, ComponentCertificate> uuidMap;
 	private static Map<ComponentCertificate, ComponentHandlerBase> connectedDeviceMap;
 	private Broadcaster seeker;
