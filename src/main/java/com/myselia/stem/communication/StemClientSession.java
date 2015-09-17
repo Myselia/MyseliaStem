@@ -1,6 +1,8 @@
 package com.myselia.stem.communication;
 
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -19,15 +21,12 @@ public class StemClientSession extends SimpleChannelInboundHandler<Transmission>
 	// Channel object to handle client transmission on transport layer
 	private Channel clientChannel = null;
 	private Object firstContact = null;
-
 	private boolean isHTTP;
-	// Component handler that encapsulates MySelia Component behavior and
-	// handling
+	// Component handler that encapsulates MySelia Component behavior and handling
 	private ComponentHandlerBase componentHandler;
 	// Current state of the connection
 	private ConnectionState clientConnectionState;
-	// Container of all the state instances needed to decide what to do at each
-	// client tick
+	// Container of all the state instances
 	private ConnectionStateContainer stateContainer;
 
 	public StemClientSession(Channel clientChannel, Object firstContact, boolean isHTTP) {
@@ -42,18 +41,31 @@ public class StemClientSession extends SimpleChannelInboundHandler<Transmission>
 		
 		try {
 			if (isHTTP) {
-
 				clientConnectionState.process(null);
-
 			} else {
 				clientConnectionState.process((Transmission) firstContact);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("StemClientSession : received packet is not supported");
 		}
-
+		
+		setupFutures(clientChannel);
+		
 		this.componentAttached = true;
+	}
+
+	public void setupFutures(Channel channel) {
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		ChannelFuture closeFuture = channel.closeFuture();
+
+		closeFuture.addListener(new ChannelFutureListener() {
+			@Override
+			public void operationComplete(ChannelFuture future) throws Exception {
+				System.out.println("DISCONNECTED ");
+				clientConnectionState = stateContainer.getDisconnectedState();
+				componentAttached = false;
+			}
+		});
 	}
 
 	@Override
@@ -94,6 +106,11 @@ public class StemClientSession extends SimpleChannelInboundHandler<Transmission>
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 		cause.printStackTrace();
 		ctx.close();
+	}
+	
+	public void resetExistingConnection() {
+		componentAttached = true;
+		clientConnectionState = stateContainer.getConnectedState();
 	}
 
 	public ConnectionState getConnectionState() {

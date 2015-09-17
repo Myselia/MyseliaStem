@@ -2,6 +2,8 @@ package com.myselia.stem;
 
 import java.util.ArrayList;
 
+import com.myselia.javacommon.constants.opcode.ComponentType;
+import com.myselia.javacommon.topology.ComponentCertificate;
 import com.myselia.stem.communication.CommunicationDock;
 import com.myselia.stem.communication.seekers.LocalNetworkSeek;
 import com.myselia.stem.communication.seekers.Seek;
@@ -27,7 +29,7 @@ public class Main {
 		databank_thread = new Thread(databank);
 		databank_thread.start();
 		
-		comDock = new CommunicationDock();	
+		comDock = new CommunicationDock(new ComponentCertificate(ComponentType.STEM));	
 		comDock.startServers();
 	}
 	
