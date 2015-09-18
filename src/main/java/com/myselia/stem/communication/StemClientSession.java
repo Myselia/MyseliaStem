@@ -9,6 +9,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import java.io.IOException;
 import java.util.Iterator;
 
+import com.myselia.javacommon.communication.mail.MailService;
 import com.myselia.javacommon.communication.units.Atom;
 import com.myselia.javacommon.communication.units.Transmission;
 import com.myselia.stem.communication.handlers.ComponentHandlerBase;
@@ -55,9 +56,8 @@ public class StemClientSession extends SimpleChannelInboundHandler<Transmission>
 	}
 
 	public void setupFutures(Channel channel) {
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		ChannelFuture closeFuture = channel.closeFuture();
-
+		
 		closeFuture.addListener(new ChannelFutureListener() {
 			@Override
 			public void operationComplete(ChannelFuture future) throws Exception {

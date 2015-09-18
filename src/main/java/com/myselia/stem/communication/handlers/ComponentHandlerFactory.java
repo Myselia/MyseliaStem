@@ -36,6 +36,8 @@ public class ComponentHandlerFactory {
 		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		System.out.println("!!!!!!!!!!SETUP PACKET: " + jsonInterpreter.toJson(setupPacket));
+		
+		//TODO Perhaps put this in a helper class somewhere
 		Iterator<Atom> it = setupPacket.get_atoms().iterator();
 		Atom a = it.next();
 		String atomValue = a.get_value();

@@ -1,20 +1,24 @@
 package com.myselia.stem.communication.handlers;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import com.myselia.javacommon.communication.mail.Addressable;
 import com.myselia.javacommon.communication.mail.MailBox;
 import com.myselia.javacommon.communication.mail.MailService;
+import com.myselia.javacommon.communication.units.Atom;
 import com.myselia.javacommon.communication.units.Transmission;
 import com.myselia.javacommon.topology.ComponentCertificate;
+import com.myselia.javacommon.topology.MyseliaUUID;
 import com.myselia.stem.communication.CommunicationDock;
 import com.myselia.stem.communication.StemClientSession;
 
 public abstract class ComponentHandlerBase implements Handler, Addressable {
 
-	protected ComponentCertificate componentCert;
 	protected StemClientSession session;
 	protected MailBox<Transmission> mailbox;
+	protected ComponentCertificate componentCert;
+
 	protected boolean ready = false;
 	
 	//Called by xConnectionState when Transmission is received
@@ -43,6 +47,10 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 		} else {
 			//This is a brand new session, initialize required objects
 			System.out.println("[ComponentHandler] : This is a new session " + componentCert.getUUID());
+			
+			MyseliaUUID componentMUUID = componentCert.getUUID();
+			MailService.routingTable.setNext(componentMUUID.toString(), componentMUUID.toString());
+			
 			this.session = session;
 			CommunicationDock.addNetworkComponent(componentCert, this);
 			mailbox = new MailBox<Transmission>();
@@ -87,6 +95,27 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 	
 	public ComponentCertificate getCertificate() {
 		return componentCert;
+	}
+	
+	protected void printRecvMsg(Transmission t) {
+		System.out.println();
+		System.out.println("[Message Received]");
+		
+		//Header
+		System.out.println("\t->Header: ");
+		System.out.println("\t\t->ID: " + t.get_header().get_id());
+		System.out.println("\t\t->From: " + t.get_header().get_from());
+		System.out.println("\t\t->To: " + t.get_header().get_to());
+		//Atoms
+		System.out.println("\t->Atoms:");
+		Iterator<Atom> it = t.get_atoms().iterator();
+		while (it.hasNext()) {
+			Atom a = it.next();
+			System.out.println("\t\t->Field: " + a.get_field());
+			System.out.println("\t\t\t->Type: " + a.get_type());
+			System.out.println("\t\t\t->Value: " + a.get_value());
+		}
+		System.out.println();
 	}
 	
 }

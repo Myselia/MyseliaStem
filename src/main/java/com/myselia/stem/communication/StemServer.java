@@ -1,5 +1,7 @@
 package com.myselia.stem.communication;
 
+import com.myselia.stem.control.StemLogic;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -7,17 +9,14 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-import com.myselia.javacommon.communication.mail.MailService;
-import com.myselia.javacommon.constants.opcode.ComponentType;
-
 public class StemServer {
 
 	protected int port, backlog;
-	private MailService s;
+	protected StemLogic stemLogic;
 	
 	public StemServer(int port) {
+		stemLogic = new StemLogic();
 		System.out.println("Starting Stem Server with Port: " + port);
-		s = new MailService(ComponentType.STEM);
 		this.port = port; 
 	}
 	

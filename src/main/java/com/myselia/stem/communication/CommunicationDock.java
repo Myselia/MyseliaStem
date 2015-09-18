@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.myselia.javacommon.communication.mail.MailService;
+import com.myselia.javacommon.constants.opcode.ComponentType;
 import com.myselia.javacommon.topology.ComponentCertificate;
 import com.myselia.javacommon.topology.MyseliaUUID;
 import com.myselia.stem.Main;
@@ -22,11 +24,14 @@ public class CommunicationDock {
 	private static Map<MyseliaUUID, ComponentCertificate> uuidMap;
 	private static Map<ComponentCertificate, ComponentHandlerBase> connectedDeviceMap;
 	private Broadcaster seeker;
+	private MailService s;
 
 	public CommunicationDock(ComponentCertificate stemCertificate) {
 		CommunicationDock.stemCertificate = stemCertificate;
+		
 		System.out.println("Initializing ComDock with local IP - " + stemCertificate.getIpAddress());
-
+		
+		s = new MailService(ComponentType.STEM, CommunicationDock.getStemCertificate().getUUID());
 		connectedDeviceMap = new ConcurrentHashMap<ComponentCertificate, ComponentHandlerBase>();
 		uuidMap = new ConcurrentHashMap<MyseliaUUID, ComponentCertificate>();
 		seeker = new Broadcaster();
