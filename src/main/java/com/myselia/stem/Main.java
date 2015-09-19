@@ -21,6 +21,7 @@ public class Main {
 	private static CommunicationDock comDock;
 
 	public static void main(String[] args) {
+		System.setProperty("java.net.preferIPv4Stack" , "true");
 		System.out.println("MyseliaStem Initialization... ");
 
 		console_thread = new Thread(console);
