@@ -8,8 +8,6 @@ import com.myselia.javacommon.communication.units.Transmission;
 public class SandboxHandler extends ComponentHandlerBase {
 
 	public SandboxHandler() {
-		//String toOpcode = OpcodeBroker.makeMailCheckingOpcode(ComponentType.SANDBOXMASTER, ActionType.DATA);
-		//String toOpcode2 = OpcodeBroker.makeMailCheckingOpcode(ComponentType.SANDBOXMASTER, ActionType.RUNTIME);
 		MailService.register("SANDBOXMASTER_DATA", this);
 		MailService.register("SANDBOXMASTER_RUNTIME", this);
 	}

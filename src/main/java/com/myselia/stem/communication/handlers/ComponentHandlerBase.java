@@ -8,6 +8,8 @@ import com.myselia.javacommon.communication.mail.MailBox;
 import com.myselia.javacommon.communication.mail.MailService;
 import com.myselia.javacommon.communication.units.Atom;
 import com.myselia.javacommon.communication.units.Transmission;
+import com.myselia.javacommon.constants.opcode.ComponentType;
+import com.myselia.javacommon.constants.opcode.OpcodeBroker;
 import com.myselia.javacommon.topology.ComponentCertificate;
 import com.myselia.javacommon.topology.MyseliaUUID;
 import com.myselia.stem.communication.CommunicationDock;
@@ -24,7 +26,16 @@ public abstract class ComponentHandlerBase implements Handler, Addressable {
 	//Called by xConnectionState when Transmission is received
 	@Override
 	public void handleComponent(Transmission t) throws IOException {
-		transmissionReceived(t);
+		//Relay to another component using muuid?
+		//or
+		//Use CT_AT if to header opcode is directed at 'STEM' for subsystem processing
+
+		if (OpcodeBroker.deduceComponent(t.get_header().get_to()).equals(ComponentType.STEM)) {
+			
+		} else {
+			transmissionReceived(t);
+		}
+		
 	}
 	
 	public void write(Transmission t) {
